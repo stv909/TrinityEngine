@@ -24,3 +24,11 @@ Trinity Engine. Conceptual design and research.
 			3.1.3 ResourceLinkSystem
 		3.2 EntitySystem
 		3.3 FixedString, StringBuilder, StringFormat, I18N, L10N
+
+Links:
+
+http://powdertoy.co.uk/ - The Powder Toys. Most known implementation of static interactions.
+
+http://fallingsandgame.com/ - Forum with multiple implementations of Falling Sand games - parents of The Powder Toys
+	http://fallingsandgame.com/sand/NewSand.html - implementation with Zombies (characters in physical environment)
+	http://sourceforge.net/projects/sdlsand/ - simple C++ implementation
