@@ -203,6 +203,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\quantumProcessor.h"
+			>
+		</File>
+		<File
 			RelativePath=".\quantums.h"
 			>
 		</File>

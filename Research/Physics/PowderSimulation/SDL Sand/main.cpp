@@ -10,6 +10,7 @@
 #include "math.h"
 
 #include "quantums.h"
+#include "quantumProcessor.h"
 #include "render.h"
 #include "input.h"
 
