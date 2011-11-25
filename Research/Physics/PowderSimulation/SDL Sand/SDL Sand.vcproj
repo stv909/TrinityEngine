@@ -195,11 +195,23 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\input.h"
+			>
+		</File>
+		<File
 			RelativePath=".\main.cpp"
 			>
 		</File>
 		<File
+			RelativePath=".\quantums.h"
+			>
+		</File>
+		<File
 			RelativePath=".\readme.txt"
+			>
+		</File>
+		<File
+			RelativePath=".\render.h"
 			>
 		</File>
 	</Files>

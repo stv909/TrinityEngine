@@ -9,333 +9,9 @@
 #include "../SDL/includes/SDL.h"
 #include "math.h"
 
-//Screen size
-const int WIDTH = 1024;
-const int HEIGHT = 768;
-
-int particleCount = 0;
-int penSize = 5;
-
-bool implementParticleSwaps = false;
-
-enum ParticleType
-{
-	NOTHING = 0,
-	WALL = 1,
-	SAND = 2,
-	MOVEDSAND = 3,
-	WATER = 4,
-	MOVEDWATER = 5,
-	OIL = 6,
-	MOVEDOIL = 7
-};
-
-//Instead of using a two dimensional array
-// we'll use a simple array to improve speed
-// vs = virtual screen
-ParticleType vs[WIDTH*HEIGHT];
-
-// The current brush type
-ParticleType CurrentParticleType = WALL;
-
-//THe screen
-SDL_Surface *screen;
-
-static Uint32 WATERCOLOR = 0;
-static Uint32 OILCOLOR = 0;
-static Uint32 WALLCOLOR = 0;
-static Uint32 SANDCOLOR = 0;
-
-// Initializing colors
-void initColors()
-{
-	OILCOLOR = SDL_MapRGB(screen->format, 130, 70, 0);
-	WATERCOLOR = SDL_MapRGB(screen->format, 0, 50, 255);
-	WALLCOLOR = SDL_MapRGB(screen->format, 100, 100, 100);
-	SANDCOLOR = SDL_MapRGB(screen->format, 255, 230, 127);
-}
-
-//Setting a pixel to a given color
-inline void SetPixel16Bit(Uint16 x, Uint16 y, Uint32 pixel)
-{
-  *((Uint16 *)screen->pixels + y * screen->pitch/2 + x) = pixel;
-}
-
-//Drawing our virtual screen to the real screen
-static void DrawScene()
-{
-	particleCount = 0;
-
-	//Locking the screen
-	if ( SDL_MUSTLOCK(screen) )
-	{
-		if ( SDL_LockSurface(screen) < 0 )
-		{
-			return;
-		}
-	}
-
-	//Clearing the screen with black
-	SDL_FillRect(screen,NULL,0);
-
-	//Iterating through each pixe height first
-	for(int y=0;y<HEIGHT;y++)
-	{
-		//Width
-		for(int x=0;x<WIDTH;x++)
-		{
-			int same = x+(WIDTH*y);
-
-			//If the type is of MOVEDx then set it to x and draw it
-			switch(vs[same])
-			{
-			case MOVEDSAND:
-				vs[same] = SAND;
-			case SAND:
-				SetPixel16Bit(x,y,SANDCOLOR);
-				particleCount++;
-				break;
-			case MOVEDWATER:
-				vs[same] = WATER;
-			case WATER:
-				SetPixel16Bit(x,y,WATERCOLOR);
-				particleCount++;
-				break;
-			case MOVEDOIL:
-				vs[same] = OIL;
-			case OIL:
-				SetPixel16Bit(x,y,OILCOLOR);
-				particleCount++;
-				break;
-			case WALL:
-				SetPixel16Bit(x,y,WALLCOLOR);
-				break;
-			}
-		}
-	}
-	//Unlocking the screen
-	if ( SDL_MUSTLOCK(screen) )
-	{
-		SDL_UnlockSurface(screen);
-	}
-}
-
-// Emitting a given particletype at (x,o) width pixels wide and
-// with a p density (probability that a given pixel will be drawn 
-// at a given position withing the width)
-void Emit(int x, int width, ParticleType type, float p)
-{
-	for (int i = x - width/2; i < x + width/2; i++)
-	{
-		if ( rand() < (int)(RAND_MAX * p) ) vs[i+WIDTH] = type;
-	}
-}
-
-// Performing the movement logic of a given particle. The argument 'type'
-// is passed so that we don't need a table lookup when determining the
-// type to set the given particle to - i.e. if the particle is SAND then the
-// passed type will be MOVEDSAND
-inline void MoveParticle(int x, int y, ParticleType type)
-{
-	//Creating a random int
-	int r = rand();
-
-	if ( r < RAND_MAX / 13 ) return; // This makes it fall unevenly
-
-	// We'll only calculate these indicies once for optimization purpose
-	int below = x+((y+1)*WIDTH);
-	int same = x+(WIDTH*y);
-
-	//If nothing below then just fall
-	if ( vs[below] == NOTHING && r % 8) //rand() % 8 makes it spread
-	{
-		vs[below] = type;
-		vs[same] = NOTHING;
-		return;
-	}
-
-	// Peform 'realism' logic?
-	if(implementParticleSwaps)
-	{
-		//Making water lighter than sand
-		if(type == MOVEDSAND && (vs[below] == WATER))
-		{
-			vs[below] = MOVEDSAND;
-			vs[same] = WATER;
-			return;
-		}
-
-		//Making sand lighter than oil
-		if(type == MOVEDSAND && (vs[below] == OIL) && (rand() % 5 == 0)) //Making oil dense so that sand falls slower
-		{
-			vs[below] = MOVEDSAND;
-			vs[same] = OIL;
-			return;
-		}
-
-		//Making oil lighter than water
-		if(type == MOVEDWATER && (vs[below] == OIL))
-		{
-			vs[below] = MOVEDWATER;
-			vs[same] = OIL;
-			return;
-		}
-	}
-
-	//Randomly select right or left first
-	int sign = rand() % 2 == 0 ? -1 : 1;
-
-	//Add to sideways flow
-	if(((vs[(x+1)+((y-1)*WIDTH)] !=  NOTHING && vs[(x+1)+(WIDTH*y)] != NOTHING) || (vs[(x-1)+((y-1)*WIDTH)] != NOTHING && vs[(x-1)+(WIDTH*y)] != NOTHING)) && (x-5)>0 && (x+5) < WIDTH)
-		sign *= rand()%5;
-
-	// We'll only calculate these indicies once for optimization purpose
-	int firstdown = (x+sign)+((y+1)*WIDTH);
-	int seconddown = (x-sign)+((y+1)*WIDTH);
-	int first = (x+sign)+(WIDTH*y);
-	int second = (x-sign)+(WIDTH*y);
-
-	// The place below (x,y+1) is filled with something, then check (x+sign,y+1) and (x-sign,y+1) 
-	// We chose sign randomly to randomly check eigther left or right
-	if ( vs[firstdown] == NOTHING )
-	{
-		vs[firstdown] = type;
-		vs[same] = NOTHING;
-	}
-	else if ( vs[seconddown] == NOTHING )
-	{
-		vs[seconddown] = type;
-		vs[same] = NOTHING;
-	}
-	//If (x+sign,y+1) is filled then try (x+sign,y) and (x-sign,y)
-	else if (vs[first] == NOTHING )
-	{
-		vs[first] = type;
-		vs[same] = NOTHING;
-	}
-	else if (vs[second] == NOTHING )
-	{
-		vs[second] = type;
-		vs[same] = NOTHING;
-	}
-}
-
-
-//Drawing a filled circle at a given position with a given radius and a given partice type
-void DrawParticles(int xpos, int ypos, int radius, ParticleType type)
-{
-	for (int x = ((xpos - radius - 1) < 0) ? 0 : (xpos - radius - 1); x <= xpos + radius && x < WIDTH; x++)
-		for (int y = ((ypos - radius - 1) < 0) ? 0 : (ypos - radius - 1); y <= ypos + radius && y < HEIGHT; y++)
-		{
-			if ((x-xpos)*(x-xpos) + (y-ypos)*(y-ypos) <= radius*radius) vs[x+(WIDTH*y)] = type;
-		};
-}
-
-// Drawing some random wall lines
-void DoRandomLines(ParticleType type)
-{
-	for(int i = 0; i < 20; i++)
-	{
-		int x1 = rand() % WIDTH;
-		int x2 = rand() % WIDTH;
-
-		float step = 1.0f / HEIGHT;
-		for (float a = 0; a < 1; a+=step)
-			DrawParticles((int)(a*x1+(1-a)*x2),(int)(a*0+(1-a)*HEIGHT),penSize,type); 
-	}
-	for(int i = 0; i < 20; i++)
-	{
-		int y1 = rand() % HEIGHT;
-		int y2 = rand() % HEIGHT;
-
-		float step = 1.0f / WIDTH;
-		for (float a = 0; a < 1; a+=step)
-			DrawParticles((int)(a*0+(1-a)*WIDTH),(int)(a*y1+(1-a)*y2),penSize,type); 
-	}
-}
-
-// Drawing a line
-void DrawLine(int newx, int newy, int oldx, int oldy)
-{
-	if(newx == oldx && newy == oldy)
-	{
-		DrawParticles(newx,newy,penSize,CurrentParticleType);
-	}
-	else
-	{
-		float step = 1.0f / ((abs(newx-oldx)>abs(newy-oldy)) ? abs(newx-oldx) : abs(newy-oldy));
-		for (float a = 0; a < 1; a+=step)
-			DrawParticles((int)(a*newx+(1-a)*oldx),(int)(a*newy+(1-a)*oldy),penSize,CurrentParticleType); 
-	}
-}
-
-// Updating a virtual pixel
-inline void UpdateVirtualPixel(int x, int y)
-{
-	switch (vs[x+(WIDTH*y)])
-	{
-	case SAND:
-		MoveParticle(x,y,MOVEDSAND);
-		break;
-	case WATER:
-		MoveParticle(x,y,MOVEDWATER);
-		break;
-	case OIL:
-		MoveParticle(x,y,MOVEDOIL);
-		break;				
-	}
-}
-
-// Updating the particle system (virtual screen) pixel by pixel
-inline void UpdateVirtualScreen()
-{
-	for(int y = HEIGHT-2; y > 0; y--)
-	{
-		// Due to biasing when iterating through the scanline from left to right,
-		// we now chose our direction randomly per scanline.
-		if (rand() & 2)
-			for(int x = WIDTH-2; x > 0 ; x--) UpdateVirtualPixel(x,y);
-		else
-			for(int x = 1; x < WIDTH - 1; x++) UpdateVirtualPixel(x,y);
-	}
-}
-
-//Cearing the partice system
-void Clear()
-{
-	for(int w = 0; w < WIDTH ; w++)
-	{
-		for(int h = 0; h < HEIGHT; h++)
-		{
-			vs[w+(WIDTH*h)] = NOTHING;
-		}
-	}
-}
-
-// Initializing the screen a
-void init()
-{
-	// Initializing SDL
-	if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		fprintf( stderr, "Video initialization failed: %s\n",
-			SDL_GetError( ) );
-		SDL_Quit( );
-	}
-
-	//Creating the screen using 16 bit colors
-	screen = SDL_SetVideoMode(WIDTH, HEIGHT, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_ASYNCBLIT);
-	if ( screen == NULL ) {
-		fprintf(stderr, "Unable to set video mode: %s\n", SDL_GetError());
-
-	}
-	//Setting caption
-	SDL_WM_SetCaption("SDL Sand",NULL);
-	//Enabeling key repeats
-	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-	initColors();
-}
+#include "quantums.h"
+#include "render.h"
+#include "input.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -494,11 +170,11 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		//To emit or not to emit
 		if(emitSand)
-			Emit(WIDTH/4, 20, SAND, sandDens);
+			Emit(FIELD_WIDTH/4, 20, SAND, sandDens);
 		if(emitWater)
-			Emit(WIDTH/4*2, 20, WATER, waterDens);
+			Emit(FIELD_WIDTH/4*2, 20, WATER, waterDens);
 		if(emitOil)
-			Emit(WIDTH/4*3, 20, OIL, oilDens);
+			Emit(FIELD_WIDTH/4*3, 20, OIL, oilDens);
 
 		//If the button is pressed (and no event has occured since last frame due
 		// to the polling procedure, then draw at the position (enabeling 'dynamic emitters')
@@ -506,7 +182,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			DrawLine(oldx,oldy,oldx,oldy);
 
 		//Clear bottom line
-		for (int i=0; i< WIDTH; i++) vs[i+((HEIGHT-1)*WIDTH)] = NOTHING;
+		for (int i=0; i< FIELD_WIDTH; i++) vs[i+((FIELD_HEIGHT-1)*FIELD_WIDTH)] = NOTHING;
 
 		// Update the virtual screen (performing particle logic)
 		UpdateVirtualScreen();
@@ -531,7 +207,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			avg = 1000/((int)avg/NumFrames);
 
 			printf("FPS: %i\n",avg);
-			printf("Particle count: %i\n",particleCount);
+			printf("Particle count: %i\n",renderedParticlesCount);
 		}
 	}
 
