@@ -50,23 +50,16 @@ static void DrawScene()
 		{
 			int same = x+(FIELD_WIDTH*y);
 
-			//If the type is of MOVEDx then set it to x and draw it
 			switch(vs[same])
 			{
-			case MOVEDSAND:
-				vs[same] = SAND;
 			case SAND:
 				SetPixel16Bit(x,y,SANDCOLOR);
 				renderedParticlesCount++;
 				break;
-			case MOVEDWATER:
-				vs[same] = WATER;
 			case WATER:
 				SetPixel16Bit(x,y,WATERCOLOR);
 				renderedParticlesCount++;
 				break;
-			case MOVEDOIL:
-				vs[same] = OIL;
 			case OIL:
 				SetPixel16Bit(x,y,OILCOLOR);
 				renderedParticlesCount++;
@@ -85,7 +78,7 @@ static void DrawScene()
 }
 
 // Initializing the screen a
-void init()
+void InitRender()
 {
 	// Initializing SDL
 	if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -107,4 +100,12 @@ void init()
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
 	initColors();
+}
+
+void UpdateRender()
+{
+	// Map the virtual screen to the real screen
+	DrawScene();
+	//Fip the vs
+	SDL_Flip(screen);
 }

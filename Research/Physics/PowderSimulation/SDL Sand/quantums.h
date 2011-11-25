@@ -11,11 +11,11 @@ enum ParticleType
 	NOTHING = 0,
 	WALL = 1,
 	SAND = 2,
-	MOVEDSAND = 3,
+	MOVEDSAND = 3, // TODO: find the purpose of this special type. I guess it's useless.
 	WATER = 4,
-	MOVEDWATER = 5,
+	MOVEDWATER = 5, // TODO: find the purpose of this special type. I guess it's useless.
 	OIL = 6,
-	MOVEDOIL = 7
+	MOVEDOIL = 7 // TODO: find the purpose of this special type. I guess it's useless.
 };
 
 //Instead of using a two dimensional array
@@ -23,22 +23,11 @@ enum ParticleType
 // vs = virtual screen
 ParticleType vs[FIELD_WIDTH*FIELD_HEIGHT];
 
-// Emitting a given particletype at (x,o) width pixels wide and
-// with a p density (probability that a given pixel will be drawn 
-// at a given position withing the width)
-void Emit(int x, int width, ParticleType type, float p)
-{
-	for (int i = x - width/2; i < x + width/2; i++)
-	{
-		if ( rand() < (int)(RAND_MAX * p) ) vs[i+FIELD_WIDTH] = type;
-	}
-}
-
 // Performing the movement logic of a given particle. The argument 'type'
 // is passed so that we don't need a table lookup when determining the
 // type to set the given particle to - i.e. if the particle is SAND then the
 // passed type will be MOVEDSAND
-inline void MoveParticle(int x, int y, ParticleType type)
+inline void MoveQuantum(int x, int y, ParticleType type)
 {
 	//Creating a random int
 	int r = rand();
@@ -123,29 +112,19 @@ inline void MoveParticle(int x, int y, ParticleType type)
 	}
 }
 
-//Drawing a filled circle at a given position with a given radius and a given partice type
-void DrawParticles(int xpos, int ypos, int radius, ParticleType type)
-{
-	for (int x = ((xpos - radius - 1) < 0) ? 0 : (xpos - radius - 1); x <= xpos + radius && x < FIELD_WIDTH; x++)
-		for (int y = ((ypos - radius - 1) < 0) ? 0 : (ypos - radius - 1); y <= ypos + radius && y < FIELD_HEIGHT; y++)
-		{
-			if ((x-xpos)*(x-xpos) + (y-ypos)*(y-ypos) <= radius*radius) vs[x+(FIELD_WIDTH*y)] = type;
-		};
-}
-
 // Updating a virtual pixel
-inline void UpdateVirtualPixel(int x, int y)
+inline void UpdateVirtualPixel(int x, int y) // TODO: refactor this strange function with x -> MOVEDx trik
 {
 	switch (vs[x+(FIELD_WIDTH*y)])
 	{
 	case SAND:
-		MoveParticle(x,y,MOVEDSAND);
+		MoveQuantum(x,y,MOVEDSAND);
 		break;
 	case WATER:
-		MoveParticle(x,y,MOVEDWATER);
+		MoveQuantum(x,y,MOVEDWATER);
 		break;
 	case OIL:
-		MoveParticle(x,y,MOVEDOIL);
+		MoveQuantum(x,y,MOVEDOIL);
 		break;				
 	}
 }
@@ -164,14 +143,105 @@ inline void UpdateVirtualScreen()
 	}
 }
 
+//---
+
+// Creates particle in given place of field
+void SetQuantum(int xpos, int ypos, ParticleType type)
+{
+	vs[xpos+(FIELD_WIDTH*ypos)] = type;
+}
+
+void ConvertMoveQuantumsToRegularQuantums()
+{
+	//Iterating through each pixe height first
+	for(int y=0;y<FIELD_HEIGHT;y++)
+	{
+		//Width
+		for(int x=0;x<FIELD_WIDTH;x++)
+		{
+			int same = x+(FIELD_WIDTH*y);
+
+			//If the type is of MOVEDx then set it to x
+			switch(vs[same])
+			{
+			case MOVEDSAND:
+				vs[same] = SAND;
+				break;
+			case MOVEDWATER:
+				vs[same] = WATER;
+				break;
+			case MOVEDOIL:
+				vs[same] = OIL;
+				break;
+			}
+		}
+	}
+}
+
+//To emit or not to emit
+bool emitSand = true;
+bool emitWater = true;
+bool emitOil = true;
+
+//Initial density of emitters
+float oilDens = 0.3f;
+float sandDens = 0.3f;
+float waterDens = 0.3f;
+
+// Emitting a given particletype at (x,o) width pixels wide and
+// with a p density (probability that a given pixel will be drawn 
+// at a given position withing the width)
+void Emit(int x, int width, ParticleType type, float p)
+{
+	for (int i = x - width/2; i < x + width/2; i++)
+	{
+		if ( rand() < (int)(RAND_MAX * p) ) vs[i+FIELD_WIDTH] = type;
+	}
+}
+
+void UpdateQuantumEmmiters()
+{
+	//To emit or not to emit
+	if(emitSand)
+		Emit(FIELD_WIDTH/4, 20, SAND, sandDens);
+	if(emitWater)
+		Emit(FIELD_WIDTH/4*2, 20, WATER, waterDens);
+	if(emitOil)
+		Emit(FIELD_WIDTH/4*3, 20, OIL, oilDens);
+}
+
+void ClearQuantumsFromBottomLine()
+{
+	//Clear bottom line
+	for (int i=0; i< FIELD_WIDTH; i++) SetQuantum(i, FIELD_HEIGHT-1, NOTHING);
+}
+
 //Cearing the partice system
-void Clear()
+void ClearQuantums()
 {
 	for(int w = 0; w < FIELD_WIDTH ; w++)
 	{
 		for(int h = 0; h < FIELD_HEIGHT; h++)
 		{
-			vs[w+(FIELD_WIDTH*h)] = NOTHING;
+			SetQuantum(w, h, NOTHING);
 		}
 	}
+}
+
+void InitQuantums()
+{
+	ClearQuantums();
+
+	// Set initial seed
+	srand( (unsigned)time( NULL ) );
+}
+
+void UpdateQuantums()
+{
+	UpdateQuantumEmmiters();
+	ClearQuantumsFromBottomLine();
+	// Update the virtual screen (performing particle logic)
+	UpdateVirtualScreen();
+	// Clean up temporary MOVED-information from the field
+	ConvertMoveQuantumsToRegularQuantums(); // TODO: Try to make things without this logic and MOVEDx types. // WARNING: these slows down computation. If this logic will be placed to DrawScene, we avoid extra-iteration of all quantums in the field.
 }
