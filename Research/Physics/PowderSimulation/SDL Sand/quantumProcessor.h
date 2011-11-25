@@ -1,7 +1,7 @@
 #pragma once
 
 // Creates particle in given place of field
-void SetQuantum(int xpos, int ypos, ParticleType type)
+inline void SetQuantum(int xpos, int ypos, ParticleType type)
 {
 	vs[xpos+(FIELD_WIDTH*ypos)] = type;
 }

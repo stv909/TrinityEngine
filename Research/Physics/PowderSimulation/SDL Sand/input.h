@@ -161,6 +161,23 @@ void ProcessEvent(SDL_Event event)
 		case SDLK_o: // Enable or disable particle swaps
 			implementParticleSwaps ^= true;
 			break;
+
+		case SDLK_F1: 
+			updateVertical = UM_VERTICAL_TOP_TO_BOTTOM;
+			printf("UM_VERTICAL_TOP_TO_BOTTOM\n");
+			break;
+		case SDLK_F2: 
+			updateVertical = UM_VERTICAL_TO_BOTTOM_TOP;
+			printf("UM_VERTICAL_TO_BOTTOM_TOP\n");
+			break;
+		case SDLK_F3: 
+			updateMovement = UM_MOVEMENT_RANDOM;
+			printf("UM_MOVEMENT_RANDOM\n");
+			break;
+		case SDLK_F4: 
+			updateMovement = UM_MOVEMENT_REGULAR;
+			printf("UM_MOVEMENT_REGULAR\n");
+			break;
 		}
 	}
 	// If mouse button pressed then save position of cursor

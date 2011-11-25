@@ -23,6 +23,18 @@ enum ParticleType
 // vs = virtual screen
 ParticleType vs[FIELD_WIDTH*FIELD_HEIGHT];
 
+enum UpdateMethod
+{
+	UM_VERTICAL_TOP_TO_BOTTOM = 0,
+	UM_VERTICAL_TO_BOTTOM_TOP,
+	UM_MOVEMENT_RANDOM,
+	UM_MOVEMENT_REGULAR,
+	UM_TOTAL
+};
+
+UpdateMethod updateVertical = UM_VERTICAL_TOP_TO_BOTTOM;
+UpdateMethod updateMovement = UM_MOVEMENT_RANDOM;
+
 // Performing the movement logic of a given particle. The argument 'type'
 // is passed so that we don't need a table lookup when determining the
 // type to set the given particle to - i.e. if the particle is SAND then the
@@ -32,14 +44,18 @@ inline void MoveQuantum(int x, int y, ParticleType type)
 	//Creating a random int
 	int r = rand();
 
-	if ( r < RAND_MAX / 13 ) return; // This makes it fall unevenly
+	if ( updateMovement == UM_MOVEMENT_RANDOM && r < RAND_MAX / 13 ) // This makes it fall unevenly
+		return;
 
 	// We'll only calculate these indicies once for optimization purpose
 	int below = x+((y+1)*FIELD_WIDTH);
 	int same = x+(FIELD_WIDTH*y);
 
 	//If nothing below then just fall
-	if ( vs[below] == NOTHING && r % 8) //rand() % 8 makes it spread
+	if ( 
+		vs[below] == NOTHING 
+		&& (updateMovement != UM_MOVEMENT_RANDOM || r % 8) //rand() % 8 makes it spread
+	)
 	{
 		vs[below] = type;
 		vs[same] = NOTHING;
@@ -58,7 +74,10 @@ inline void MoveQuantum(int x, int y, ParticleType type)
 		}
 
 		//Making sand lighter than oil
-		if(type == MOVEDSAND && (vs[below] == OIL) && (rand() % 5 == 0)) //Making oil dense so that sand falls slower
+		if(
+			type == MOVEDSAND && (vs[below] == OIL) 
+			&& rand() % 5 == 0 //Making oil dense so that sand falls slower
+		)
 		{
 			vs[below] = MOVEDSAND;
 			vs[same] = OIL;
@@ -79,7 +98,14 @@ inline void MoveQuantum(int x, int y, ParticleType type)
 
 	//Add to sideways flow
 	if(((vs[(x+1)+((y-1)*FIELD_WIDTH)] !=  NOTHING && vs[(x+1)+(FIELD_WIDTH*y)] != NOTHING) || (vs[(x-1)+((y-1)*FIELD_WIDTH)] != NOTHING && vs[(x-1)+(FIELD_WIDTH*y)] != NOTHING)) && (x-5)>0 && (x+5) < FIELD_WIDTH)
-		sign *= rand()%5;
+	{
+		int viscosity = 8;
+		if (type == MOVEDWATER)
+			viscosity = 16;
+		if (type == MOVEDSAND)
+			viscosity = 4;
+		sign *= rand()%viscosity;
+	}
 
 	// We'll only calculate these indicies once for optimization purpose
 	int firstdown = (x+sign)+((y+1)*FIELD_WIDTH);
@@ -129,16 +155,23 @@ inline void UpdateVirtualPixel(int x, int y) // TODO: refactor this strange func
 	}
 }
 
+inline void UpdateVirtualScreenLine(int y)
+{
+	// Due to biasing when iterating through the scanline from left to right,
+	// we now chose our direction randomly per scanline.
+	if (rand() % 2 != 0)
+		for(int x = FIELD_WIDTH-2; x > 0 ; x--) UpdateVirtualPixel(x,y);
+	else
+		for(int x = 1; x < FIELD_WIDTH - 1; x++) UpdateVirtualPixel(x,y);
+}
+
 // Updating the particle system (virtual screen) pixel by pixel
 inline void UpdateVirtualScreen()
 {
-	for(int y = FIELD_HEIGHT-2; y > 0; y--)
-	{
-		// Due to biasing when iterating through the scanline from left to right,
-		// we now chose our direction randomly per scanline.
-		if (rand() & 2)
-			for(int x = FIELD_WIDTH-2; x > 0 ; x--) UpdateVirtualPixel(x,y);
-		else
-			for(int x = 1; x < FIELD_WIDTH - 1; x++) UpdateVirtualPixel(x,y);
-	}
+	if (updateVertical == UM_VERTICAL_TOP_TO_BOTTOM)
+		for(int y = FIELD_HEIGHT-2; y > 0; y--)
+			UpdateVirtualScreenLine(y);
+	else
+		for(int y = 1; y < FIELD_HEIGHT-1; y++)
+			UpdateVirtualScreenLine(y);
 }
