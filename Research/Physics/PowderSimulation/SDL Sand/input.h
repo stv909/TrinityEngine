@@ -178,6 +178,10 @@ void ProcessEvent(SDL_Event event)
 			updateMovement = UM_MOVEMENT_REGULAR;
 			printf("UM_MOVEMENT_REGULAR\n");
 			break;
+
+		case SDLK_F10: 
+			DrawLine(0,0,0,0);
+			break;
 		}
 	}
 	// If mouse button pressed then save position of cursor

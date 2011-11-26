@@ -6,33 +6,6 @@ inline void SetQuantum(int xpos, int ypos, ParticleType type)
 	vs[xpos+(FIELD_WIDTH*ypos)] = type;
 }
 
-void ConvertMoveQuantumsToRegularQuantums()
-{
-	//Iterating through each pixe height first
-	for(int y=0;y<FIELD_HEIGHT;y++)
-	{
-		//Width
-		for(int x=0;x<FIELD_WIDTH;x++)
-		{
-			int same = x+(FIELD_WIDTH*y);
-
-			//If the type is of MOVEDx then set it to x
-			switch(vs[same])
-			{
-			case MOVEDSAND:
-				vs[same] = SAND;
-				break;
-			case MOVEDWATER:
-				vs[same] = WATER;
-				break;
-			case MOVEDOIL:
-				vs[same] = OIL;
-				break;
-			}
-		}
-	}
-}
-
 //To emit or not to emit
 bool emitSand = true;
 bool emitWater = true;
@@ -74,13 +47,7 @@ void ClearQuantumsFromBottomLine()
 //Cearing the partice system
 void ClearQuantums()
 {
-	for(int w = 0; w < FIELD_WIDTH ; w++)
-	{
-		for(int h = 0; h < FIELD_HEIGHT; h++)
-		{
-			SetQuantum(w, h, NOTHING);
-		}
-	}
+	ClearQuantumBuffer((void *)vs, NOTHING, sizeof(ParticleType));
 }
 
 void InitQuantums()
@@ -97,6 +64,4 @@ void UpdateQuantums()
 	ClearQuantumsFromBottomLine();
 	// Update the virtual screen (performing particle logic)
 	UpdateVirtualScreen();
-	// Clean up temporary MOVED-information from the field
-	ConvertMoveQuantumsToRegularQuantums(); // TODO: Try to make things without this logic and MOVEDx types. // WARNING: these slows down computation. If this logic will be placed to DrawScene, we avoid extra-iteration of all quantums in the field.
 }
