@@ -16,7 +16,8 @@ enum ParticleType
 	PT_TOTAL
 };
 
-const int ParticleUpdateCounters[PT_TOTAL] = {1, 1, 1, 1, 1};
+const int ParticleUpdateCounters[PT_TOTAL] = {0, 0, 1, 1, 1};
+const int ParticleMaxSidewayFlow[PT_TOTAL] = {0, 0, 1, 6, 3};
 
 //Instead of using a two dimensional array
 // we'll use a simple array to improve speed
@@ -113,7 +114,7 @@ inline void MoveQuantum(int x, int y)
 	int flowShift = rand() % 2 == 0 ? -1 : 1;
 
 	//Add to sideways flow
-	int sidewayFlowMaxStep = 5;
+	int sidewayFlowMaxStep = ParticleMaxSidewayFlow[type];
 	if(
 		(
 			(vs[(x+1)+((y-1)*FIELD_WIDTH)] != PT_Nothing && vs[(x+1)+(FIELD_WIDTH*y)] != PT_Nothing) || 
