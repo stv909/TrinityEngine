@@ -31,23 +31,23 @@ void UpdateQuantumEmmiters()
 {
 	//To emit or not to emit
 	if(emitSand)
-		Emit(FIELD_WIDTH/4, 20, SAND, sandDens);
+		Emit(FIELD_WIDTH/4, 20, PT_Sand, sandDens);
 	if(emitWater)
-		Emit(FIELD_WIDTH/4*2, 20, WATER, waterDens);
+		Emit(FIELD_WIDTH/4*2, 20, PT_Water, waterDens);
 	if(emitOil)
-		Emit(FIELD_WIDTH/4*3, 20, OIL, oilDens);
+		Emit(FIELD_WIDTH/4*3, 20, PT_Oil, oilDens);
 }
 
 void ClearQuantumsFromBottomLine()
 {
 	//Clear bottom line
-	for (int i=0; i< FIELD_WIDTH; i++) SetQuantum(i, FIELD_HEIGHT-1, NOTHING);
+	for (int i=0; i< FIELD_WIDTH; i++) SetQuantum(i, FIELD_HEIGHT-1, PT_Nothing);
 }
 
 //Cearing the partice system
 void ClearQuantums()
 {
-	ClearQuantumBuffer((void *)vs, NOTHING, sizeof(ParticleType));
+	ClearQuantumBuffer((void *)vs, PT_Nothing, sizeof(ParticleType));
 }
 
 void InitQuantums()

@@ -52,19 +52,19 @@ static void DrawScene()
 
 			switch(vs[same])
 			{
-			case SAND:
+			case PT_Sand:
 				SetPixel16Bit(x,y,SANDCOLOR);
 				renderedParticlesCount++;
 				break;
-			case WATER:
+			case PT_Water:
 				SetPixel16Bit(x,y,WATERCOLOR);
 				renderedParticlesCount++;
 				break;
-			case OIL:
+			case PT_Oil:
 				SetPixel16Bit(x,y,OILCOLOR);
 				renderedParticlesCount++;
 				break;
-			case WALL:
+			case PT_Wall:
 				SetPixel16Bit(x,y,WALLCOLOR);
 				break;
 			}

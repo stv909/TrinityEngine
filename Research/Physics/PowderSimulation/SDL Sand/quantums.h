@@ -8,12 +8,15 @@ bool implementParticleSwaps = true;
 
 enum ParticleType
 {
-	NOTHING = 0,
-	WALL,
-	SAND,
-	WATER,
-	OIL,
+	PT_Nothing = 0,
+	PT_Wall,
+	PT_Sand,
+	PT_Water,
+	PT_Oil,
+	PT_TOTAL
 };
+
+const int ParticleUpdateCounters[PT_TOTAL] = {1, 1, 1, 1, 1};
 
 //Instead of using a two dimensional array
 // we'll use a simple array to improve speed
@@ -40,7 +43,7 @@ inline void ClearQuantumBuffer(void * buffer, int initValue, size_t sizeofElemen
 
 // Performing the movement logic of a given particle. The argument 'type'
 // is passed so that we don't need a table lookup when determining the
-// type to set the given particle to - i.e. if the particle is SAND then the
+// type to set the given particle to - i.e. if the particle is PT_Sand then the
 // passed type will be MOVEDSAND
 inline void MoveQuantum(int x, int y)
 {
@@ -48,7 +51,7 @@ inline void MoveQuantum(int x, int y)
 	int same = x+(FIELD_WIDTH*y);
 	ParticleType type = vs[same];
 
-	if (type == NOTHING || type == WALL || vsCountdown[same] < 1)
+	if (type == PT_Nothing || type == PT_Wall || vsCountdown[same] < 1)
 		return;
 
 	//Creating a random int
@@ -62,13 +65,13 @@ inline void MoveQuantum(int x, int y)
 
 	//If nothing below then just fall
 	if ( 
-		vs[below] == NOTHING 
+		vs[below] == PT_Nothing 
 		&& (updateMovement != UM_MOVEMENT_RANDOM || r % 8) //rand() % 8 makes it spread
 	)
 	{
 		vs[below] = type;
 		vsCountdown[below] -= 1;
-		vs[same] = NOTHING;
+		vs[same] = PT_Nothing;
 		return;
 	}
 
@@ -76,32 +79,32 @@ inline void MoveQuantum(int x, int y)
 	if(implementParticleSwaps)
 	{
 		//Making water lighter than sand
-		if(type == SAND && (vs[below] == WATER))
+		if(type == PT_Sand && (vs[below] == PT_Water))
 		{
-			vs[below] = SAND;
+			vs[below] = PT_Sand;
 			vsCountdown[below] -= 1;
-			vs[same] = WATER;
+			vs[same] = PT_Water;
 			return;
 		}
 
 		//Making sand lighter than oil
 		if(
-			type == SAND && (vs[below] == OIL) 
+			type == PT_Sand && (vs[below] == PT_Oil) 
 			&& rand() % 5 == 0 //Making oil dense so that sand falls slower
 		)
 		{
-			vs[below] = SAND;
+			vs[below] = PT_Sand;
 			vsCountdown[below] -= 1;
-			vs[same] = OIL;
+			vs[same] = PT_Oil;
 			return;
 		}
 
 		//Making oil lighter than water
-		if(type == WATER && (vs[below] == OIL))
+		if(type == PT_Water && (vs[below] == PT_Oil))
 		{
-			vs[below] = WATER;
+			vs[below] = PT_Water;
 			vsCountdown[below] -= 1;
-			vs[same] = OIL;
+			vs[same] = PT_Oil;
 			return;
 		}
 	}
@@ -113,19 +116,19 @@ inline void MoveQuantum(int x, int y)
 	int sidewayFlowMaxStep = 5;
 	if(
 		(
-			(vs[(x+1)+((y-1)*FIELD_WIDTH)] != NOTHING && vs[(x+1)+(FIELD_WIDTH*y)] != NOTHING) || 
-			(vs[(x-1)+((y-1)*FIELD_WIDTH)] != NOTHING && vs[(x-1)+(FIELD_WIDTH*y)] != NOTHING)
+			(vs[(x+1)+((y-1)*FIELD_WIDTH)] != PT_Nothing && vs[(x+1)+(FIELD_WIDTH*y)] != PT_Nothing) || 
+			(vs[(x-1)+((y-1)*FIELD_WIDTH)] != PT_Nothing && vs[(x-1)+(FIELD_WIDTH*y)] != PT_Nothing)
 		) 
 		&& (x-sidewayFlowMaxStep)>0 && (x+sidewayFlowMaxStep) < FIELD_WIDTH
 	)
 	{
 		flowShift *= rand()%(sidewayFlowMaxStep+1);
 	}
-	else if (vs[x+(y+1)*FIELD_WIDTH] == NOTHING)
+	else if (vs[x+(y+1)*FIELD_WIDTH] == PT_Nothing)
 	{
 		vs[x+(y+1)*FIELD_WIDTH] = type;
 		vsCountdown[x+(y+1)*FIELD_WIDTH] -= 1;
-		vs[same] = NOTHING;
+		vs[same] = PT_Nothing;
 		return;
 	}
 
@@ -137,30 +140,30 @@ inline void MoveQuantum(int x, int y)
 
 	// The place below (x,y+1) is filled with something, then check (x+sign,y+1) and (x-sign,y+1) 
 	// We chose sign randomly to randomly check eigther left or right
-	if ( vs[firstdown] == NOTHING )
+	if ( vs[firstdown] == PT_Nothing )
 	{
 		vs[firstdown] = type;
 		vsCountdown[firstdown] -= 1;
-		vs[same] = NOTHING;
+		vs[same] = PT_Nothing;
 	}
-	else if ( vs[seconddown] == NOTHING )
+	else if ( vs[seconddown] == PT_Nothing )
 	{
 		vs[seconddown] = type;
 		vsCountdown[seconddown] -= 1;
-		vs[same] = NOTHING;
+		vs[same] = PT_Nothing;
 	}
 	//If (x+sign,y+1) is filled then try (x+sign,y) and (x-sign,y)
-	else if (vs[first] == NOTHING )
+	else if (vs[first] == PT_Nothing )
 	{
 		vs[first] = type;
 		vsCountdown[first] -= 1;
-		vs[same] = NOTHING;
+		vs[same] = PT_Nothing;
 	}
-	else if (vs[second] == NOTHING )
+	else if (vs[second] == PT_Nothing )
 	{
 		vs[second] = type;
 		vsCountdown[second] -= 1;
-		vs[same] = NOTHING;
+		vs[same] = PT_Nothing;
 	}
 }
 

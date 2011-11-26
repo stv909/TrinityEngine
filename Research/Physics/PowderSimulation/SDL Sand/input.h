@@ -3,7 +3,7 @@
 int penSize = 5;
 
 // The current brush type
-ParticleType CurrentParticleType = WALL;
+ParticleType CurrentParticleType = PT_Wall;
 
 int tick = 0;
 int done=0;
@@ -88,19 +88,19 @@ void ProcessEvent(SDL_Event event)
 			done = 1;
 			break;
 		case SDLK_0: // Eraser
-			CurrentParticleType = NOTHING;
+			CurrentParticleType = PT_Nothing;
 			break;
 		case SDLK_1: // Draw walls
-			CurrentParticleType = WALL;
+			CurrentParticleType = PT_Wall;
 			break;
 		case SDLK_2: // Draw sand		
-			CurrentParticleType = SAND;
+			CurrentParticleType = PT_Sand;
 			break;
 		case SDLK_3: // Draw water		
-			CurrentParticleType = WATER;
+			CurrentParticleType = PT_Water;
 			break;
 		case SDLK_4: // Draw oil		
-			CurrentParticleType = OIL;
+			CurrentParticleType = PT_Oil;
 			break;
 		case SDLK_UP: // Increase pen size
 			penSize *= 2;
@@ -153,10 +153,10 @@ void ProcessEvent(SDL_Event event)
 			emitOil ^= true;
 			break;
 		case SDLK_r: // Draw a bunch of random lines
-			DoRandomLines(WALL);
+			DoRandomLines(PT_Wall);
 			break;
 		case SDLK_t: // Erase a bunch of random lines
-			DoRandomLines(NOTHING);
+			DoRandomLines(PT_Nothing);
 			break;
 		case SDLK_o: // Enable or disable particle swaps
 			implementParticleSwaps ^= true;
