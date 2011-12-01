@@ -29,11 +29,8 @@ namespace PhysicsTestbed
 				{
 					e.ApplyForce(b.particles);
 				}
-
 				b.Smooth();
-
 				b.DoFracture();
-
                 b.UpdateParticles();
 			}
 
