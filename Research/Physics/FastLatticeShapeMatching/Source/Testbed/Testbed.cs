@@ -102,7 +102,10 @@ namespace PhysicsTestbed
 				case 4:
                     currentBlueprints.SetValue(SimpleBlueprint.blueprint, blueprintNo);
 					break;
-			}
+                case 5:
+                    currentBlueprints.SetValue(SingleBlueprint.blueprint, blueprintNo);
+                    break;
+            }
 			Reset();
 		}
 

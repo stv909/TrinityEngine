@@ -51,6 +51,7 @@ namespace PhysicsTestbed
             this.rmbPushRadioButton = new System.Windows.Forms.RadioButton();
             this.rmbLockRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.resetButton = new System.Windows.Forms.Button();
             this.model1Button = new System.Windows.Forms.Button();
             this.model2Button = new System.Windows.Forms.Button();
@@ -61,8 +62,9 @@ namespace PhysicsTestbed
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.statusBox = new PhysicsTestbed.MessageTextBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -258,11 +260,11 @@ namespace PhysicsTestbed
             // label8
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label8.Location = new System.Drawing.Point(296, 739);
+            this.label8.Location = new System.Drawing.Point(313, 739);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(48, 48);
+            this.label8.Size = new System.Drawing.Size(36, 48);
             this.label8.TabIndex = 37;
-            this.label8.Text = "R M B:";
+            this.label8.Text = "RMB:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // rmbPushRadioButton
@@ -303,6 +305,15 @@ namespace PhysicsTestbed
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tunable parameters";
             // 
+            // controllerPanel1
+            // 
+            this.controllerPanel1.AutoScroll = true;
+            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
+            this.controllerPanel1.Name = "controllerPanel1";
+            this.controllerPanel1.Size = new System.Drawing.Size(378, 476);
+            this.controllerPanel1.TabIndex = 0;
+            // 
             // resetButton
             // 
             this.resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -318,7 +329,7 @@ namespace PhysicsTestbed
             // 
             this.model1Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.model1Button.BackColor = System.Drawing.Color.HotPink;
-            this.model1Button.Location = new System.Drawing.Point(190, 741);
+            this.model1Button.Location = new System.Drawing.Point(184, 741);
             this.model1Button.Name = "model1Button";
             this.model1Button.Size = new System.Drawing.Size(24, 23);
             this.model1Button.TabIndex = 61;
@@ -330,7 +341,7 @@ namespace PhysicsTestbed
             // 
             this.model2Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.model2Button.BackColor = System.Drawing.Color.HotPink;
-            this.model2Button.Location = new System.Drawing.Point(214, 741);
+            this.model2Button.Location = new System.Drawing.Point(208, 741);
             this.model2Button.Name = "model2Button";
             this.model2Button.Size = new System.Drawing.Size(24, 23);
             this.model2Button.TabIndex = 62;
@@ -342,7 +353,7 @@ namespace PhysicsTestbed
             // 
             this.model4Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.model4Button.BackColor = System.Drawing.Color.HotPink;
-            this.model4Button.Location = new System.Drawing.Point(262, 741);
+            this.model4Button.Location = new System.Drawing.Point(256, 741);
             this.model4Button.Name = "model4Button";
             this.model4Button.Size = new System.Drawing.Size(24, 23);
             this.model4Button.TabIndex = 64;
@@ -354,7 +365,7 @@ namespace PhysicsTestbed
             // 
             this.model3Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.model3Button.BackColor = System.Drawing.Color.HotPink;
-            this.model3Button.Location = new System.Drawing.Point(238, 741);
+            this.model3Button.Location = new System.Drawing.Point(232, 741);
             this.model3Button.Name = "model3Button";
             this.model3Button.Size = new System.Drawing.Size(24, 23);
             this.model3Button.TabIndex = 63;
@@ -376,7 +387,7 @@ namespace PhysicsTestbed
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button1.BackColor = System.Drawing.Color.LawnGreen;
-            this.button1.Location = new System.Drawing.Point(262, 764);
+            this.button1.Location = new System.Drawing.Point(256, 764);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(24, 23);
             this.button1.TabIndex = 69;
@@ -388,7 +399,7 @@ namespace PhysicsTestbed
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button2.BackColor = System.Drawing.Color.LawnGreen;
-            this.button2.Location = new System.Drawing.Point(238, 764);
+            this.button2.Location = new System.Drawing.Point(232, 764);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(24, 23);
             this.button2.TabIndex = 68;
@@ -400,7 +411,7 @@ namespace PhysicsTestbed
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button3.BackColor = System.Drawing.Color.LawnGreen;
-            this.button3.Location = new System.Drawing.Point(214, 764);
+            this.button3.Location = new System.Drawing.Point(208, 764);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(24, 23);
             this.button3.TabIndex = 67;
@@ -412,22 +423,13 @@ namespace PhysicsTestbed
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button4.BackColor = System.Drawing.Color.LawnGreen;
-            this.button4.Location = new System.Drawing.Point(190, 764);
+            this.button4.Location = new System.Drawing.Point(184, 764);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(24, 23);
             this.button4.TabIndex = 66;
             this.button4.Text = "1";
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.model11Button_Click);
-            // 
-            // controllerPanel1
-            // 
-            this.controllerPanel1.AutoScroll = true;
-            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
-            this.controllerPanel1.Name = "controllerPanel1";
-            this.controllerPanel1.Size = new System.Drawing.Size(378, 476);
-            this.controllerPanel1.TabIndex = 0;
             // 
             // statusBox
             // 
@@ -439,11 +441,37 @@ namespace PhysicsTestbed
             this.statusBox.TabIndex = 36;
             this.statusBox.Text = "";
             // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button5.BackColor = System.Drawing.Color.HotPink;
+            this.button5.Location = new System.Drawing.Point(280, 741);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(24, 23);
+            this.button5.TabIndex = 70;
+            this.button5.Text = "5";
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.model25Button_Click);
+            // 
+            // button6
+            // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button6.BackColor = System.Drawing.Color.LawnGreen;
+            this.button6.Location = new System.Drawing.Point(280, 764);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(24, 23);
+            this.button6.TabIndex = 71;
+            this.button6.Text = "5";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.model15Button_Click);
+            // 
             // TestWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1035, 795);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
@@ -523,6 +551,8 @@ namespace PhysicsTestbed
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
 	}
 }
 

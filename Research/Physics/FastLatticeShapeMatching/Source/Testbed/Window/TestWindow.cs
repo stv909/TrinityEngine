@@ -178,6 +178,11 @@ namespace PhysicsTestbed
             Testbed.SetModel(0, 4);
 		}
 
+        private void model15Button_Click(object sender, EventArgs e)
+        {
+            Testbed.SetModel(0, 5);
+        }
+
         private void model21Button_Click(object sender, EventArgs e)
         {
             Testbed.SetModel(1, 1);
@@ -196,6 +201,11 @@ namespace PhysicsTestbed
         private void model24Button_Click(object sender, EventArgs e)
         {
             Testbed.SetModel(1, 4);
+        }
+
+        private void model25Button_Click(object sender, EventArgs e)
+        {
+            Testbed.SetModel(1, 5);
         }
     }
 }
