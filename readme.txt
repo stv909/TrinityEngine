@@ -32,3 +32,8 @@ http://powdertoy.co.uk/ - The Powder Toys. Most known implementation of static i
 http://fallingsandgame.com/ - Forum with multiple implementations of Falling Sand games - parents of The Powder Toys
 	http://fallingsandgame.com/sand/NewSand.html - implementation with Zombies (characters in physical environment)
 	http://sourceforge.net/projects/sdlsand/ - simple C++ implementation
+
+http://www.alecrivers.com/fastlsm/
+	http://realmatter.com/
+	http://vimeo.com/16652015
+	http://vimeo.com/16652171

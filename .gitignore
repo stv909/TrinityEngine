@@ -1,5 +1,9 @@
-.Release
-.Debug
+.Release/
+.Debug/
+.Publish/
+bin/
+obj/
 *.ncb
 *.suo
 *.vcproj.*.user
+*.csproj.user
