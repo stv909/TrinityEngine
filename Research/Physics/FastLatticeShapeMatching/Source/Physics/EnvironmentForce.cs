@@ -11,4 +11,9 @@ namespace PhysicsTestbed
 		public virtual void Update() { }
         public virtual void PostUpdate() { }
     }
+
+    public abstract class EnvironmentImpulse
+    {
+        public abstract void ApplyImpulse(IEnumerable particles);
+    }
 }

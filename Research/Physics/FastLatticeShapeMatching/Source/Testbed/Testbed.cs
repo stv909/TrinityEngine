@@ -51,7 +51,7 @@ namespace PhysicsTestbed
 			lockForce = new LockForce();
 			gravityForce = new GravityForce();
 			world.environmentForces.Add(dragForce);
-			world.environmentForces.Add(wallForce);
+			world.environmentImpulses.Add(wallForce);
 			world.environmentForces.Add(pushForce);
 			world.environmentForces.Add(lockForce);
 			world.environmentForces.Add(gravityForce);
@@ -146,6 +146,25 @@ namespace PhysicsTestbed
                         Gl.glVertex2d(t.goal.X, t.goal.Y);
 				}
 				Gl.glEnd();
+
+                // Redraw collisioned particles
+				Gl.glColor3d(0, 0, 0);
+				Gl.glPointSize(5.0f);
+				foreach (Particle t in body.particles)
+				{
+                    if (t.timeCoefPreCollision > 0.0)
+                    {
+                        Gl.glBegin(Gl.GL_POINTS);
+                        Gl.glVertex2d(t.goal.X, t.goal.Y);
+                        Gl.glEnd();
+
+                        Gl.glBegin(Gl.GL_LINE_STRIP);
+                        Gl.glVertex2d(t.goal.X, t.goal.Y);
+                        Gl.glVertex2d(t.goal.X + t.vPreCollision.X * t.timeCoefPreCollision, t.goal.Y + t.vPreCollision.Y * t.timeCoefPreCollision);
+                        Gl.glVertex2d(t.goal.X + t.vPreCollision.X * t.timeCoefPreCollision + t.v.X * (1.0 - t.timeCoefPreCollision), t.goal.Y + t.vPreCollision.Y * t.timeCoefPreCollision + t.v.Y * (1.0 - t.timeCoefPreCollision));
+                        Gl.glEnd();
+                    }
+				}
 			}
 
 			// Draw the drag force

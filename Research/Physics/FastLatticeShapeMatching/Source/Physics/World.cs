@@ -11,6 +11,7 @@ namespace PhysicsTestbed
 
 		public List<LsmBody> bodies = new List<LsmBody>();
 		public List<EnvironmentForce> environmentForces = new List<EnvironmentForce>();
+		public List<EnvironmentImpulse> environmentImpulses = new List<EnvironmentImpulse>();
 
         // Simulation parameters
         //[Controllable(Type=ControllableAttribute.ControllerType.Slider, Min=0.0, Max=1.0, Caption="Alpha")]
@@ -31,8 +32,13 @@ namespace PhysicsTestbed
 				}
 				b.Smooth();
 				b.DoFracture();
-                b.UpdateParticles();
-			}
+                b.UpdateParticlesVelocity();
+                foreach (EnvironmentImpulse e in environmentImpulses)
+                {
+                    e.ApplyImpulse(b.particles);
+                }
+                b.UpdateParticlesPosition();
+            }
 
             foreach (EnvironmentForce e in environmentForces)
             {

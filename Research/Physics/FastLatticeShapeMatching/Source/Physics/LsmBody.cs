@@ -190,7 +190,7 @@ namespace PhysicsTestbed
 			PerformChunkSmoothing();
 		}
 
-        public void UpdateParticles()
+        public void UpdateParticlesVelocity()
         {
 			// Bleed off inertia, if the user wants to (usually not)
 			foreach (Particle particle in particles)
@@ -217,40 +217,36 @@ namespace PhysicsTestbed
             // Damp velocity
             PerformRegionDamping();
 			PerformChunkDamping();
+        }
 
+        public void UpdateParticlesPosition()
+        {
             // Apply velocity
-            foreach(Particle p in particles)
+            foreach (Particle p in particles)
             {
-				if (p.locked == false)
-				{
-                    // impulse & offset collision method
-                    /*
-                    if (p.iExt != Vector2.ZERO)
+                if (p.locked == false)
+                {
+                    if (p.timeCoefPreCollision > 0.0)
                     {
-                        if (Math.Abs(p.iExt.X) > 0.1)
-                        {
-                            p.v.X = -p.v.X;
-                        }
-                        if (Math.Abs(p.iExt.Y) > 0.1)
-                        {
-                            p.v.Y = -p.v.Y;
-                        }
-                        p.iExt = Vector2.ZERO;
-                    }
-                    if (p.oExt != Vector2.ZERO)
-                    {
-                        p.x += p.oExt;
-                        p.v = Vector2.ZERO;
-                        p.oExt = Vector2.ZERO;
-                    }
-                    */
+                        p.x += p.vPreCollision * p.timeCoefPreCollision;
+                        p.x += p.v * (1.0 - p.timeCoefPreCollision);
 
-                    p.x += p.v;
-				}
-				else
-				{
-					p.v = Vector2.ZERO;
-				}
+                        /*
+                        // Debug metrics
+                        Testbed.PostMessage(
+                            System.Drawing.Color.Green, "Collision check: " + ( (p.vPreCollision * p.timeCoefPreCollision).Length() + (p.v * (1.0 - p.timeCoefPreCollision)).Length() ) + " =?= " + p.v.Length()
+                        );
+                        */
+                    }
+                    else
+                    {
+                        p.x += p.v;
+                    }
+                }
+                else
+                {
+                    p.v = Vector2.ZERO;
+                }
             }
         }
 
