@@ -39,6 +39,43 @@ namespace PhysicsTestbed
 				{
 					t.fExt += new Vector2(0, top - pos.Y);
 				}
+
+                // impulse & offset collision method
+                /*
+                if (pos.X < left)
+                {
+                    t.iExt += new Vector2(-1, 0);
+                }
+                if (pos.Y < bottom)
+                {
+                    t.iExt += new Vector2(0, -1);
+                }
+                if (pos.X > right)
+                {
+                    t.iExt += new Vector2(1, 0);
+                }
+                if (pos.Y > top)
+                {
+                    t.iExt += new Vector2(0, 1);
+                }
+
+                if (pos.X < left)
+                {
+                    t.oExt += new Vector2(left - pos.X, 0);
+                }
+                if (pos.Y < bottom)
+                {
+                    t.oExt += new Vector2(0, bottom - pos.Y);
+                }
+                if (pos.X > right)
+                {
+                    t.oExt += new Vector2(right - pos.X, 0);
+                }
+                if (pos.Y > top)
+                {
+                    t.oExt += new Vector2(0, top - pos.Y);
+                }
+                */
             }
 		}
 	}

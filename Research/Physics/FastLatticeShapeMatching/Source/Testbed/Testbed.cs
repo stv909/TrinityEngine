@@ -23,6 +23,9 @@ namespace PhysicsTestbed
 		public static bool paused = false;
 		public static int updateFrame = 0;
 
+		//[Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption="Walls closing in")]
+		public static bool wallsClosingIn = false;
+
 		public static bool Paused
 		{
 			get
@@ -53,6 +56,8 @@ namespace PhysicsTestbed
 			world.environmentForces.Add(lockForce);
 			world.environmentForces.Add(gravityForce);
 
+            // SimpleBlueprint.blueprint; RectangleBlueprint.blueprint; HumanBlueprint.blueprint; BuildingBlueprint.blueprint; ChairBlueprint.blueprint;
+            //currentBlueprints = new Array[3]{ HumanBlueprint.blueprint, ChairBlueprint.blueprint, BuildingBlueprint.blueprint };
             currentBlueprints = new Array[2] { RectangleBlueprint.blueprint, RectangleBlueprint.blueprint };
             GenerateBodies(currentBlueprints);
         }
@@ -103,6 +108,14 @@ namespace PhysicsTestbed
 
 		public static void Update()
 		{
+			if(wallsClosingIn)
+			{
+				wallForce.bottom++;
+				wallForce.top--;
+				//wallForce.left++;
+				//wallForce.right--;
+			}
+
 			world.Update();
 		}
 

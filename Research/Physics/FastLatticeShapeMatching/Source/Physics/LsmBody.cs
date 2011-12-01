@@ -223,6 +223,28 @@ namespace PhysicsTestbed
             {
 				if (p.locked == false)
 				{
+                    // impulse & offset collision method
+                    /*
+                    if (p.iExt != Vector2.ZERO)
+                    {
+                        if (Math.Abs(p.iExt.X) > 0.1)
+                        {
+                            p.v.X = -p.v.X;
+                        }
+                        if (Math.Abs(p.iExt.Y) > 0.1)
+                        {
+                            p.v.Y = -p.v.Y;
+                        }
+                        p.iExt = Vector2.ZERO;
+                    }
+                    if (p.oExt != Vector2.ZERO)
+                    {
+                        p.x += p.oExt;
+                        p.v = Vector2.ZERO;
+                        p.oExt = Vector2.ZERO;
+                    }
+                    */
+
                     p.x += p.v;
 				}
 				else

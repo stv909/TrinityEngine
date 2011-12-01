@@ -21,6 +21,8 @@ namespace PhysicsTestbed
 		public Vector2 v;							// Velocity
         public Vector2 x0;							// Material position
         public Vector2 fExt;						// External force
+        public Vector2 iExt;						// External impulse // impulse & offset collision method
+        public Vector2 oExt;						// External offset // impulse & offset collision method
 
 		// Shape matching
         public Vector2 goal;

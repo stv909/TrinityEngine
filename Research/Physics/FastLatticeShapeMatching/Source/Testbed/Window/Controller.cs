@@ -126,6 +126,9 @@ namespace PhysicsTestbed
 			panel.Controls.Add(trackBar);
 			panel.Controls.Add(value);
 			panel.ResumeLayout(false);
+			//panel.PerformLayout();
+
+			//Height = trackBar.Size.Height;
 
 			Refresh();
 
@@ -160,8 +163,11 @@ namespace PhysicsTestbed
 			caption.Text = att.Caption + ":";
 			textBox.Location = new Point(layoutPoint.X + 160, layoutPoint.Y);
 			textBox.TextAlign = HorizontalAlignment.Right;
+			//textBox.Size = new Size(100, 32);
 			panel.Controls.Add(caption);
 			panel.Controls.Add(textBox);
+
+			//Height = textBox.Size.Height;
 
 			Refresh();
 
@@ -207,8 +213,11 @@ namespace PhysicsTestbed
 			caption.Width = 160;
 			caption.Text = att.Caption + ":";
 			checkBox.Location = new Point(layoutPoint.X + 160, layoutPoint.Y - 5);
+			//textBox.Size = new Size(100, 32);
 			panel.Controls.Add(caption);
 			panel.Controls.Add(checkBox);
+
+			//Height = textBox.Size.Height;
 
 			Refresh();
 

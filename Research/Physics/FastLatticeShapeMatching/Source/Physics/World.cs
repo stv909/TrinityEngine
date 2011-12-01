@@ -12,6 +12,10 @@ namespace PhysicsTestbed
 		public List<LsmBody> bodies = new List<LsmBody>();
 		public List<EnvironmentForce> environmentForces = new List<EnvironmentForce>();
 
+        // Simulation parameters
+        //[Controllable(Type=ControllableAttribute.ControllerType.Slider, Min=0.0, Max=1.0, Caption="Alpha")]
+        public static double alpha = 1.0;
+
 		public void Update()
 		{
 			foreach (EnvironmentForce e in environmentForces)
