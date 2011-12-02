@@ -55,7 +55,7 @@ namespace PhysicsTestbed
     {
         static void RenderCollisionTrace(Particle t)
         {
-            Vector2 hPosition = t.goal;
+            Vector2 hPosition = t.goal; // WARNING: why t.x doesn't work correctly???
             Gl.glLineWidth(1.0f);
             Gl.glBegin(Gl.GL_LINE_STRIP);
             Gl.glVertex2d(hPosition.X, hPosition.Y);
@@ -67,44 +67,108 @@ namespace PhysicsTestbed
             Gl.glEnd();
         }
 
+        static void RenderLockedParticlesSelection(List<Particle> particles)
+        {
+            Gl.glColor3d(1, 0, 0);
+            Gl.glPointSize(8.0f);
+            Gl.glBegin(Gl.GL_POINTS);
+            foreach (Particle t in particles)
+            {
+                if (t.locked)
+                    Gl.glVertex2d(t.goal.X, t.goal.Y);
+            }
+            Gl.glEnd();
+        }
+
+        static void RenderCollisionedParticlesSelection(List<Particle> particles)
+        {
+            Gl.glColor3d(0, 0, 0);
+            Gl.glPointSize(8.0f);
+            foreach (Particle t in particles)
+            {
+                if (t.collisionSubframes.Count > 0)
+                {
+                    Gl.glBegin(Gl.GL_POINTS);
+                    Gl.glVertex2d(t.goal.X, t.goal.Y);
+                    Gl.glEnd();
+                    RenderCollisionTrace(t);
+                }
+            }
+        }
+
+        static void RenderParticleGroup_Goal(List<Particle> particles, Color3 color)
+        {
+            Gl.glLineWidth(1.0f);
+            Gl.glColor4f(0.3f, 0.3f, 0.3f, 1.0f);
+            Gl.glBegin(Gl.GL_LINES);
+            {
+                foreach (Particle t in particles)
+                {
+                    if (t.xPos != null)
+                    {
+                        Gl.glVertex2d(t.goal.X, t.goal.Y);
+                        Gl.glVertex2d(t.xPos.goal.X, t.xPos.goal.Y);
+                    }
+                    if (t.yPos != null)
+                    {
+                        Gl.glVertex2d(t.goal.X, t.goal.Y);
+                        Gl.glVertex2d(t.yPos.goal.X, t.yPos.goal.Y);
+                    }
+                }
+            }
+            Gl.glEnd();
+
+            Gl.glColor3d(color.R, color.G, color.B);
+            Gl.glPointSize(4.0f);
+            Gl.glBegin(Gl.GL_POINTS);
+            foreach (Particle t in particles)
+            {
+                Gl.glVertex2d(t.goal.X, t.goal.Y);
+            }
+            Gl.glEnd();
+        }
+
+        static void RenderParticleGroup_x(List<Particle> particles, Color3 color)
+        {
+            Gl.glLineWidth(1.0f);
+            Gl.glColor4f(0.3f, 0.3f, 0.3f, 1.0f);
+            Gl.glBegin(Gl.GL_LINES);
+            {
+                foreach (Particle t in particles)
+                {
+                    if (t.xPos != null)
+                    {
+                        Gl.glVertex2d(t.x.X, t.x.Y);
+                        Gl.glVertex2d(t.xPos.x.X, t.xPos.x.Y);
+                    }
+                    if (t.yPos != null)
+                    {
+                        Gl.glVertex2d(t.x.X, t.x.Y);
+                        Gl.glVertex2d(t.yPos.x.X, t.yPos.x.Y);
+                    }
+                }
+            }
+            Gl.glEnd();
+
+            Gl.glColor3d(color.R, color.G, color.B);
+            Gl.glPointSize(4.0f);
+            Gl.glBegin(Gl.GL_POINTS);
+            foreach (Particle t in particles)
+            {
+                Gl.glVertex2d(t.x.X, t.x.Y);
+            }
+            Gl.glEnd();
+        }
+
         static void RenderBodies()
         {
             foreach (LsmBody body in world.bodies)
             {
-                // Draw locked particles selection
-                Gl.glColor3d(1, 0, 0);
-                Gl.glPointSize(8.0f);
-                Gl.glBegin(Gl.GL_POINTS);
-                foreach (Particle t in body.particles)
-                {
-                    if (t.locked)
-                        Gl.glVertex2d(t.goal.X, t.goal.Y);
-                }
-                Gl.glEnd();
+                RenderLockedParticlesSelection(body.particles);
+                RenderCollisionedParticlesSelection(body.particles);
 
-                // Draw collisioned particles selection and trace
-                Gl.glColor3d(0, 0, 0);
-                Gl.glPointSize(8.0f);
-                foreach (Particle t in body.particles)
-                {
-                    if (t.collisionSubframes.Count > 0)
-                    {
-                        Gl.glBegin(Gl.GL_POINTS);
-                        Gl.glVertex2d(t.goal.X, t.goal.Y);
-                        Gl.glEnd();
-                        RenderCollisionTrace(t);
-                    }
-                }
-
-                // Draw all particles
-                Gl.glColor3d(body.Color.R, body.Color.G, body.Color.B);
-                Gl.glPointSize(4.0f);
-                Gl.glBegin(Gl.GL_POINTS);
-                foreach (Particle t in body.particles)
-                {
-                    Gl.glVertex2d(t.goal.X, t.goal.Y);
-                }
-                Gl.glEnd();
+                //RenderParticleGroup_x(body.particles, new Color3(0, 0, 0));
+                RenderParticleGroup_Goal(body.particles, body.Color);
             }
         }
 
