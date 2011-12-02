@@ -18,13 +18,13 @@ Trinity Engine. Conceptual design and research.
 						1.1.2.1.1.1 Static environment
 							1.1.2.1.1.1.1 Single particle
 								+ vs simple wall
-								- vs complex static body
+								+ vs complex static body
 							1.1.2.1.1.1.2 Single chunk of soft body
 								- vs simple wall
 								- vs complex static body
 						1.1.2.1.1.2 Dynamic environment
 							1.1.2.1.1.2.1 Single particle
-								- vs moving wall
+								> vs moving wall
 								- vs complex dynamic body
 							1.1.2.1.1.2.2 Single chunk of soft body
 								- vs moving wall
