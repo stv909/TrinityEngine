@@ -23,30 +23,64 @@ namespace PhysicsTestbed
 			{
                 // impulse & offset collision method
                 t.vHistory.Clear();
+                double timeCoefficientPrediction = 1.0;
                 Vector2 pos = t.x;
-                Vector2 posNext = pos + t.v;
-                if (posNext.X < left)
+                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
+
+                bool collisionFound = false;
+                PreCollisionHistory history = null;
+                do
                 {
-                    t.vHistory.Add(new PreCollisionHistory(t.v, (left - pos.X) / t.v.X));
-                    t.v.X = -t.v.X;
+                    if (posNext.X < left)
+                    {
+                        history = new PreCollisionHistory(t.v, (left - pos.X) / t.v.X);
+                        t.vHistory.Add(history);
+                        t.v.X = -t.v.X;
+
+                        pos += history.v * history.timeCoefficient;
+                        timeCoefficientPrediction -= history.timeCoefficient;
+                        posNext = pos + t.v * timeCoefficientPrediction;
+                        collisionFound = true;
+                    }
+                    else if (posNext.X > right)
+                    {
+                        history = new PreCollisionHistory(t.v, (right - pos.X) / t.v.X);
+                        t.vHistory.Add(history);
+                        t.v.X = -t.v.X;
+
+                        pos += history.v * history.timeCoefficient;
+                        timeCoefficientPrediction -= history.timeCoefficient;
+                        posNext = pos + t.v * timeCoefficientPrediction;
+                        collisionFound = true;
+                    }
+                    else if (posNext.Y < bottom)
+                    {
+                        history = new PreCollisionHistory(t.v, (bottom - pos.Y) / t.v.Y);
+                        t.vHistory.Add(history);
+                        t.v.Y = -t.v.Y;
+
+                        pos += history.v * history.timeCoefficient;
+                        timeCoefficientPrediction -= history.timeCoefficient;
+                        posNext = pos + t.v * timeCoefficientPrediction;
+                        collisionFound = true;
+                    }
+                    else if (posNext.Y > top)
+                    {
+                        history = new PreCollisionHistory(t.v, (top - pos.Y) / t.v.Y);
+                        t.vHistory.Add(history);
+                        t.v.Y = -t.v.Y;
+
+                        pos += history.v * history.timeCoefficient;
+                        timeCoefficientPrediction -= history.timeCoefficient;
+                        posNext = pos + t.v * timeCoefficientPrediction;
+                        collisionFound = true;
+                    }
+                    else
+                    {
+                        collisionFound = false;
+                    }
                 }
-                else if (posNext.X > right)
-                {
-                    t.vHistory.Add(new PreCollisionHistory(t.v, (right - pos.X) / t.v.X));
-                    t.v.X = -t.v.X;
-                }
-                else if (posNext.Y < bottom)
-                {
-                    t.vHistory.Add(new PreCollisionHistory(t.v, (bottom - pos.Y) / t.v.Y));
-                    t.v.Y = -t.v.Y;
-                }
-                else if (posNext.Y > top)
-                {
-                    t.vHistory.Add(new PreCollisionHistory(t.v, (top - pos.Y) / t.v.Y));
-                    t.v.Y = -t.v.Y;
-                }
-                // WARNING: now we handle only 1 collision case and ignore all others - because we are using else statement between collision checks
-                // TODO: handle all accured collisions iterativly
+                while (collisionFound);
             }
 		}
 	}
