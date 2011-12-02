@@ -37,6 +37,8 @@ namespace PhysicsTestbed
         // continues collision detection and impulse integration
         public List<CollisionSubframe> collisionSubframes = new List<CollisionSubframe>();
 
+        public List<Vector2> collisionPoints = new List<Vector2>(); // TEMP
+
 		// Shape matching
         public Vector2 goal;
         public Matrix2x2 R;							// Average of all parent regions' Rs - used in fracturing

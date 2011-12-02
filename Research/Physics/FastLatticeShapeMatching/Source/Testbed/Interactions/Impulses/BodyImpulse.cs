@@ -39,19 +39,24 @@ namespace PhysicsTestbed
 
             foreach (Particle t in particles)
             {
+                t.collisionPoints.Clear();
                 foreach (Particle bodyt in body.particles)
                 {
                     Vector2 intersection = new Vector2();
                     if (bodyt.xPos != null)
                     {
                         if (CollideSweptSegments(new LineSegment(bodyt.goal, bodyt.xPos.goal), new LineSegment(t.x, t.x + t.v), ref intersection))
-                            Testbed.PostMessage(System.Drawing.Color.Green, "LineSegments Collision Detected in (" + intersection.X + ", " + intersection.Y + ")."); // DEBUG
+                        {
+                            t.collisionPoints.Add(intersection);
+                        }
                     }
 
                     if (bodyt.yPos != null)
                     {
                         if (CollideSweptSegments(new LineSegment(bodyt.goal, bodyt.yPos.goal), new LineSegment(t.x, t.x + t.v), ref intersection))
-                            Testbed.PostMessage(System.Drawing.Color.Green, "LineSegments Collision Detected in (" + intersection.X + ", " + intersection.Y + ")."); // DEBUG
+                        {
+                            t.collisionPoints.Add(intersection);
+                        }
                     }
                 }
             }

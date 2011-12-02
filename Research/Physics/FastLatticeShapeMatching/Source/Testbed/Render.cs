@@ -160,6 +160,36 @@ namespace PhysicsTestbed
             Gl.glEnd();
         }
 
+        static void RenderCollisionPoints(List<Particle> particles, Color3 color)
+        {
+            Gl.glColor3d(color.R, color.G, color.B);
+            Gl.glPointSize(4.0f);
+            Gl.glLineWidth(1.0f);
+            Gl.glBegin(Gl.GL_LINES);
+            {
+                foreach (Particle t in particles)
+                {
+                    if (t.collisionPoints.Count > 0)
+                    {
+                        Gl.glVertex2d(t.goal.X, t.goal.Y);
+                        Gl.glVertex2d(t.goal.X + t.v.X, t.goal.Y + t.v.Y);
+                    }
+                }
+            }
+            Gl.glEnd();
+            Gl.glBegin(Gl.GL_POINTS);
+            {
+                foreach (Particle t in particles)
+                {
+                    foreach (Vector2 collisionPoint in t.collisionPoints)
+                    {
+                        Gl.glVertex2d(collisionPoint.X, collisionPoint.Y);
+                    }
+                }
+            }
+            Gl.glEnd();
+        }
+
         static void RenderBodies()
         {
             foreach (LsmBody body in world.bodies)
@@ -169,6 +199,8 @@ namespace PhysicsTestbed
 
                 //RenderParticleGroup_x(body.particles, new Color3(0, 0, 0));
                 RenderParticleGroup_Goal(body.particles, body.Color);
+
+                RenderCollisionPoints(body.particles, new Color3(1, 0, 1));
             }
         }
 
