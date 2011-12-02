@@ -19,8 +19,8 @@ namespace PhysicsTestbed
 		public TestWindow()
 		{
 			InitializeComponent();
-			Testbed.wallForce.right = renderBox.Width;
-			Testbed.wallForce.top = renderBox.Height;
+			Testbed.wallImpulse.right = renderBox.Width;
+			Testbed.wallImpulse.top = renderBox.Height;
 
 			statusBox.PostMessage(Color.Green, "Simulation started");
 		}
@@ -144,8 +144,8 @@ namespace PhysicsTestbed
 
 		private void renderBox_Resize(object sender, EventArgs e)
 		{
-			Testbed.wallForce.right = renderBox.Width;
-			Testbed.wallForce.top = renderBox.Height;
+			Testbed.wallImpulse.right = renderBox.Width;
+			Testbed.wallImpulse.top = renderBox.Height;
 		}
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)

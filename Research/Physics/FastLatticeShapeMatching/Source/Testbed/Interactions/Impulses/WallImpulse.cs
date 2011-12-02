@@ -4,12 +4,12 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-    public class WallForce : EnvironmentImpulse
+    public class WallImpulse : EnvironmentImpulse
 	{
         public float border = 45;
         public float left = 0, right, bottom = 0, top;
 
-		public WallForce(float width, float height)
+		public WallImpulse(float width, float height)
 		{
 			this.right = width;
 			this.top = height;

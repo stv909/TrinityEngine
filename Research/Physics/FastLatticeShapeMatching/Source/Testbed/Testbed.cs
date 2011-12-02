@@ -15,7 +15,7 @@ namespace PhysicsTestbed
         public static Array currentBlueprints = null;
 
 		public static DragForce dragForce;
-		public static WallForce wallForce;
+		public static WallImpulse wallImpulse;
 		public static PushForce pushForce;
 		public static LockForce lockForce;
 		public static GravityForce gravityForce;
@@ -46,12 +46,12 @@ namespace PhysicsTestbed
 		public static void Initialize()
 		{
 			dragForce = new DragForce();
-			wallForce = new WallForce(9999, 9999);
+			wallImpulse = new WallImpulse(9999, 9999);
 			pushForce = new PushForce();
 			lockForce = new LockForce();
 			gravityForce = new GravityForce();
 			world.environmentForces.Add(dragForce);
-			world.environmentImpulses.Add(wallForce);
+			world.environmentImpulses.Add(wallImpulse);
 			world.environmentForces.Add(pushForce);
 			world.environmentForces.Add(lockForce);
 			world.environmentForces.Add(gravityForce);
@@ -113,8 +113,8 @@ namespace PhysicsTestbed
 		{
 			if(wallsClosingIn)
 			{
-				wallForce.bottom++;
-				wallForce.top--;
+				wallImpulse.bottom++;
+				wallImpulse.top--;
 				//wallForce.left++;
 				//wallForce.right--;
 			}
@@ -247,14 +247,14 @@ namespace PhysicsTestbed
             Gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
             Gl.glBegin(Gl.GL_LINES);
             {
-                Gl.glVertex2d(wallForce.left + wallForce.border, wallForce.top);
-                Gl.glVertex2d(wallForce.left + wallForce.border, wallForce.bottom);
-                Gl.glVertex2d(wallForce.right - wallForce.border, wallForce.top);
-                Gl.glVertex2d(wallForce.right - wallForce.border, wallForce.bottom);
-                Gl.glVertex2d(wallForce.left, wallForce.top - wallForce.border);
-                Gl.glVertex2d(wallForce.right, wallForce.top - wallForce.border);
-                Gl.glVertex2d(wallForce.left, wallForce.bottom + wallForce.border);
-                Gl.glVertex2d(wallForce.right, wallForce.bottom + wallForce.border);
+                Gl.glVertex2d(wallImpulse.left + wallImpulse.border, wallImpulse.top);
+                Gl.glVertex2d(wallImpulse.left + wallImpulse.border, wallImpulse.bottom);
+                Gl.glVertex2d(wallImpulse.right - wallImpulse.border, wallImpulse.top);
+                Gl.glVertex2d(wallImpulse.right - wallImpulse.border, wallImpulse.bottom);
+                Gl.glVertex2d(wallImpulse.left, wallImpulse.top - wallImpulse.border);
+                Gl.glVertex2d(wallImpulse.right, wallImpulse.top - wallImpulse.border);
+                Gl.glVertex2d(wallImpulse.left, wallImpulse.bottom + wallImpulse.border);
+                Gl.glVertex2d(wallImpulse.right, wallImpulse.bottom + wallImpulse.border);
             }
             Gl.glEnd();
 		}
