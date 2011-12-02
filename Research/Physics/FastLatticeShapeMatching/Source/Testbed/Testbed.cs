@@ -149,7 +149,7 @@ namespace PhysicsTestbed
 
                 // Redraw collisioned particles
 				Gl.glColor3d(0, 0, 0);
-				Gl.glPointSize(5.0f);
+				Gl.glPointSize(4.0f);
 				foreach (Particle t in body.particles)
 				{
                     if (t.vHistory.Count > 0)
@@ -161,15 +161,11 @@ namespace PhysicsTestbed
                         Vector2 hPosition = t.goal;
                         Gl.glBegin(Gl.GL_LINE_STRIP);
                         Gl.glVertex2d(hPosition.X, hPosition.Y);
-                        double timeCoefficientLast = 1.0;
                         foreach (PreCollisionHistory history in t.vHistory)
                         {
                             hPosition += history.v * history.timeCoefficient;
                             Gl.glVertex2d(hPosition.X, hPosition.Y);
-                            timeCoefficientLast -= history.timeCoefficient;
                         }
-                        hPosition += t.v * timeCoefficientLast;
-                        Gl.glVertex2d(hPosition.X, hPosition.Y);
                         Gl.glEnd();
                     }
 				}

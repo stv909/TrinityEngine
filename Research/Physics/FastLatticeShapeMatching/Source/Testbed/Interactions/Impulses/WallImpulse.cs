@@ -41,7 +41,6 @@ namespace PhysicsTestbed
                 Vector2 posNext = pos + t.v * timeCoefficientPrediction;
 
                 bool collisionFound = false;
-                
                 List<PreCollisionHistory> collisionBuffer = new List<PreCollisionHistory>(4);
                 do
                 {
@@ -80,6 +79,11 @@ namespace PhysicsTestbed
                     }
                 }
                 while (collisionFound);
+                
+                if (t.vHistory.Count > 0)
+                {
+                    t.vHistory.Add(new PreCollisionHistory(t.v, timeCoefficientPrediction));
+                }
             }
 		}
 	}
