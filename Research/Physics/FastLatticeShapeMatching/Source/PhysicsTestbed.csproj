@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>485D71C697BAA5165F1E33370402008C30F1E43C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B717A19DE3DA2BF6F5CF4624C9127B2B04C2EEC0</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>PhysicsTestbed_TemporaryKey.pfx</ManifestKeyFile>
