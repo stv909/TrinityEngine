@@ -93,6 +93,7 @@
     <Compile Include="Testbed\Blueprints\HumanBlueprint.cs" />
     <Compile Include="Testbed\Interactions\Forces\LockForce.cs" />
     <Compile Include="Testbed\Interactions\Impulses\BodyImpulse.cs" />
+    <Compile Include="Testbed\Render.cs" />
     <Compile Include="Testbed\Window\MessageTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -141,6 +142,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Testbed\Interactions\Impulses\WallImpulse.cs" />
+    <Compile Include="Tools\Color3.cs" />
     <Compile Include="Tools\ManagedList.cs" />
     <Compile Include="Tools\Matrix2x2.cs" />
     <Compile Include="Tools\Vector2.cs" />

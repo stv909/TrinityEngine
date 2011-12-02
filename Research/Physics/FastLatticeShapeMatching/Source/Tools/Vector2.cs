@@ -164,22 +164,4 @@ namespace PhysicsTestbed
             return x * r.Y - y * r.X;
         }
 	}
-
-    // TODO: move it to separated file Color3.cs
-    [Serializable]
-    public struct Color3
-    { 
-        double r, g, b;
-
-		public double R { get{ return r; } set{ r = value; } }
-		public double G { get{ return g; } set{ g = value; } }
-		public double B { get{ return b; } set{ b = value; } }
-
-        public Color3(double r, double g, double b)
-        {
-            this.r = r;
-            this.g = g;
-            this.b = b;
-        }
-    }
 }
