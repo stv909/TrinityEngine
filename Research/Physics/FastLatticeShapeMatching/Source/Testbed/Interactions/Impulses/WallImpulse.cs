@@ -15,76 +15,26 @@ namespace PhysicsTestbed
 			this.top = height;
 		}
 
-        private CollisionSubframe GetEarliestCollision(List<CollisionSubframe> collisions)
-        {
-            CollisionSubframe earliestCollision = null;
-            foreach (CollisionSubframe collision in collisions)
-            {
-                if (earliestCollision == null || earliestCollision.timeCoefficient > collision.timeCoefficient)
-                {
-                    earliestCollision = collision;
-                }
-            }
-            return earliestCollision;
-        }
-
-		public override void ApplyImpulse(System.Collections.IEnumerable particles)
+        public override void ApplyImpulse(Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
 		{
             float left = this.left + border, right = this.right - border, bottom = this.bottom + border, top = this.top - border;
 
-			foreach(Particle t in particles)
-			{
-                // impulse & offset collision method
-                t.collisionSubframes.Clear();
-                double timeCoefficientPrediction = 1.0;
-                Vector2 pos = t.x;
-                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
-
-                bool collisionFound = false;
-                List<CollisionSubframe> collisionBuffer = new List<CollisionSubframe>(4);
-                do
-                {
-                    if (posNext.X < left)
-                    {
-                        collisionBuffer.Add(new CollisionSubframe(new Vector2(-t.v.X, t.v.Y), (left - pos.X) / t.v.X));
-                    }
-                    if (posNext.X > right)
-                    {
-                        collisionBuffer.Add(new CollisionSubframe(new Vector2(-t.v.X, t.v.Y), (right - pos.X) / t.v.X));
-                    }
-                    if (posNext.Y < bottom)
-                    {
-                        collisionBuffer.Add(new CollisionSubframe(new Vector2(t.v.X, -t.v.Y), (bottom - pos.Y) / t.v.Y));
-                    }
-                    if (posNext.Y > top)
-                    {
-                        collisionBuffer.Add(new CollisionSubframe(new Vector2(t.v.X, -t.v.Y), (top - pos.Y) / t.v.Y));
-                    }
-
-                    if (collisionBuffer.Count > 0)
-                    {
-                        CollisionSubframe currentCollision = GetEarliestCollision( collisionBuffer );
-                        CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
-                        t.v = currentCollision.v;
-                        t.collisionSubframes.Add(subframe);
-                        pos += subframe.v * subframe.timeCoefficient;
-                        timeCoefficientPrediction -= subframe.timeCoefficient;
-                        posNext = pos + t.v * timeCoefficientPrediction;
-                        collisionFound = true;
-                        collisionBuffer.Clear();
-                    }
-                    else
-                    {
-                        collisionFound = false;
-                    }
-                }
-                while (collisionFound);
-                
-                if (t.collisionSubframes.Count > 0)
-                {
-                    t.collisionSubframes.Add(new CollisionSubframe(t.v, timeCoefficientPrediction));
-                }
+            if (posNext.X < left)
+            {
+                collisionBuffer.Add(new CollisionSubframe(new Vector2(-velocity.X, velocity.Y), (left - pos.X) / velocity.X));
             }
-		}
+            if (posNext.X > right)
+            {
+                collisionBuffer.Add(new CollisionSubframe(new Vector2(-velocity.X, velocity.Y), (right - pos.X) / velocity.X));
+            }
+            if (posNext.Y < bottom)
+            {
+                collisionBuffer.Add(new CollisionSubframe(new Vector2(velocity.X, -velocity.Y), (bottom - pos.Y) / velocity.Y));
+            }
+            if (posNext.Y > top)
+            {
+                collisionBuffer.Add(new CollisionSubframe(new Vector2(velocity.X, -velocity.Y), (top - pos.Y) / velocity.Y));
+            }
+        }
 	}
 }

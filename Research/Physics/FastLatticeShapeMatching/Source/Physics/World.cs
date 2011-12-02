@@ -33,10 +33,7 @@ namespace PhysicsTestbed
 				b.Smooth();
 				b.DoFracture();
                 b.UpdateParticlesVelocity();
-                foreach (EnvironmentImpulse e in environmentImpulses)
-                {
-                    e.ApplyImpulse(b.particles);
-                }
+                b.HandleCollisions(environmentImpulses);
                 b.UpdateParticlesPosition();
             }
 

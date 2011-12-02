@@ -13,7 +13,7 @@ namespace PhysicsTestbed
             this.body = body;
         }
 
-        public bool CollideSweptSegments(LineSegment first, LineSegment second, ref Vector2 intersection)
+        private bool CollideSweptSegments(LineSegment first, LineSegment second, ref Vector2 intersection)
         {
             // TODO: test this algorithm and optimize if needed
             double Ua, Ub;
@@ -31,33 +31,40 @@ namespace PhysicsTestbed
             return false;
         }
 
-        public override void ApplyImpulse(System.Collections.IEnumerable particles)
+        private void CheckParticlePair(
+            Particle origin, Particle neighbor,
+            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer
+        )
         {
-            // avoid self-collision
-            if (particles.Equals(body.particles))
-                return;
-
-            foreach (Particle t in particles)
+            Vector2 intersection = new Vector2();
+            if (
+                CollideSweptSegments(new LineSegment(origin.goal, neighbor.goal), new LineSegment(pos, posNext), ref intersection) && 
+                (intersection - pos).Length() > 0.00001 // to prevent slipping of start point to just reflected edge
+            )
             {
-                t.collisionPoints.Clear();
-                foreach (Particle bodyt in body.particles)
-                {
-                    Vector2 intersection = new Vector2();
-                    if (bodyt.xPos != null)
-                    {
-                        if (CollideSweptSegments(new LineSegment(bodyt.goal, bodyt.xPos.goal), new LineSegment(t.x, t.x + t.v), ref intersection))
-                        {
-                            t.collisionPoints.Add(intersection);
-                        }
-                    }
+                // reflect velocity relative edge
+                Vector2 reflectSurface = neighbor.goal - origin.goal;
+                Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
+                if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
+                Vector2 velocityReflectPart = velocity - reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
+                Vector2 newVelocity = 2.0 * velocityReflectPart - velocity;
+                // TODO: optimize this code ^
 
-                    if (bodyt.yPos != null)
-                    {
-                        if (CollideSweptSegments(new LineSegment(bodyt.goal, bodyt.yPos.goal), new LineSegment(t.x, t.x + t.v), ref intersection))
-                        {
-                            t.collisionPoints.Add(intersection);
-                        }
-                    }
+                collisionBuffer.Add(new CollisionSubframe(newVelocity, (intersection - pos).Length() / velocity.Length()));
+            }
+        }
+
+        public override void ApplyImpulse(Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
+        {
+            foreach (Particle bodyt in body.particles)
+            {
+                if (bodyt.xPos != null)
+                {
+                    CheckParticlePair(bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
+                }
+                if (bodyt.yPos != null)
+                {
+                    CheckParticlePair(bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
                 }
             }
         }

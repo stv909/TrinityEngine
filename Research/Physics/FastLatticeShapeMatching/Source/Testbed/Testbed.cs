@@ -43,8 +43,7 @@ namespace PhysicsTestbed
 
 		public static void Initialize()
 		{
-            // SingleBlueprint.blueprint; SimpleBlueprint.blueprint; RectangleBlueprint.blueprint; HumanBlueprint.blueprint; BuildingBlueprint.blueprint; ChairBlueprint.blueprint;
-            //currentBlueprints = new Array[3]{ HumanBlueprint.blueprint, ChairBlueprint.blueprint, BuildingBlueprint.blueprint };
+            // SingleBlueprint; SimpleBlueprint; RectangleBlueprint; HumanBlueprint; BuildingBlueprint; ChairBlueprint;
             currentBlueprints = new Array[2] { RectangleBlueprint.blueprint, SingleBlueprint.blueprint };
             GenerateBodies(currentBlueprints);
             

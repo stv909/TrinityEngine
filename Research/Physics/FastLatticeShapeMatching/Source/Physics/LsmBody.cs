@@ -23,7 +23,7 @@ namespace PhysicsTestbed
 		public List<SmoothingRegion> smoothingRegions = new List<SmoothingRegion>();
 		public List<Chunk> chunks = new List<Chunk>();
 
-		Point spacing = new Point(25, 25);
+		Point spacing = new Point(25, 25); // 160, 160
 		Vector2 offset = new Vector2(200, 200);
         Color3 color = new Color3(0, 1, 0);
         public Color3 Color { get { return color; } }
@@ -60,6 +60,17 @@ namespace PhysicsTestbed
 		public static double fractureLengthTolerance = 0.66;
 		[Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "Fracture angle tolerance", Min = 0.0, Max = 1.0)]
 		public static double fractureAngleTolerance = 0.63;
+
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body particles - goal")]
+        public static bool drawBodyParticles_goal = true;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body lattice - goal")]
+        public static bool drawBodyLattice_goal = true;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body particles - x")]
+        public static bool drawBodyParticles_x = false;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body lattice - x")]
+        public static bool drawBodyLattice_x = false;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw collision points and traces")]
+        public static bool drawCollisionPointsAndTraces = true;
 
         public LsmBody(Vector2 offset, Color3 color)
         {
@@ -217,6 +228,77 @@ namespace PhysicsTestbed
             // Damp velocity
             PerformRegionDamping();
 			PerformChunkDamping();
+        }
+
+        private CollisionSubframe GetEarliestCollision(List<CollisionSubframe> collisions)
+        {
+            CollisionSubframe earliestCollision = null;
+            foreach (CollisionSubframe collision in collisions)
+            {
+                if (earliestCollision == null || earliestCollision.timeCoefficient > collision.timeCoefficient)
+                {
+                    earliestCollision = collision;
+                }
+            }
+            return earliestCollision;
+        }
+
+        public void HandleCollisions(List<EnvironmentImpulse> environmentImpulses)
+        {
+            foreach (Particle t in particles)
+            {
+                // impulse & offset collision method
+                t.collisionSubframes.Clear();
+                double timeCoefficientPrediction = 1.0;
+                Vector2 pos = t.x;
+                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
+
+                int iterationsCounter = 0; // HACK // to prevent deadlocks
+                const int maxIterations = 32; // HACK // to prevent deadlocks
+                bool collisionFound = false;
+                List<CollisionSubframe> collisionBuffer = new List<CollisionSubframe>();
+                do
+                {
+                    foreach (EnvironmentImpulse e in environmentImpulses)
+                    {
+                        // HACK // to avoid self-collision
+                        BodyImpulse bi = e as BodyImpulse;
+                        if (bi != null && bi.body.Equals(this))
+                            continue;
+
+                        e.ApplyImpulse(pos, posNext, t.v, ref collisionBuffer);
+                    }
+
+                    if (collisionBuffer.Count > 0)
+                    {
+                        CollisionSubframe currentCollision = GetEarliestCollision(collisionBuffer);
+                        CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
+                        t.v = currentCollision.v;
+                        t.collisionSubframes.Add(subframe);
+                        pos += subframe.v * subframe.timeCoefficient;
+                        timeCoefficientPrediction -= subframe.timeCoefficient;
+                        posNext = pos + t.v * timeCoefficientPrediction;
+                        collisionFound = true;
+                        collisionBuffer.Clear();
+                    }
+                    else
+                    {
+                        collisionFound = false;
+                    }
+                    if (++iterationsCounter > maxIterations) // HACK // to prevent deadlocks
+                    {
+                        Testbed.PostMessage(System.Drawing.Color.Red, "Deadlock detected in HandleCollisions!"); // DEBUG
+                        Testbed.Paused = true; // DEBUG
+                        break;
+                    }
+                }
+                while (collisionFound);
+
+                if (t.collisionSubframes.Count > 0)
+                {
+                    t.collisionSubframes.Add(new CollisionSubframe(t.v, timeCoefficientPrediction));
+                }
+            }
         }
 
         public void UpdateParticlesPosition()
