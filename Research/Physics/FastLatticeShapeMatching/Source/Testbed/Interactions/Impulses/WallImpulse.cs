@@ -15,17 +15,17 @@ namespace PhysicsTestbed
 			this.top = height;
 		}
 
-        private CollisionSubframe GetNearestCollision(List<CollisionSubframe> collisions)
+        private CollisionSubframe GetEarliestCollision(List<CollisionSubframe> collisions)
         {
-            CollisionSubframe nearestCollision = null;
+            CollisionSubframe earliestCollision = null;
             foreach (CollisionSubframe collision in collisions)
             {
-                if (nearestCollision == null || nearestCollision.timeCoefficient > collision.timeCoefficient)
+                if (earliestCollision == null || earliestCollision.timeCoefficient > collision.timeCoefficient)
                 {
-                    nearestCollision = collision;
+                    earliestCollision = collision;
                 }
             }
-            return nearestCollision;
+            return earliestCollision;
         }
 
 		public override void ApplyImpulse(System.Collections.IEnumerable particles)
@@ -63,7 +63,7 @@ namespace PhysicsTestbed
 
                     if (collisionBuffer.Count > 0)
                     {
-                        CollisionSubframe currentCollision = GetNearestCollision( collisionBuffer );
+                        CollisionSubframe currentCollision = GetEarliestCollision( collisionBuffer );
                         CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
                         t.v = currentCollision.v;
                         t.collisionSubframes.Add(subframe);
