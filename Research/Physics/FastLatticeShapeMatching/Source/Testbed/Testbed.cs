@@ -152,16 +152,24 @@ namespace PhysicsTestbed
 				Gl.glPointSize(5.0f);
 				foreach (Particle t in body.particles)
 				{
-                    if (t.timeCoefPreCollision > 0.0)
+                    if (t.vHistory.Count > 0)
                     {
                         Gl.glBegin(Gl.GL_POINTS);
                         Gl.glVertex2d(t.goal.X, t.goal.Y);
                         Gl.glEnd();
 
+                        Vector2 hPosition = t.goal;
                         Gl.glBegin(Gl.GL_LINE_STRIP);
-                        Gl.glVertex2d(t.goal.X, t.goal.Y);
-                        Gl.glVertex2d(t.goal.X + t.vPreCollision.X * t.timeCoefPreCollision, t.goal.Y + t.vPreCollision.Y * t.timeCoefPreCollision);
-                        Gl.glVertex2d(t.goal.X + t.vPreCollision.X * t.timeCoefPreCollision + t.v.X * (1.0 - t.timeCoefPreCollision), t.goal.Y + t.vPreCollision.Y * t.timeCoefPreCollision + t.v.Y * (1.0 - t.timeCoefPreCollision));
+                        Gl.glVertex2d(hPosition.X, hPosition.Y);
+                        double timeCoefficientLast = 1.0;
+                        foreach (PreCollisionHistory history in t.vHistory)
+                        {
+                            hPosition += history.v * history.timeCoefficient;
+                            Gl.glVertex2d(hPosition.X, hPosition.Y);
+                            timeCoefficientLast -= history.timeCoefficient;
+                        }
+                        hPosition += t.v * timeCoefficientLast;
+                        Gl.glVertex2d(hPosition.X, hPosition.Y);
                         Gl.glEnd();
                     }
 				}

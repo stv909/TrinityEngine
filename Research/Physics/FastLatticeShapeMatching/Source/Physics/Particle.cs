@@ -6,6 +6,18 @@ using System.Drawing;
 
 namespace PhysicsTestbed
 {
+    public class PreCollisionHistory
+    {
+        public Vector2 v;				        // Velocity before collision
+        public double timeCoefficient = 0.0;    // Part of time step before collision - [0, 1]
+
+        public PreCollisionHistory(Vector2 v, double timeCoefficient)
+        {
+            this.v = v;
+            this.timeCoefficient = timeCoefficient;
+        }
+    }
+
 	public class Particle
 	{
         public LsmBody body;
@@ -23,9 +35,7 @@ namespace PhysicsTestbed
         public Vector2 fExt;						// External force
 
         // continues collision detection and impulse integration
-        public Vector2 vPreCollision;				// Velocity before collision
-        public double timeCoefPreCollision = 0.0;   // Part of time step before collision - [0, 1]
-
+        public List<PreCollisionHistory> vHistory = new List<PreCollisionHistory>();
 
 		// Shape matching
         public Vector2 goal;

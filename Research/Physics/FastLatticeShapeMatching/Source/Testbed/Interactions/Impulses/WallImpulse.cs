@@ -22,31 +22,27 @@ namespace PhysicsTestbed
 			foreach(Particle t in particles)
 			{
                 // impulse & offset collision method
-                t.timeCoefPreCollision = 0.0;
+                t.vHistory.Clear();
                 Vector2 pos = t.x;
                 Vector2 posNext = pos + t.v;
                 if (posNext.X < left)
                 {
-                    t.vPreCollision = t.v;
-                    t.timeCoefPreCollision = (left - pos.X) / t.v.X;
+                    t.vHistory.Add(new PreCollisionHistory(t.v, (left - pos.X) / t.v.X));
                     t.v.X = -t.v.X;
                 }
                 else if (posNext.X > right)
                 {
-                    t.vPreCollision = t.v;
-                    t.timeCoefPreCollision = (right - pos.X) / t.v.X;
+                    t.vHistory.Add(new PreCollisionHistory(t.v, (right - pos.X) / t.v.X));
                     t.v.X = -t.v.X;
                 }
                 else if (posNext.Y < bottom)
                 {
-                    t.vPreCollision = t.v;
-                    t.timeCoefPreCollision = (bottom - pos.Y) / t.v.Y;
+                    t.vHistory.Add(new PreCollisionHistory(t.v, (bottom - pos.Y) / t.v.Y));
                     t.v.Y = -t.v.Y;
                 }
                 else if (posNext.Y > top)
                 {
-                    t.vPreCollision = t.v;
-                    t.timeCoefPreCollision = (top - pos.Y) / t.v.Y;
+                    t.vHistory.Add(new PreCollisionHistory(t.v, (top - pos.Y) / t.v.Y));
                     t.v.Y = -t.v.Y;
                 }
                 // WARNING: now we handle only 1 collision case and ignore all others - because we are using else statement between collision checks
