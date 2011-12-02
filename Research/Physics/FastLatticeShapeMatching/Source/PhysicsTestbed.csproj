@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="Testbed\Interactions\Impulses\WallImpulse.cs" />
     <Compile Include="Tools\Color3.cs" />
+    <Compile Include="Tools\LineSegment.cs" />
     <Compile Include="Tools\ManagedList.cs" />
     <Compile Include="Tools\Matrix2x2.cs" />
     <Compile Include="Tools\Vector2.cs" />
