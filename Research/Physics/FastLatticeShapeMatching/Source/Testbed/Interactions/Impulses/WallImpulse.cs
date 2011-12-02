@@ -15,10 +15,10 @@ namespace PhysicsTestbed
 			this.top = height;
 		}
 
-        private PreCollisionHistory GetNearestCollision(List<PreCollisionHistory> collisions)
+        private CollisionSubframe GetNearestCollision(List<CollisionSubframe> collisions)
         {
-            PreCollisionHistory nearestCollision = null;
-            foreach (PreCollisionHistory collision in collisions)
+            CollisionSubframe nearestCollision = null;
+            foreach (CollisionSubframe collision in collisions)
             {
                 if (nearestCollision == null || nearestCollision.timeCoefficient > collision.timeCoefficient)
                 {
@@ -35,40 +35,40 @@ namespace PhysicsTestbed
 			foreach(Particle t in particles)
 			{
                 // impulse & offset collision method
-                t.vHistory.Clear();
+                t.collisionSubframes.Clear();
                 double timeCoefficientPrediction = 1.0;
                 Vector2 pos = t.x;
                 Vector2 posNext = pos + t.v * timeCoefficientPrediction;
 
                 bool collisionFound = false;
-                List<PreCollisionHistory> collisionBuffer = new List<PreCollisionHistory>(4);
+                List<CollisionSubframe> collisionBuffer = new List<CollisionSubframe>(4);
                 do
                 {
                     if (posNext.X < left)
                     {
-                        collisionBuffer.Add(new PreCollisionHistory(new Vector2(-t.v.X, t.v.Y), (left - pos.X) / t.v.X));
+                        collisionBuffer.Add(new CollisionSubframe(new Vector2(-t.v.X, t.v.Y), (left - pos.X) / t.v.X));
                     }
                     if (posNext.X > right)
                     {
-                        collisionBuffer.Add(new PreCollisionHistory(new Vector2(-t.v.X, t.v.Y), (right - pos.X) / t.v.X));
+                        collisionBuffer.Add(new CollisionSubframe(new Vector2(-t.v.X, t.v.Y), (right - pos.X) / t.v.X));
                     }
                     if (posNext.Y < bottom)
                     {
-                        collisionBuffer.Add(new PreCollisionHistory(new Vector2(t.v.X, -t.v.Y), (bottom - pos.Y) / t.v.Y));
+                        collisionBuffer.Add(new CollisionSubframe(new Vector2(t.v.X, -t.v.Y), (bottom - pos.Y) / t.v.Y));
                     }
                     if (posNext.Y > top)
                     {
-                        collisionBuffer.Add(new PreCollisionHistory(new Vector2(t.v.X, -t.v.Y), (top - pos.Y) / t.v.Y));
+                        collisionBuffer.Add(new CollisionSubframe(new Vector2(t.v.X, -t.v.Y), (top - pos.Y) / t.v.Y));
                     }
 
                     if (collisionBuffer.Count > 0)
                     {
-                        PreCollisionHistory collision = GetNearestCollision( collisionBuffer );
-                        PreCollisionHistory history = new PreCollisionHistory(t.v, collision.timeCoefficient);
-                        t.v = collision.v;
-                        t.vHistory.Add(history);
-                        pos += history.v * history.timeCoefficient;
-                        timeCoefficientPrediction -= history.timeCoefficient;
+                        CollisionSubframe currentCollision = GetNearestCollision( collisionBuffer );
+                        CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
+                        t.v = currentCollision.v;
+                        t.collisionSubframes.Add(subframe);
+                        pos += subframe.v * subframe.timeCoefficient;
+                        timeCoefficientPrediction -= subframe.timeCoefficient;
                         posNext = pos + t.v * timeCoefficientPrediction;
                         collisionFound = true;
                         collisionBuffer.Clear();
@@ -80,9 +80,9 @@ namespace PhysicsTestbed
                 }
                 while (collisionFound);
                 
-                if (t.vHistory.Count > 0)
+                if (t.collisionSubframes.Count > 0)
                 {
-                    t.vHistory.Add(new PreCollisionHistory(t.v, timeCoefficientPrediction));
+                    t.collisionSubframes.Add(new CollisionSubframe(t.v, timeCoefficientPrediction));
                 }
             }
 		}

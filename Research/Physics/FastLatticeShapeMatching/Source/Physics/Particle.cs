@@ -6,12 +6,12 @@ using System.Drawing;
 
 namespace PhysicsTestbed
 {
-    public class PreCollisionHistory
+    public class CollisionSubframe
     {
         public Vector2 v;				        // Velocity before collision
         public double timeCoefficient = 0.0;    // Part of time step before collision - [0, 1]
 
-        public PreCollisionHistory(Vector2 v, double timeCoefficient)
+        public CollisionSubframe(Vector2 v, double timeCoefficient)
         {
             this.v = v;
             this.timeCoefficient = timeCoefficient;
@@ -35,7 +35,7 @@ namespace PhysicsTestbed
         public Vector2 fExt;						// External force
 
         // continues collision detection and impulse integration
-        public List<PreCollisionHistory> vHistory = new List<PreCollisionHistory>();
+        public List<CollisionSubframe> collisionSubframes = new List<CollisionSubframe>();
 
 		// Shape matching
         public Vector2 goal;

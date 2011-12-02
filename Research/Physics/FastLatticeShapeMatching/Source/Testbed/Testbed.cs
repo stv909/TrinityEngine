@@ -152,7 +152,7 @@ namespace PhysicsTestbed
 				Gl.glPointSize(4.0f);
 				foreach (Particle t in body.particles)
 				{
-                    if (t.vHistory.Count > 0)
+                    if (t.collisionSubframes.Count > 0)
                     {
                         Gl.glBegin(Gl.GL_POINTS);
                         Gl.glVertex2d(t.goal.X, t.goal.Y);
@@ -161,9 +161,9 @@ namespace PhysicsTestbed
                         Vector2 hPosition = t.goal;
                         Gl.glBegin(Gl.GL_LINE_STRIP);
                         Gl.glVertex2d(hPosition.X, hPosition.Y);
-                        foreach (PreCollisionHistory history in t.vHistory)
+                        foreach (CollisionSubframe subframe in t.collisionSubframes)
                         {
-                            hPosition += history.v * history.timeCoefficient;
+                            hPosition += subframe.v * subframe.timeCoefficient;
                             Gl.glVertex2d(hPosition.X, hPosition.Y);
                         }
                         Gl.glEnd();

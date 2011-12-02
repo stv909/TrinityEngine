@@ -226,18 +226,20 @@ namespace PhysicsTestbed
             {
                 if (p.locked == false)
                 {
-                    if (p.vHistory.Count > 0)
+                    if (p.collisionSubframes.Count > 0)
                     {
                         double velocityCheckLength = 0.0; // DEBUG
-                        foreach (PreCollisionHistory history in p.vHistory)
+                        foreach (CollisionSubframe subframe in p.collisionSubframes)
                         {
-                            velocityCheckLength += (history.v * history.timeCoefficient).Length(); // DEBUG
-                            p.x += history.v * history.timeCoefficient;
+                            velocityCheckLength += (subframe.v * subframe.timeCoefficient).Length(); // DEBUG
+                            p.x += subframe.v * subframe.timeCoefficient;
                         }
                         // Debug metrics
+                        /*
                         Testbed.PostMessage(
                             System.Drawing.Color.Green, "Collision check: " + velocityCheckLength + " =?= " + p.v.Length() // DEBUG
                         );
+                        */
                     }
                     else
                     {
