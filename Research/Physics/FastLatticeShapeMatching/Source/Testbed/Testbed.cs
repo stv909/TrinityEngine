@@ -15,10 +15,12 @@ namespace PhysicsTestbed
         public static Array currentBlueprints = null;
 
 		public static DragForce dragForce;
-		public static WallImpulse wallImpulse;
-		public static PushForce pushForce;
+        //public static WallForce wallForce;
+        public static PushForce pushForce;
 		public static LockForce lockForce;
 		public static GravityForce gravityForce;
+        public static WallImpulse wallImpulse;
+        public static BodyImpulse bodyImpulse;
 
 		public static bool paused = false;
 		public static int updateFrame = 0;
@@ -28,38 +30,37 @@ namespace PhysicsTestbed
 
 		public static bool Paused
 		{
-			get
-			{
-				return paused;
-			}
-			set
-			{
-				if(paused != value)
+			get { return paused; }
+			set 
+            { 
+				if (paused != value)
 				{
 					paused = value;
-					if(paused)
-						Program.window.runCheckBox.Checked = false;
+					if (paused) Program.window.runCheckBox.Checked = false;
 				}
 			}
 		}
 
 		public static void Initialize()
 		{
-			dragForce = new DragForce();
-			wallImpulse = new WallImpulse(9999, 9999);
+            // SingleBlueprint.blueprint; SimpleBlueprint.blueprint; RectangleBlueprint.blueprint; HumanBlueprint.blueprint; BuildingBlueprint.blueprint; ChairBlueprint.blueprint;
+            //currentBlueprints = new Array[3]{ HumanBlueprint.blueprint, ChairBlueprint.blueprint, BuildingBlueprint.blueprint };
+            currentBlueprints = new Array[2] { RectangleBlueprint.blueprint, SingleBlueprint.blueprint };
+            GenerateBodies(currentBlueprints);
+            
+            dragForce = new DragForce();
 			pushForce = new PushForce();
 			lockForce = new LockForce();
 			gravityForce = new GravityForce();
+			wallImpulse = new WallImpulse(9999, 9999);
+            bodyImpulse = new BodyImpulse(testBody);
+
 			world.environmentForces.Add(dragForce);
-			world.environmentImpulses.Add(wallImpulse);
 			world.environmentForces.Add(pushForce);
 			world.environmentForces.Add(lockForce);
 			world.environmentForces.Add(gravityForce);
-
-            // SimpleBlueprint.blueprint; RectangleBlueprint.blueprint; HumanBlueprint.blueprint; BuildingBlueprint.blueprint; ChairBlueprint.blueprint;
-            //currentBlueprints = new Array[3]{ HumanBlueprint.blueprint, ChairBlueprint.blueprint, BuildingBlueprint.blueprint };
-            currentBlueprints = new Array[2] { RectangleBlueprint.blueprint, RectangleBlueprint.blueprint };
-            GenerateBodies(currentBlueprints);
+            world.environmentImpulses.Add(wallImpulse);
+            world.environmentImpulses.Add(bodyImpulse);
         }
 
         public static void GenerateBodies(Array blueprints)
@@ -84,7 +85,8 @@ namespace PhysicsTestbed
 		{
             world.bodies.Clear();
             GenerateBodies(currentBlueprints);
-		}
+            bodyImpulse.body = testBody;
+        }
 
 		public static void SetModel(int blueprintNo, int modelNo)
 		{

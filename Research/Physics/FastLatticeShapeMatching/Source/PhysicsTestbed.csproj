@@ -92,6 +92,7 @@
     <Compile Include="Testbed\Interactions\Forces\GravityForce.cs" />
     <Compile Include="Testbed\Blueprints\HumanBlueprint.cs" />
     <Compile Include="Testbed\Interactions\Forces\LockForce.cs" />
+    <Compile Include="Testbed\Interactions\Impulses\BodyImpulse.cs" />
     <Compile Include="Testbed\Window\MessageTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
