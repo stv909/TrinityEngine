@@ -13,7 +13,7 @@ namespace PhysicsTestbed
         public static Array currentBlueprints = null;
 
 		public static DragForce dragForce;
-        //public static WallForce wallForce;
+        public static WallForce wallForce;
         public static PushForce pushForce;
 		public static LockForce lockForce;
 		public static GravityForce gravityForce;
@@ -42,11 +42,12 @@ namespace PhysicsTestbed
 		public static void Initialize()
 		{
             // SimpleX1Blueprint; SimpleX2Blueprint; SimpleX3Blueprint; RectangleBlueprint; HumanBlueprint; BuildingBlueprint; ChairBlueprint;
-            //currentBlueprints = new Array[2] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint };
-            currentBlueprints = new Array[5] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint };
+            currentBlueprints = new Array[2] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint };
+            //currentBlueprints = new Array[5] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint };
             GenerateBodies(currentBlueprints);
             
             dragForce = new DragForce();
+            wallForce = new WallForce(9999, 9999);
 			pushForce = new PushForce();
 			lockForce = new LockForce();
 			gravityForce = new GravityForce();
@@ -54,26 +55,37 @@ namespace PhysicsTestbed
             bodyImpulse = new BodyImpulse();
 
 			world.environmentForces.Add(dragForce);
-			world.environmentForces.Add(pushForce);
+            world.environmentForces.Add(wallForce);
+            world.environmentForces.Add(pushForce);
 			world.environmentForces.Add(lockForce);
 			world.environmentForces.Add(gravityForce);
             world.environmentImpulses.Add(wallImpulse);
             world.environmentImpulses.Add(bodyImpulse);
         }
 
+        private static LsmBody GenerateBody(int verticalIndex, bool[,] blueprint)
+        {
+            LsmBody body = new LsmBody(
+                new Vector2(50, 50 + 150 * verticalIndex),
+                new Color3(verticalIndex == 1 ? 1 : 0, verticalIndex == 0 ? 1 : 0, verticalIndex == 2 ? 1 : 0)
+            );
+            body.GenerateFromBlueprint(blueprint);
+            return body;
+        }
+
         public static void GenerateBodies(Array blueprints)
         {
-            int verticalOffset = 0;
+            int verticalIndex = 0;
             foreach (bool[,] blueprint in blueprints)
             {
-                LsmBody body = new LsmBody(
-                    new Vector2(50, 50 + 150 * verticalOffset), 
-                    new Color3(verticalOffset == 1 ? 1 : 0, verticalOffset == 0 ? 1 : 0, verticalOffset == 2 ? 1 : 0)
-                );
+                LsmBody body = GenerateBody(verticalIndex++, blueprint);
                 world.bodies.Add(body);
-                ++verticalOffset;
-                body.GenerateFromBlueprint(blueprint);
             }
+        }
+
+        private static void RegenerateBody(int verticalIndex, bool[,] blueprint)
+        {
+            world.bodies[verticalIndex] = GenerateBody(verticalIndex, blueprint);
         }
 
 		public static void Reset()
@@ -101,8 +113,10 @@ namespace PhysicsTestbed
                 case 5:
                     currentBlueprints.SetValue(SimpleX1Blueprint.blueprint, blueprintNo);
                     break;
+                default:
+                    return;
             }
-			Reset();
+            RegenerateBody(blueprintNo, currentBlueprints.GetValue(blueprintNo) as bool[,]);
 		}
 
 		public static void Update()

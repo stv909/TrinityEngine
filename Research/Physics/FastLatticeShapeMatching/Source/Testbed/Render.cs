@@ -261,6 +261,8 @@ namespace PhysicsTestbed
                 Gl.glVertex2d(wallImpulse.right, wallImpulse.bottom + wallImpulse.border);
             }
             Gl.glEnd();
+
+            // TODO: render force-based wall as well
         }
 
         public static void Render()

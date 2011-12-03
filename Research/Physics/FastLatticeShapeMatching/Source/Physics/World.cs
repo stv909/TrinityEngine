@@ -26,9 +26,13 @@ namespace PhysicsTestbed
 
 			foreach (LsmBody b in bodies)
 			{
+                if (b.frozen)
+                    continue;
 				foreach (EnvironmentForce e in environmentForces)
 				{
-					e.ApplyForce(b.particles);
+                    if (e is WallForce && !b.pureForces)
+                        continue;
+                    e.ApplyForce(b.particles);
 				}
 				b.Smooth();
 				b.DoFracture();

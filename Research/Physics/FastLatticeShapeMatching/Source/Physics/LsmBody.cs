@@ -23,10 +23,13 @@ namespace PhysicsTestbed
 		public List<SmoothingRegion> smoothingRegions = new List<SmoothingRegion>();
 		public List<Chunk> chunks = new List<Chunk>();
 
-		Point spacing = new Point(25, 25); // 25, 25
+		Point spacing = new Point(250, 250); // 25, 25
 		Vector2 offset = new Vector2(200, 200);
         Color3 color = new Color3(0, 1, 0);
         public Color3 Color { get { return color; } }
+
+        public bool pureForces = false;
+        public bool frozen = false;
 
 		protected static int w = 3;
 		[Controllable(Type = ControllableAttribute.ControllerType.Textbox, Caption = "w", Min = 0, Max = 100, Integral = true)]
@@ -249,6 +252,9 @@ namespace PhysicsTestbed
 
         public void HandleCollisions(List<EnvironmentImpulse> environmentImpulses)
         {
+            if (pureForces || frozen)
+                return;
+
             foreach (Particle t in particles)
             {
                 // impulse & offset collision method

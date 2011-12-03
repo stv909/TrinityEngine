@@ -10,7 +10,6 @@ namespace PhysicsTestbed
 
         private bool CollideSweptSegments(LineSegment first, LineSegment second, ref Vector2 intersection)
         {
-            // TODO: test this algorithm and optimize if needed
             double Ua, Ub;
             // Equations to determine whether lines intersect
             Ua = ((second.end.X - second.start.X) * (first.start.Y - second.start.Y) - (second.end.Y - second.start.Y) * (first.start.X - second.start.X)) /
@@ -66,15 +65,34 @@ namespace PhysicsTestbed
                 if (body.Equals(applyBody))
                     continue; // avoid self-collision here
                 // iterate all possible edges of body and test them with current subframed point
-                foreach (Particle bodyt in body.particles)
+                if (body.frozen)
                 {
-                    if (bodyt.xPos != null)
+                    // simple collision - swept particle only
+                    foreach (Particle bodyt in body.particles)
                     {
-                        CheckParticleEdge(bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
+                        if (bodyt.xPos != null)
+                        {
+                            CheckSegment(bodyt.goal, bodyt.xPos.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
+                        }
+                        if (bodyt.yPos != null)
+                        {
+                            CheckSegment(bodyt.goal, bodyt.yPos.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
+                        }
                     }
-                    if (bodyt.yPos != null)
+                }
+                else
+                {
+                    // swept collision for body
+                    foreach (Particle bodyt in body.particles)
                     {
-                        CheckParticleEdge(bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
+                        if (bodyt.xPos != null)
+                        {
+                            CheckParticleEdge(bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
+                        }
+                        if (bodyt.yPos != null)
+                        {
+                            CheckParticleEdge(bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
+                        }
                     }
                 }
             }

@@ -146,7 +146,10 @@ namespace PhysicsTestbed
 		{
 			Testbed.wallImpulse.right = renderBox.Width;
 			Testbed.wallImpulse.top = renderBox.Height;
-		}
+
+            Testbed.wallForce.right = renderBox.Width;
+            Testbed.wallForce.top = renderBox.Height;
+        }
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -206,6 +209,30 @@ namespace PhysicsTestbed
         private void model25Button_Click(object sender, EventArgs e)
         {
             Testbed.SetModel(1, 5);
+        }
+
+        private void model02DisableCollisions_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            Testbed.world.bodies[1].pureForces = cb.Checked;
+        }
+        
+        private void model01DisableCollisions_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            Testbed.world.bodies[0].pureForces = cb.Checked;
+        }
+
+        private void model02Freeze_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            Testbed.world.bodies[1].frozen = cb.Checked;
+        }
+
+        private void model01Freeze_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            Testbed.world.bodies[0].frozen = cb.Checked;
         }
     }
 }
