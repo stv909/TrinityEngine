@@ -6,6 +6,9 @@ namespace PhysicsTestbed
 {
     public class BodyImpulse : EnvironmentImpulse
     {
+        [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "CCD time offset (pure visual)", Min = 0.0, Max = 1.0)]
+        public static double ccdTimeOffset = 0.0;
+
         private double epsilon = 0.00001;
 
         private bool CollideSweptSegments(LineSegment first, LineSegment second, ref Vector2 intersection)

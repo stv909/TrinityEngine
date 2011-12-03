@@ -265,10 +265,46 @@ namespace PhysicsTestbed
             // TODO: render force-based wall as well
         }
 
+        private static Color3 ccdHelper = new Color3(0.5, 0.5, 1);
+
+        static void RenderCCDHelpers(double ccdTimeOffset)
+        {
+            Gl.glColor3d(ccdHelper.R, ccdHelper.G, ccdHelper.B);
+            foreach (LsmBody body in world.bodies)
+            {
+                foreach (Particle t in body.particles)
+                {
+                    Vector2 tHelper = t.goal + ccdTimeOffset * (t.x - t.goal);
+
+                    Gl.glPointSize(4.0f);
+                    Gl.glBegin(Gl.GL_POINTS);
+                    Gl.glVertex2d(tHelper.X, tHelper.Y);
+                    Gl.glEnd();
+
+                    Gl.glLineWidth(1.0f);
+                    Gl.glBegin(Gl.GL_LINES);
+                    if (t.xPos != null)
+                    {
+                        Vector2 tHelperNeighbor = t.xPos.goal + ccdTimeOffset * (t.xPos.x - t.xPos.goal);
+                        Gl.glVertex2d(tHelper.X, tHelper.Y);
+                        Gl.glVertex2d(tHelperNeighbor.X, tHelperNeighbor.Y);
+                    }
+                    if (t.yPos != null)
+                    {
+                        Vector2 tHelperNeighbor = t.yPos.goal + ccdTimeOffset * (t.yPos.x - t.yPos.goal);
+                        Gl.glVertex2d(tHelper.X, tHelper.Y);
+                        Gl.glVertex2d(tHelperNeighbor.X, tHelperNeighbor.Y);
+                    }
+                    Gl.glEnd();
+                }
+            }
+        }
+
         public static void Render()
         {
             RenderWalls();
             RenderBodies();
+            if (BodyImpulse.ccdTimeOffset > 0.0) RenderCCDHelpers(BodyImpulse.ccdTimeOffset);
             RenderForces();
         }
     }
