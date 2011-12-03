@@ -24,9 +24,9 @@ Trinity Engine. Conceptual design and research.
 								- vs complex static body
 						1.1.2.1.1.2 Dynamic environment
 							1.1.2.1.1.2.1 Single particle
-								> vs moving object (rotating wall, kinematic body etc.)
-									- visual continuous collision detection edge vs particle
-									- implementation algorithm for edge vs particle CCD (use formulas and equations)
+								- vs moving object (rotating wall, kinematic body etc.)
+									+ visual continuous collision detection edge vs particle
+									> implementation algorithm for edge vs particle CCD (use formulas and equations)
 								- vs complex dynamic body
 							1.1.2.1.1.2.2 Single chunk of soft body
 								- vs moving wall
