@@ -19,5 +19,15 @@ namespace PhysicsTestbed
             this.g = g;
             this.b = b;
         }
+
+        static public Color3 operator *(Color3 c, double k)
+        {
+            return new Color3(c.R * k, c.G * k, c.B * k);
+        }
+
+        static public Color3 operator *(double k, Color3 c)
+        {
+            return new Color3(c.R * k, c.G * k, c.B * k);
+        }
     }
 }

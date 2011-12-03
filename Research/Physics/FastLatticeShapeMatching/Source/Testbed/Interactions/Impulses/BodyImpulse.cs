@@ -32,19 +32,19 @@ namespace PhysicsTestbed
             return false;
         }
 
-        private void CheckParticlePair(
-            Particle origin, Particle neighbor,
+        private void CheckSegment(
+            Vector2 origin, Vector2 neighbor,
             Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer
         )
         {
             Vector2 intersection = new Vector2();
             if (
-                CollideSweptSegments(new LineSegment(origin.goal, neighbor.goal), new LineSegment(pos, posNext), ref intersection) && 
+                CollideSweptSegments(new LineSegment(origin, neighbor), new LineSegment(pos, posNext), ref intersection) &&
                 (intersection - pos).Length() > epsilon // to prevent slipping of start point to just reflected edge
             )
             {
                 // reflect velocity relative edge
-                Vector2 reflectSurface = neighbor.goal - origin.goal;
+                Vector2 reflectSurface = neighbor - origin;
                 Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
                 if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
                 Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
@@ -53,17 +53,27 @@ namespace PhysicsTestbed
             }
         }
 
+        private void CheckParticleEdge(
+            Particle origin, Particle neighbor,
+            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer
+        )
+        {
+            // simple approximation of really swept approach // TODO: implement full featured swept for point-lineSegment
+            CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current position
+            CheckSegment(origin.x, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // next position
+        }
+
         public override void ApplyImpulse(Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
         {
             foreach (Particle bodyt in body.particles)
             {
                 if (bodyt.xPos != null)
                 {
-                    CheckParticlePair(bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
+                    CheckParticleEdge(bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
                 }
                 if (bodyt.yPos != null)
                 {
-                    CheckParticlePair(bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
+                    CheckParticleEdge(bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
                 }
             }
         }

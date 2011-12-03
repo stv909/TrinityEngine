@@ -185,9 +185,10 @@ namespace PhysicsTestbed
                 RenderLockedParticlesSelection(body.particles);
                 if (LsmBody.drawCollisionPointsAndTraces) RenderCollisionedParticlesSelection(body.particles);
 
-                if (LsmBody.drawBodyLattice_x) RenderLattice_x(body.particles, new Color3(0, 0, 0));
-                if (LsmBody.drawBodyParticles_x) RenderParticleGroup_x(body.particles, new Color3(0, 0, 0));
-                if (LsmBody.drawBodyLattice_goal) RenderLattice_Goal(body.particles, new Color3(0.3, 0.3, 0.3));
+                Color3 colorX = new Color3(0, 0.5, 1);
+                if (LsmBody.drawBodyLattice_x) RenderLattice_x(body.particles, 0.7 * colorX);
+                if (LsmBody.drawBodyParticles_x) RenderParticleGroup_x(body.particles, colorX);
+                if (LsmBody.drawBodyLattice_goal) RenderLattice_Goal(body.particles, 0.7 * body.Color);
                 if (LsmBody.drawBodyParticles_goal) RenderParticleGroup_Goal(body.particles, body.Color);
             }
         }
