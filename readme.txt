@@ -69,6 +69,7 @@ Deformable Objects
 		http://vimeo.com/16652015
 		http://vimeo.com/16652171
 	http://grail.cs.washington.edu/projects/deformation/
+	http://graphics.ewha.ac.kr/FAST/
 
 Continuous Collision Detection
 	http://www.wildbunny.co.uk/blog/2011/04/20/collision-detection-for-dummies/
@@ -80,7 +81,6 @@ Continuous Collision Detection
 
 2D Game Engines
 	http://www.stencyl.com/stencylworks/overview/
-	http://graphics.ewha.ac.kr/FAST/
 
 Liquids
 	http://www.youtube.com/watch?NR=1&feature=endscreen&v=KkEP_HA4X3Y
