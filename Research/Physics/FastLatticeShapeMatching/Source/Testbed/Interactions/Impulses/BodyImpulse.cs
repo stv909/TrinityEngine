@@ -7,6 +7,7 @@ namespace PhysicsTestbed
     public class BodyImpulse : EnvironmentImpulse
     {
         public LsmBody body = null;
+        private double epsilon = 0.00001;
 
         public BodyImpulse(LsmBody body)
         {
@@ -39,16 +40,14 @@ namespace PhysicsTestbed
             Vector2 intersection = new Vector2();
             if (
                 CollideSweptSegments(new LineSegment(origin.goal, neighbor.goal), new LineSegment(pos, posNext), ref intersection) && 
-                (intersection - pos).Length() > 0.00001 // to prevent slipping of start point to just reflected edge
+                (intersection - pos).Length() > epsilon // to prevent slipping of start point to just reflected edge
             )
             {
                 // reflect velocity relative edge
                 Vector2 reflectSurface = neighbor.goal - origin.goal;
                 Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
                 if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
-                Vector2 velocityReflectPart = velocity - reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
-                Vector2 newVelocity = 2.0 * velocityReflectPart - velocity;
-                // TODO: optimize this code ^
+                Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
 
                 collisionBuffer.Add(new CollisionSubframe(newVelocity, (intersection - pos).Length() / velocity.Length()));
             }
