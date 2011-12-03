@@ -59,8 +59,10 @@ namespace PhysicsTestbed
         )
         {
             // simple approximation of really swept approach // TODO: implement full featured swept for point-lineSegment
-            CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current position
-            CheckSegment(origin.x, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // next position
+            CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
+            CheckSegment(origin.x, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // next edge position
+            CheckSegment(origin.goal, origin.x, pos, posNext, velocity, ref collisionBuffer); // origin current to next virtual edge 
+            CheckSegment(neighbor.goal, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // neighbor current to next virtual edge
         }
 
         public override void ApplyImpulse(Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
