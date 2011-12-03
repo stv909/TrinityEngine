@@ -56,13 +56,39 @@ Trinity Engine. Conceptual design and research.
 
 Links:
 
-http://powdertoy.co.uk/ - The Powder Toys. Most known implementation of static interactions.
+Falling Sand paradigm
+	http://powdertoy.co.uk/ - The Powder Toys. Most known implementation of static interactions.
 
-http://fallingsandgame.com/ - Forum with multiple implementations of Falling Sand games - parents of The Powder Toys
-	http://fallingsandgame.com/sand/NewSand.html - implementation with Zombies (characters in physical environment)
-	http://sourceforge.net/projects/sdlsand/ - simple C++ implementation
+	http://fallingsandgame.com/ - Forum with multiple implementations of Falling Sand games - parents of The Powder Toys
+		http://fallingsandgame.com/sand/NewSand.html - implementation with Zombies (characters in physical environment)
+		http://sourceforge.net/projects/sdlsand/ - simple C++ implementation
 
-http://www.alecrivers.com/fastlsm/
-	http://realmatter.com/
-	http://vimeo.com/16652015
-	http://vimeo.com/16652171
+Deformable Objects
+	http://www.alecrivers.com/fastlsm/
+		http://realmatter.com/
+		http://vimeo.com/16652015
+		http://vimeo.com/16652171
+	http://grail.cs.washington.edu/projects/deformation/
+
+Continuous Collision Detection
+	http://www.wildbunny.co.uk/blog/2011/04/20/collision-detection-for-dummies/
+	http://www.wildbunny.co.uk/blog/2011/03/25/speculative-contacts-an-continuous-collision-engine-approach-part-1/
+	http://www.youtube.com/watch?v=0_v46pNsKkI
+	http://www.continuousphysics.com/BulletContinuousCollisionDetection.pdf
+	http://www.dtecta.com/papers/unpublished04raycast.pdf
+	http://www.kuffner.org/james/software/dynamics/mirtich/mirtichThesis.pdf
+
+2D Game Engines
+	http://www.stencyl.com/stencylworks/overview/
+	http://graphics.ewha.ac.kr/FAST/
+
+Liquids
+	http://www.youtube.com/watch?NR=1&feature=endscreen&v=KkEP_HA4X3Y
+
+Character Animation
+	http://www.youtube.com/watch?v=xXDZZt7TEAo&feature=related
+	http://aigamedev.com/premium/interview/near-optimal-character-locomotion/
+	http://aigamedev.com/open/article/optimal-continuous-control/
+	http://grail.cs.washington.edu/projects/graph-optimal-control/
+	http://www.youtube.com/watch?v=JzAEx6d4ow4&feature=related
+	http://graphics.cs.ucr.edu/projects/mocsim/mocsim.html
