@@ -23,7 +23,7 @@ namespace PhysicsTestbed
 		public List<SmoothingRegion> smoothingRegions = new List<SmoothingRegion>();
 		public List<Chunk> chunks = new List<Chunk>();
 
-		Point spacing = new Point(25, 25); // 160, 160
+		Point spacing = new Point(250, 250); // 160, 160
 		Vector2 offset = new Vector2(200, 200);
         Color3 color = new Color3(0, 1, 0);
         public Color3 Color { get { return color; } }
@@ -48,7 +48,7 @@ namespace PhysicsTestbed
 		[Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption="Chunk damping", Min = 0.0, Max = 1.0)]
         public static double kChunkDamping = 0.0;
         [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "Region damping", Min = 0.0, Max = 1.0)]
-		public static double kRegionDamping = 0.5;
+		public static double kRegionDamping = 0.0; // 0.5
 		[Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "Chunk smoothing", Min = 0.0, Max = 1.0)]
 		public static double kChunkSmoothing = 0.0;
 
