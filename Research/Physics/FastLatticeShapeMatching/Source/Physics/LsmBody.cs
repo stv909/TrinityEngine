@@ -23,7 +23,7 @@ namespace PhysicsTestbed
 		public List<SmoothingRegion> smoothingRegions = new List<SmoothingRegion>();
 		public List<Chunk> chunks = new List<Chunk>();
 
-		Point spacing = new Point(250, 250); // 160, 160
+		Point spacing = new Point(250, 250); // 25, 25
 		Vector2 offset = new Vector2(200, 200);
         Color3 color = new Color3(0, 1, 0);
         public Color3 Color { get { return color; } }
@@ -69,6 +69,8 @@ namespace PhysicsTestbed
         public static bool drawBodyParticles_x = false;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body lattice - x")]
         public static bool drawBodyLattice_x = false;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw goal - x connection")]
+        public static bool drawGoalXConnection = true;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw collision points and traces")]
         public static bool drawCollisionPointsAndTraces = true;
 
@@ -250,11 +252,12 @@ namespace PhysicsTestbed
                 // impulse & offset collision method
                 t.collisionSubframes.Clear();
                 double timeCoefficientPrediction = 1.0;
-                Vector2 pos = t.x;
-                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
+                // TODO: figureout what positions to use
+                Vector2 pos = t.x; // t.goal - ???
+                Vector2 posNext = pos + t.v * timeCoefficientPrediction; // t.x - ???
 
                 int iterationsCounter = 0; // HACK // to prevent deadlocks
-                const int maxIterations = 32; // HACK // to prevent deadlocks
+                const int maxIterations = 64; // HACK // to prevent deadlocks
                 bool collisionFound = false;
                 List<CollisionSubframe> collisionBuffer = new List<CollisionSubframe>();
                 do

@@ -69,7 +69,7 @@ namespace PhysicsTestbed
         static void RenderCollisionTrace(Particle t)
         {
             Vector2 hPosition = t.goal; // WARNING: why t.x doesn't work correctly???
-            Gl.glColor3d(0, 0, 0);
+            Gl.glColor4d(0, 0, 0, 0.5);
             Gl.glLineWidth(1.0f);
             Gl.glBegin(Gl.GL_LINE_STRIP);
             Gl.glVertex2d(hPosition.X, hPosition.Y);
@@ -81,7 +81,7 @@ namespace PhysicsTestbed
             Gl.glEnd();
 
             hPosition = t.goal; // WARNING: why t.x doesn't work correctly???
-            Gl.glColor3d(1, 0.5, 0);
+            Gl.glColor4d(1, 0.5, 0, 0.5);
             Gl.glPointSize(4.0f);
             Gl.glBegin(Gl.GL_POINTS);
             foreach (CollisionSubframe subframe in t.collisionSubframes)
@@ -178,6 +178,22 @@ namespace PhysicsTestbed
             Gl.glEnd();
         }
 
+        static void RenderConnection_Goal_X(List<Particle> particles, Color3 color)
+        {
+            Gl.glColor4d(color.R, color.G, color.B, 0.5);
+            Gl.glLineWidth(1.0f);
+            Gl.glBegin(Gl.GL_LINES);
+            foreach (Particle t in particles)
+            {
+                if (t.collisionSubframes.Count == 0)
+                {
+                    Gl.glVertex2d(t.x.X, t.x.Y);
+                    Gl.glVertex2d(t.goal.X, t.goal.Y);
+                }
+            }
+            Gl.glEnd();
+        }
+
         static void RenderBodies()
         {
             foreach (LsmBody body in world.bodies)
@@ -186,6 +202,8 @@ namespace PhysicsTestbed
                 if (LsmBody.drawCollisionPointsAndTraces) RenderCollisionedParticlesSelection(body.particles);
 
                 Color3 colorX = new Color3(0, 0.5, 1);
+                Color3 colorGoalX = new Color3(1, 0, 1);
+                if (LsmBody.drawGoalXConnection) RenderConnection_Goal_X(body.particles, colorGoalX);
                 if (LsmBody.drawBodyLattice_x) RenderLattice_x(body.particles, 0.7 * colorX);
                 if (LsmBody.drawBodyParticles_x) RenderParticleGroup_x(body.particles, colorX);
                 if (LsmBody.drawBodyLattice_goal) RenderLattice_Goal(body.particles, 0.7 * body.Color);
