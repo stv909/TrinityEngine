@@ -10,8 +10,6 @@ namespace PhysicsTestbed
 	public partial class Testbed
 	{
 		public static World world = World.Singleton;
-
-		public static LsmBody testBody;
         public static Array currentBlueprints = null;
 
 		public static DragForce dragForce;
@@ -44,8 +42,8 @@ namespace PhysicsTestbed
 		public static void Initialize()
 		{
             // SimpleX1Blueprint; SimpleX2Blueprint; SimpleX3Blueprint; RectangleBlueprint; HumanBlueprint; BuildingBlueprint; ChairBlueprint;
-            currentBlueprints = new Array[2] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint };
-            //currentBlueprints = new Array[5] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint };
+            //currentBlueprints = new Array[2] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint };
+            currentBlueprints = new Array[5] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint };
             GenerateBodies(currentBlueprints);
             
             dragForce = new DragForce();
@@ -53,7 +51,7 @@ namespace PhysicsTestbed
 			lockForce = new LockForce();
 			gravityForce = new GravityForce();
 			wallImpulse = new WallImpulse(9999, 9999);
-            bodyImpulse = new BodyImpulse(testBody);
+            bodyImpulse = new BodyImpulse();
 
 			world.environmentForces.Add(dragForce);
 			world.environmentForces.Add(pushForce);
@@ -65,7 +63,6 @@ namespace PhysicsTestbed
 
         public static void GenerateBodies(Array blueprints)
         {
-            testBody = null;
             int verticalOffset = 0;
             foreach (bool[,] blueprint in blueprints)
             {
@@ -76,8 +73,6 @@ namespace PhysicsTestbed
                 world.bodies.Add(body);
                 ++verticalOffset;
                 body.GenerateFromBlueprint(blueprint);
-                if (testBody == null)
-                    testBody = body;
             }
         }
 
@@ -85,7 +80,6 @@ namespace PhysicsTestbed
 		{
             world.bodies.Clear();
             GenerateBodies(currentBlueprints);
-            bodyImpulse.body = testBody;
         }
 
 		public static void SetModel(int blueprintNo, int modelNo)

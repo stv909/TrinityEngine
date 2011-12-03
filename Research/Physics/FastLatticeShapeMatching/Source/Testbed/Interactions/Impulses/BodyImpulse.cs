@@ -6,13 +6,7 @@ namespace PhysicsTestbed
 {
     public class BodyImpulse : EnvironmentImpulse
     {
-        public LsmBody body = null;
         private double epsilon = 0.00001;
-
-        public BodyImpulse(LsmBody body)
-        {
-            this.body = body;
-        }
 
         private bool CollideSweptSegments(LineSegment first, LineSegment second, ref Vector2 intersection)
         {
@@ -65,17 +59,23 @@ namespace PhysicsTestbed
             CheckSegment(neighbor.goal, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // neighbor current to next virtual edge
         }
 
-        public override void ApplyImpulse(Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
+        public override void ApplyImpulse(LsmBody applyBody, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
         {
-            foreach (Particle bodyt in body.particles)
+            foreach (LsmBody body in Testbed.world.bodies)
             {
-                if (bodyt.xPos != null)
+                if (body.Equals(applyBody))
+                    continue; // avoid self-collision here
+                // iterate all possible edges of body and test them with current subframed point
+                foreach (Particle bodyt in body.particles)
                 {
-                    CheckParticleEdge(bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
-                }
-                if (bodyt.yPos != null)
-                {
-                    CheckParticleEdge(bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
+                    if (bodyt.xPos != null)
+                    {
+                        CheckParticleEdge(bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
+                    }
+                    if (bodyt.yPos != null)
+                    {
+                        CheckParticleEdge(bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
+                    }
                 }
             }
         }

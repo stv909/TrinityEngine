@@ -23,7 +23,7 @@ namespace PhysicsTestbed
 		public List<SmoothingRegion> smoothingRegions = new List<SmoothingRegion>();
 		public List<Chunk> chunks = new List<Chunk>();
 
-		Point spacing = new Point(250, 250); // 25, 25
+		Point spacing = new Point(25, 25); // 25, 25
 		Vector2 offset = new Vector2(200, 200);
         Color3 color = new Color3(0, 1, 0);
         public Color3 Color { get { return color; } }
@@ -52,7 +52,9 @@ namespace PhysicsTestbed
 		[Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "Chunk smoothing", Min = 0.0, Max = 1.0)]
 		public static double kChunkSmoothing = 0.0;
 
-		[Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Fracturing")]
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Pause on deadlock")]
+        public static bool pauseOnDeadlock = false;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Fracturing")]
 		public static bool fracturing = false;
 		[Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Pause on fracture")]
 		public static bool pauseOnFracture = false;
@@ -264,12 +266,7 @@ namespace PhysicsTestbed
                 {
                     foreach (EnvironmentImpulse e in environmentImpulses)
                     {
-                        // HACK // to avoid self-collision
-                        BodyImpulse bi = e as BodyImpulse;
-                        if (bi != null && bi.body.Equals(this))
-                            continue;
-
-                        e.ApplyImpulse(pos, posNext, t.v, ref collisionBuffer);
+                        e.ApplyImpulse(this, pos, posNext, t.v, ref collisionBuffer);
                     }
 
                     if (collisionBuffer.Count > 0)
@@ -291,7 +288,7 @@ namespace PhysicsTestbed
                     if (++iterationsCounter > maxIterations) // HACK // to prevent deadlocks
                     {
                         Testbed.PostMessage(System.Drawing.Color.Red, "Deadlock detected in HandleCollisions!"); // DEBUG
-                        Testbed.Paused = true; // DEBUG
+                        if (pauseOnDeadlock) Testbed.Paused = true; // DEBUG
                         break;
                     }
                 }
@@ -313,10 +310,10 @@ namespace PhysicsTestbed
                 {
                     if (p.collisionSubframes.Count > 0)
                     {
-                        double velocityCheckLength = 0.0; // DEBUG
+                        //double velocityCheckLength = 0.0; // DEBUG
                         foreach (CollisionSubframe subframe in p.collisionSubframes)
                         {
-                            velocityCheckLength += (subframe.v * subframe.timeCoefficient).Length(); // DEBUG
+                            //velocityCheckLength += (subframe.v * subframe.timeCoefficient).Length(); // DEBUG
                             p.x += subframe.v * subframe.timeCoefficient;
                         }
                         // Debug metrics

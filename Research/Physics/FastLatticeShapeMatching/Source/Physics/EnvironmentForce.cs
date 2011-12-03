@@ -14,6 +14,6 @@ namespace PhysicsTestbed
 
     public abstract class EnvironmentImpulse
     {
-        public abstract void ApplyImpulse(Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer);
+        public abstract void ApplyImpulse(LsmBody applyBody, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer);
     }
 }

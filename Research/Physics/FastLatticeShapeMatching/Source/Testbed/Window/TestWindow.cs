@@ -63,7 +63,7 @@ namespace PhysicsTestbed
 			double angularMomentum = 0;
 			double momentumMag;
 
-			b = Testbed.testBody;
+            b = Testbed.world.bodies[0];
 
 			foreach (Particle t in b.particles)
 			{
