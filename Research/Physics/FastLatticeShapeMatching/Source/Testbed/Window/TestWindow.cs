@@ -21,6 +21,8 @@ namespace PhysicsTestbed
 			InitializeComponent();
 			Testbed.wallImpulse.right = renderBox.Width;
 			Testbed.wallImpulse.top = renderBox.Height;
+            Testbed.wallForce.right = renderBox.Width;
+            Testbed.wallForce.top = renderBox.Height;
 
 			statusBox.PostMessage(Color.Green, "Simulation started");
 		}
