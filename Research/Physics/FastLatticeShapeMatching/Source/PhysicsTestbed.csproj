@@ -87,7 +87,6 @@
     <Compile Include="Physics\World.cs" />
     <Compile Include="Testbed\Blueprints\ChairBlueprint.cs" />
     <Compile Include="Testbed\Blueprints\BuildingBlueprint.cs" />
-    <Compile Include="Testbed\Blueprints\SingleBlueprint.cs" />
     <Compile Include="Testbed\Interactions\Forces\DragForce.cs" />
     <Compile Include="Testbed\Interactions\Forces\GravityForce.cs" />
     <Compile Include="Testbed\Blueprints\HumanBlueprint.cs" />

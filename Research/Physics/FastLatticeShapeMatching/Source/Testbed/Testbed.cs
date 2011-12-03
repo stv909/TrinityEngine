@@ -43,8 +43,8 @@ namespace PhysicsTestbed
 
 		public static void Initialize()
 		{
-            // SingleBlueprint; SimpleBlueprint; RectangleBlueprint; HumanBlueprint; BuildingBlueprint; ChairBlueprint;
-            currentBlueprints = new Array[2] { RectangleBlueprint.blueprint, SingleBlueprint.blueprint };
+            // SimpleX1Blueprint; SimpleX2Blueprint; SimpleX3Blueprint; RectangleBlueprint; HumanBlueprint; BuildingBlueprint; ChairBlueprint;
+            currentBlueprints = new Array[2] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint };
             GenerateBodies(currentBlueprints);
             
             dragForce = new DragForce();
@@ -101,10 +101,10 @@ namespace PhysicsTestbed
                     currentBlueprints.SetValue(ChairBlueprint.blueprint, blueprintNo);
 					break;
 				case 4:
-                    currentBlueprints.SetValue(SimpleBlueprint.blueprint, blueprintNo);
+                    currentBlueprints.SetValue(SimpleX2Blueprint.blueprint, blueprintNo);
 					break;
                 case 5:
-                    currentBlueprints.SetValue(SingleBlueprint.blueprint, blueprintNo);
+                    currentBlueprints.SetValue(SimpleX1Blueprint.blueprint, blueprintNo);
                     break;
             }
 			Reset();
