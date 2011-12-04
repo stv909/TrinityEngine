@@ -248,9 +248,19 @@ namespace PhysicsTestbed
         static void RenderWalls()
         {
             Gl.glLineWidth(2.0f);
-            Gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
             Gl.glBegin(Gl.GL_LINES);
             {
+                Gl.glColor4f(0.75f, 0.75f, 0.75f, 0.5f);
+                Gl.glVertex2d(wallForce.left + wallForce.border, wallForce.top);
+                Gl.glVertex2d(wallForce.left + wallForce.border, wallForce.bottom);
+                Gl.glVertex2d(wallForce.right - wallForce.border, wallForce.top);
+                Gl.glVertex2d(wallForce.right - wallForce.border, wallForce.bottom);
+                Gl.glVertex2d(wallForce.left, wallForce.top - wallForce.border);
+                Gl.glVertex2d(wallForce.right, wallForce.top - wallForce.border);
+                Gl.glVertex2d(wallForce.left, wallForce.bottom + wallForce.border);
+                Gl.glVertex2d(wallForce.right, wallForce.bottom + wallForce.border);
+
+                Gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
                 Gl.glVertex2d(wallImpulse.left + wallImpulse.border, wallImpulse.top);
                 Gl.glVertex2d(wallImpulse.left + wallImpulse.border, wallImpulse.bottom);
                 Gl.glVertex2d(wallImpulse.right - wallImpulse.border, wallImpulse.top);
@@ -261,8 +271,6 @@ namespace PhysicsTestbed
                 Gl.glVertex2d(wallImpulse.right, wallImpulse.bottom + wallImpulse.border);
             }
             Gl.glEnd();
-
-            // TODO: render force-based wall as well
         }
 
         static Vector2 GetParticlePositionAtTime(Particle t, double givenTimeCoefficient)

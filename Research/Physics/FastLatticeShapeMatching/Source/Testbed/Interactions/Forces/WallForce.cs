@@ -6,7 +6,7 @@ namespace PhysicsTestbed
 {
     public class WallForce : EnvironmentForce
     {
-        public float border = 45;
+        public float border = 30;
         public float left = 0, right, bottom = 0, top;
 
         public WallForce(float width, float height)
