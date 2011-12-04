@@ -37,8 +37,18 @@ namespace PhysicsTestbed
         // continues collision detection and impulse integration
         public List<CollisionSubframe> collisionSubframes = new List<CollisionSubframe>();
 
-        public Vector2? ccdCollisionPoint01 = null; // DEBUG
-        public Vector2? ccdCollisionPoint02 = null; // DEBUG
+        public class ccdDebugInfo
+        {
+            public Vector2 point;
+            public LineSegment edge;
+            public ccdDebugInfo(Vector2 point, LineSegment edge)
+            { 
+                this.point = point;
+                this.edge = edge;
+            }
+        }
+        public ccdDebugInfo ccdDebugInfo01 = null; // DEBUG
+        public ccdDebugInfo ccdDebugInfo02 = null; // DEBUG
 
 		// Shape matching
         public Vector2 goal;

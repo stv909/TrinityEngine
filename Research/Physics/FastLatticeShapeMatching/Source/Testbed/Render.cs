@@ -297,16 +297,32 @@ namespace PhysicsTestbed
                     }
                     Gl.glEnd();
 
-                    if (t.ccdCollisionPoint01 != null || t.ccdCollisionPoint02 != null)
+                    if (t.ccdDebugInfo01 != null || t.ccdDebugInfo02 != null)
                     {
                         Gl.glColor3d(0, 0, 1);
+
                         Gl.glPointSize(6.0f);
                         Gl.glBegin(Gl.GL_POINTS);
-                        if (t.ccdCollisionPoint01 != null)
-                            Gl.glVertex2d(t.ccdCollisionPoint01.Value.X, t.ccdCollisionPoint01.Value.Y);
-                        if (t.ccdCollisionPoint02 != null)
-                            Gl.glVertex2d(t.ccdCollisionPoint02.Value.X, t.ccdCollisionPoint02.Value.Y);
+                        if (t.ccdDebugInfo01 != null)
+                            Gl.glVertex2d(t.ccdDebugInfo01.point.X, t.ccdDebugInfo01.point.Y);
+                        if (t.ccdDebugInfo02 != null)
+                            Gl.glVertex2d(t.ccdDebugInfo02.point.X, t.ccdDebugInfo02.point.Y);
                         Gl.glEnd();
+
+                        Gl.glLineWidth(2.0f);
+                        Gl.glBegin(Gl.GL_LINES);
+                        if (t.ccdDebugInfo01 != null)
+                        {
+                            Gl.glVertex2d(t.ccdDebugInfo01.edge.start.X, t.ccdDebugInfo01.edge.start.Y);
+                            Gl.glVertex2d(t.ccdDebugInfo01.edge.end.X, t.ccdDebugInfo01.edge.end.Y);
+                        }
+                        if (t.ccdDebugInfo02 != null)
+                        {
+                            Gl.glVertex2d(t.ccdDebugInfo02.edge.start.X, t.ccdDebugInfo02.edge.start.Y);
+                            Gl.glVertex2d(t.ccdDebugInfo02.edge.end.X, t.ccdDebugInfo02.edge.end.Y);
+                        }
+                        Gl.glEnd();
+
                         Gl.glColor3d(ccdHelper.R, ccdHelper.G, ccdHelper.B);
                     }
                 }

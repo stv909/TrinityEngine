@@ -55,7 +55,7 @@ namespace PhysicsTestbed
         bool collisionWasDetected = false; // HACK for CCD DEBUG
 
         private void CheckParticleEdge(
-            bool isFrozenEdge, ref Vector2? ccdCollisionPoint01, ref Vector2? ccdCollisionPoint02,
+            bool isFrozenEdge, ref Particle.ccdDebugInfo ccd01, ref Particle.ccdDebugInfo ccd02,
             Particle origin, Particle neighbor,
             Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer
         )
@@ -73,8 +73,8 @@ namespace PhysicsTestbed
             CheckSegment(neighbor.goal, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // neighbor current to next virtual edge
 
             // HACK for CCD DEBUG
-            ccdCollisionPoint01 = null;
-            ccdCollisionPoint02 = null;
+            ccd01 = null;
+            ccd02 = null;
             if (collisionWasDetected)
             {
                 EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(new LineSegment(origin.goal, neighbor.goal), new LineSegment(origin.x, neighbor.x), pos, posNext);
@@ -82,10 +82,10 @@ namespace PhysicsTestbed
                 EdgePointCCDSolver.SolverResult result = EdgePointCCDSolver.SolveDebug(solverInput);
                 if (result != null)
                 {
-                    ccdCollisionPoint01 = GenerateDebugInfo(solverInput, result.root1.Value);
+                    ccd01 = GenerateDebugInfo(solverInput, result.root1.Value);
                     if (result.root2 != null)
                     {
-                        ccdCollisionPoint02 = GenerateDebugInfo(solverInput, result.root2.Value);
+                        ccd02 = GenerateDebugInfo(solverInput, result.root2.Value);
                     }
                 }
                 Testbed.Paused = true;
@@ -93,9 +93,16 @@ namespace PhysicsTestbed
             }
         }
 
-        Vector2 GenerateDebugInfo(EdgePointCCDSolver.SolverInput solverInput, double time) // DEBUG
+        Particle.ccdDebugInfo GenerateDebugInfo(EdgePointCCDSolver.SolverInput solverInput, double time) // DEBUG
         {
-            return solverInput.currentPoint + (solverInput.nextPoint - solverInput.currentPoint) * time;
+            Particle.ccdDebugInfo ccd = new Particle.ccdDebugInfo(
+                solverInput.currentPoint + (solverInput.nextPoint - solverInput.currentPoint) * time,
+                new LineSegment(
+                    solverInput.currentEdge.start + (solverInput.nextEdge.start - solverInput.currentEdge.start) * time,
+                    solverInput.currentEdge.end + (solverInput.nextEdge.end - solverInput.currentEdge.end) * time
+                )
+            );
+            return ccd;
         }
 
         public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
@@ -111,11 +118,11 @@ namespace PhysicsTestbed
                     {
                         if (bodyt.xPos != null)
                         {
-                            CheckParticleEdge(body.frozen, ref applyParticle.ccdCollisionPoint01, ref applyParticle.ccdCollisionPoint02, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
+                            CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo01, ref applyParticle.ccdDebugInfo02, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
                         }
                         if (bodyt.yPos != null)
                         {
-                            CheckParticleEdge(body.frozen, ref applyParticle.ccdCollisionPoint01, ref applyParticle.ccdCollisionPoint02, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
+                            CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo01, ref applyParticle.ccdDebugInfo02, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
                         }
                     }
                 }
