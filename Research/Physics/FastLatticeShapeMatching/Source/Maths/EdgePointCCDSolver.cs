@@ -71,13 +71,12 @@ namespace PhysicsTestbed
             double B1y = input.nextEdge.end.Y;
 
             // a*t^2 + b*t + c = 0
-            double a = ((-B1x + B0x - A1x + A0x) * P1y + (B1y - B0y + A1y - A0y) * P1x + (B1x - B0x + A1x - A0x) * P0y + (-B1y + B0y - A1y + A0y) * P0x + (A1x - A0x) * B1y + (A0y - A1y) * B1x + (A0x - A1x) * B0y + (A1y - A0y) * B0x);
-            double b = ((A0x - B0x) * P1y + (B0y - A0y) * P1x + (-B1x + 2.0 * B0x - A1x) * P0y + (B1y - 2.0 * B0y + A1y) * P0x - A0x * B1y + A0y * B1x + A1x * B0y - A1y * B0x);
+            double a = ((-B1x + B0x + A1x - A0x) * P1y + (B1y - B0y - A1y + A0y) * P1x + (B1x - B0x - A1x + A0x) * P0y + (-B1y + B0y + A1y - A0y) * P0x + (A0x - A1x) * B1y + (A1y - A0y) * B1x + (A1x - A0x) * B0y + (A0y - A1y) * B0x);
+            double b = ((A0x - B0x) * P1y + (B0y - A0y) * P1x + (-B1x + 2 * B0x + A1x - 2 * A0x) * P0y + (B1y - 2 * B0y - A1y + 2 * A0y) * P0x - A0x * B1y + A0y * B1x + (2 * A0x - A1x) * B0y + (A1y - 2 * A0y) * B0x);
             double c = (A0x - B0x) * P0y + (B0y - A0y) * P0x - A0x * B0y + A0y * B0x;
 
             if (a != 0.0)
             {
-                /*
                 // t^2 + 2*p*t + q = 0
                 double p = b/(a+a);
                 double q = c/a;
@@ -88,13 +87,6 @@ namespace PhysicsTestbed
                     return null;
                 double t1 = -p - Math.Sqrt(D);
                 double t2 = -p + Math.Sqrt(D);
-                */
-
-                double D = b * b - 4.0 * a * c;
-                if (D < 0)
-                    return null;
-                double t1 = (-b - Math.Sqrt(D)) / (2.0 * a);
-                double t2 = (-b + Math.Sqrt(D)) / (2.0 * a);
 
                 return new SolverResult(Math.Min(t1, t2), Math.Max(t1, t2));
             }
@@ -167,14 +159,6 @@ namespace PhysicsTestbed
         {
             SolverResult result = SolveMath(input);
             return result == null ? null : result.root1;
-        }
-
-        public static SolverResult SolveDebug(SolverInput input) // DEBUG
-        {
-            SolverResult necessaryResult = SolveNecessaryCondition(input);
-            if (necessaryResult != null)
-                return CorrectResultInterval(necessaryResult, 0.0, 1.0);
-            return null;
         }
     }
 }
