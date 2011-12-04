@@ -37,7 +37,7 @@ namespace PhysicsTestbed
             }
         }
 
-        SolverResult SolveNecessaryCondition(LineSegment currentEdge, LineSegment nextEdge, Vector2 currentPoint, Vector2 nextPoint)
+        SolverResult SolveNecessaryCondition(SolverInput input)
         {
             // Let's define line (A,B) and point P that runs time interval [0, 1] from currentMoment to nextMoment:
             //
@@ -53,23 +53,21 @@ namespace PhysicsTestbed
             //  Necessary condition: (P-A) x (B-A) = 0
             //
             // If we make form vector equation '(P-A) x (B-A) = 0' equation in coordinates in the form 'a*t^2 + b*t + c = 0' to find t, we get such a, b, c:
-            double P0x = currentPoint.X;
-            double P0y = currentPoint.Y;
+            double P0x = input.currentPoint.X;
+            double P0y = input.currentPoint.Y;
 
-            double P1x = nextPoint.X;
-            double P1y = nextPoint.Y;
+            double P1x = input.nextPoint.X;
+            double P1y = input.nextPoint.Y;
 
-            double A0x = currentEdge.start.X;
-            double A0y = currentEdge.start.Y;
+            double A0x = input.currentEdge.start.X;
+            double A0y = input.currentEdge.start.Y;
+            double B0x = input.currentEdge.end.X;
+            double B0y = input.currentEdge.end.Y;
 
-            double B0x = currentEdge.end.X;
-            double B0y = currentEdge.end.Y;
-            
-            double A1x = nextEdge.start.X;
-            double A1y = nextEdge.start.Y;
-            
-            double B1y = nextEdge.end.X;
-            double B1x = nextEdge.end.Y;
+            double A1x = input.nextEdge.start.X;
+            double A1y = input.nextEdge.start.Y;
+            double B1y = input.nextEdge.end.X;
+            double B1x = input.nextEdge.end.Y;
 
             double a = ((-B1x + B0x - A1x + A0x) * P1y + (B1y - B0y + A1y - A0y) * P1x + (B1x - B0x + A1x - A0x) * P0y + (-B1y + B0y - A1y + A0y) * P0x + (A1x - A0x) * B1y + (A0y - A1y) * B1x + (A0x - A1x) * B0y + (A1y - A0y) * B0x);
             double b = ((A0x - B0x) * P1y + (B0y - A0y) * P1x + (-B1x + 2 * B0x - A1x) * P0y + (B1y - 2 * B0y + A1y) * P0x - A0x * B1y + A0y * B1x + A1x * B0y - A1y * B0x);
@@ -97,11 +95,11 @@ namespace PhysicsTestbed
             return edgeCoordinate >= 0.0 && edgeCoordinate <= 1.0;
         }
 
-        bool IsSufficientCondition(LineSegment currentEdge, LineSegment nextEdge, Vector2 currentPoint, Vector2 nextPoint, double time)
+        bool IsSufficientCondition(SolverInput input, double time)
         {
             Debug.Assert(time >= 0.0 && time <= 1.0);
-            LineSegment edge = new LineSegment(currentEdge.start + (nextEdge.start - currentEdge.start) * time, currentEdge.end + (nextEdge.end - currentEdge.end) * time);
-            Vector2 point = currentPoint + (nextPoint - currentPoint) * time;
+            LineSegment edge = new LineSegment(input.currentEdge.start + (input.nextEdge.start - input.currentEdge.start) * time, input.currentEdge.end + (input.nextEdge.end - input.currentEdge.end) * time);
+            Vector2 point = input.currentPoint + (input.nextPoint - input.currentPoint) * time;
             return IsPointBelongsToEdge(edge, point);
         }
 
@@ -120,12 +118,12 @@ namespace PhysicsTestbed
                 return resultIn;
         }
 
-        SolverResult GetSufficientCondition(LineSegment currentEdge, LineSegment nextEdge, Vector2 currentPoint, Vector2 nextPoint, SolverResult resultIn)
+        SolverResult GetSufficientCondition(SolverInput input, SolverResult resultIn)
         {
             Debug.Assert(resultIn != null);
-            if (resultIn.root1 != null && !IsSufficientCondition(currentEdge, nextEdge, currentPoint, nextPoint, resultIn.root1.Value))
+            if (resultIn.root1 != null && !IsSufficientCondition(input, resultIn.root1.Value))
                 resultIn.root1 = null;
-            if (resultIn.root2 != null && !IsSufficientCondition(currentEdge, nextEdge, currentPoint, nextPoint, resultIn.root2.Value))
+            if (resultIn.root2 != null && !IsSufficientCondition(input, resultIn.root2.Value))
                 resultIn.root2 = null;
             if (resultIn.root1 == null && resultIn.root2 == null)
                 return null;
@@ -135,21 +133,21 @@ namespace PhysicsTestbed
                 return resultIn;
         }
 
-        SolverResult SolveMath(LineSegment currentEdge, LineSegment nextEdge, Vector2 currentPoint, Vector2 nextPoint)
+        SolverResult SolveMath(SolverInput input)
         {
-            SolverResult necessaryResult = SolveNecessaryCondition(currentEdge, nextEdge, currentPoint, nextPoint);
+            SolverResult necessaryResult = SolveNecessaryCondition(input);
             if (necessaryResult != null)
             {
                 SolverResult necessaryFilteredResult = CorrectResultInterval(necessaryResult, 0.0, 1.0);
                 if (necessaryFilteredResult != null)
-                    return GetSufficientCondition(currentEdge, nextEdge, currentPoint, nextPoint, necessaryFilteredResult);
+                    return GetSufficientCondition(input, necessaryFilteredResult);
             }
             return null;
         }
 
-        public double? Solve(LineSegment currentEdge, LineSegment nextEdge, Vector2 currentPoint, Vector2 nextPoint)
+        public double? Solve(SolverInput input)
         {
-            SolverResult result = SolveMath(currentEdge, nextEdge, currentPoint, nextPoint);
+            SolverResult result = SolveMath(input);
             return result == null ? null : result.root1;
         }
     }
