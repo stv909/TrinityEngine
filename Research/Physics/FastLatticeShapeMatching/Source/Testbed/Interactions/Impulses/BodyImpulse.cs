@@ -70,6 +70,9 @@ namespace PhysicsTestbed
             if (ccdCollisionTime != null)
             {
                 ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
+
+                // TODO: use the Rule of conservative impulse to handle this case. Simple reflection rule is not effective here.
+
                 Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * ccd.coordinateOfPointOnEdge;
                 Vector2 velocityPointRelativeEdge = velocity - velocityEdgeCollisionPoint;
 
