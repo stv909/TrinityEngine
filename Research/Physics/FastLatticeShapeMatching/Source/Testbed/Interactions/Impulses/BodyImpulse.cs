@@ -81,7 +81,7 @@ namespace PhysicsTestbed
                 Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
                 if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
                 Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
-                newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
+                //newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
 
                 Vector2 particleGlobalDelta = ccd.point - pos;
                 Vector2 edgeCollisionPointGlobalDelta = edgeCollisionPoint_Pos - edgeCollisionPoint_Intersection;
