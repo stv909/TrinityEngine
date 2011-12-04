@@ -57,6 +57,8 @@ namespace PhysicsTestbed
 
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Pause on deadlock")]
         public static bool pauseOnDeadlock = false;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Pause on body-body collision (no contact generation)")]
+        public static bool pauseOnBodyBodyCollision = false;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Fracturing")]
 		public static bool fracturing = false;
 		[Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Pause on fracture")]
@@ -294,7 +296,7 @@ namespace PhysicsTestbed
                     if (++iterationsCounter > maxIterations) // HACK // to prevent deadlocks
                     {
                         Testbed.PostMessage(System.Drawing.Color.Red, "Deadlock detected in HandleCollisions!"); // DEBUG
-                        if (pauseOnDeadlock) Testbed.Paused = true; // DEBUG
+                        if (pauseOnDeadlock) Testbed.Paused = true;
                         break;
                     }
                 }
