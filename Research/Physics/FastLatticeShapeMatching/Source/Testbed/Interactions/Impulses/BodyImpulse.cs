@@ -75,10 +75,13 @@ namespace PhysicsTestbed
                 if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
                 Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
 
-                collisionBuffer.Add(new CollisionSubframe(newVelocity, ccdCollisionTime.Value));
+                if (velocity.Length() > epsilon)
+                {
+                    collisionBuffer.Add(new CollisionSubframe(newVelocity, (ccd.point - pos).Length() / velocity.Length())); // ccdCollisionTime.Value
 
-                if (LsmBody.pauseOnBodyBodyCollision)
-                    Testbed.Paused = true;
+                    if (LsmBody.pauseOnBodyBodyCollision)
+                        Testbed.Paused = true;
+                }
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
@@ -13,6 +14,7 @@ namespace PhysicsTestbed
 
         public CollisionSubframe(Vector2 v, double timeCoefficient)
         {
+            //Debug.Assert(timeCoefficient > 0.0);
             this.v = v;
             this.timeCoefficient = timeCoefficient;
         }

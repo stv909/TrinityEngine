@@ -265,6 +265,29 @@ namespace PhysicsTestbed
             // TODO: render force-based wall as well
         }
 
+        static Vector2 GetParticlePositionAtTime(Particle t, double givenTimeCoefficient)
+        {
+            if (t.collisionSubframes.Count == 0)
+                return t.goal + givenTimeCoefficient * (t.x - t.goal);
+
+            double time = 0.0;
+            Vector2 hPosition = t.goal;
+            foreach (CollisionSubframe subframe in t.collisionSubframes)
+            {
+                if (givenTimeCoefficient > time + subframe.timeCoefficient)
+                {
+                    time += subframe.timeCoefficient;
+                    hPosition += subframe.v * subframe.timeCoefficient;
+                }
+                else
+                {
+                    hPosition += subframe.v * (givenTimeCoefficient - time);
+                    break;
+                }
+            }
+            return hPosition;
+        }
+
         private static Color3 ccdHelper = new Color3(0.5, 0.5, 1);
 
         static void RenderCCDHelpers(double ccdTimeOffset)
@@ -274,7 +297,7 @@ namespace PhysicsTestbed
             {
                 foreach (Particle t in body.particles)
                 {
-                    Vector2 tHelper = t.goal + ccdTimeOffset * (t.x - t.goal);
+                    Vector2 tHelper = GetParticlePositionAtTime(t, ccdTimeOffset);
 
                     Gl.glPointSize(4.0f);
                     Gl.glBegin(Gl.GL_POINTS);
@@ -285,13 +308,13 @@ namespace PhysicsTestbed
                     Gl.glBegin(Gl.GL_LINES);
                     if (t.xPos != null)
                     {
-                        Vector2 tHelperNeighbor = t.xPos.goal + ccdTimeOffset * (t.xPos.x - t.xPos.goal);
+                        Vector2 tHelperNeighbor = GetParticlePositionAtTime(t.xPos, ccdTimeOffset);
                         Gl.glVertex2d(tHelper.X, tHelper.Y);
                         Gl.glVertex2d(tHelperNeighbor.X, tHelperNeighbor.Y);
                     }
                     if (t.yPos != null)
                     {
-                        Vector2 tHelperNeighbor = t.yPos.goal + ccdTimeOffset * (t.yPos.x - t.yPos.goal);
+                        Vector2 tHelperNeighbor = GetParticlePositionAtTime(t.yPos, ccdTimeOffset);
                         Gl.glVertex2d(tHelper.X, tHelper.Y);
                         Gl.glVertex2d(tHelperNeighbor.X, tHelperNeighbor.Y);
                     }
