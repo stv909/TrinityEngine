@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Maths\EdgePointCCDSolver.cs" />
     <Compile Include="Physics\LsmBody.cs" />
     <Compile Include="Physics\Chunk.cs" />
     <Compile Include="Physics\EnvironmentForce.cs" />
