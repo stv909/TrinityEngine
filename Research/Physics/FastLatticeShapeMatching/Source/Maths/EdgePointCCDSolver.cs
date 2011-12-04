@@ -77,6 +77,7 @@ namespace PhysicsTestbed
 
             if (a != 0.0)
             {
+                /*
                 // t^2 + 2*p*t + q = 0
                 double p = b/(a+a);
                 double q = c/a;
@@ -87,12 +88,20 @@ namespace PhysicsTestbed
                     return null;
                 double t1 = -p - Math.Sqrt(D);
                 double t2 = -p + Math.Sqrt(D);
-                return new SolverResult(new double?(Math.Min(t1, t2)), new double?(Math.Max(t1, t2)));
+                */
+
+                double D = b * b - 4.0 * a * c;
+                if (D < 0)
+                    return null;
+                double t1 = (-b - Math.Sqrt(D)) / (2.0 * a);
+                double t2 = (-b + Math.Sqrt(D)) / (2.0 * a);
+
+                return new SolverResult(Math.Min(t1, t2), Math.Max(t1, t2));
             }
             else if (b != 0.0)
             {
                 double t = -c / b;
-                return new SolverResult(new double?(t), null);
+                return new SolverResult(t, null);
             }
             return null;
         }
