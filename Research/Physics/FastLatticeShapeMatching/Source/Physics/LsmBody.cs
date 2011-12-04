@@ -30,6 +30,7 @@ namespace PhysicsTestbed
 
         public bool pureForces = false;
         public bool frozen = false;
+        public List<LsmBody> collisionCash = new List<LsmBody>();
 
 		protected static int w = 3;
 		[Controllable(Type = ControllableAttribute.ControllerType.Textbox, Caption = "w", Min = 0, Max = 100, Integral = true)]
@@ -274,7 +275,7 @@ namespace PhysicsTestbed
                 {
                     foreach (EnvironmentImpulse e in environmentImpulses)
                     {
-                        e.ApplyImpulse(this, t, pos, posNext, t.v, ref collisionBuffer);
+                        e.ApplyImpulse(this, t, pos, posNext, t.v, ref collisionBuffer, t.collisionSubframes.CurrentTime);
                     }
 
                     if (collisionBuffer.Count > 0)
@@ -302,7 +303,7 @@ namespace PhysicsTestbed
                 }
                 while (collisionFound);
 
-                if (t.collisionSubframes.Count > 0)
+                if (t.collisionSubframes.Buffer.Count > 0)
                 {
                     t.collisionSubframes.Add(new CollisionSubframe(t.v, timeCoefficientPrediction));
                 }
@@ -316,10 +317,10 @@ namespace PhysicsTestbed
             {
                 if (p.locked == false)
                 {
-                    if (p.collisionSubframes.Count > 0)
+                    if (p.collisionSubframes.Buffer.Count > 0)
                     {
                         //double velocityCheckLength = 0.0; // DEBUG
-                        foreach (CollisionSubframe subframe in p.collisionSubframes)
+                        foreach (CollisionSubframe subframe in p.collisionSubframes.Buffer)
                         {
                             //velocityCheckLength += (subframe.v * subframe.timeCoefficient).Length(); // DEBUG
                             p.x += subframe.v * subframe.timeCoefficient;

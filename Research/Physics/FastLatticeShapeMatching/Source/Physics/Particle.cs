@@ -20,6 +20,28 @@ namespace PhysicsTestbed
         }
     }
 
+    // WARNING: not full functional class. it supports only constructor, Add and Clear.
+    public class CollisionSubframesBuffer
+    {
+        double currentTime = 0.0;
+        public double CurrentTime { get { return currentTime; } }
+
+        List<CollisionSubframe> buffer = new List<CollisionSubframe>();
+        public List<CollisionSubframe> Buffer { get { return buffer; } }
+
+        public void Add(CollisionSubframe item)
+        {
+            buffer.Add(item);
+            currentTime += item.timeCoefficient;
+        }
+
+        public void Clear()
+        {
+            buffer.Clear();
+            currentTime = 0.0;
+        }
+    }
+
 	public class Particle
 	{
         public LsmBody body;
@@ -37,7 +59,8 @@ namespace PhysicsTestbed
         public Vector2 fExt;						// External force
 
         // continues collision detection and impulse integration
-        public List<CollisionSubframe> collisionSubframes = new List<CollisionSubframe>();
+        //public List<CollisionSubframe> collisionSubframes = new List<CollisionSubframe>();
+        public CollisionSubframesBuffer collisionSubframes = new CollisionSubframesBuffer();
 
         public class CCDDebugInfo
         {

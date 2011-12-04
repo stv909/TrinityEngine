@@ -52,7 +52,7 @@ namespace PhysicsTestbed
         private void CheckParticleEdge(
             bool isFrozenEdge, ref Particle.CCDDebugInfo ccd,
             Particle origin, Particle neighbor,
-            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer
+            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer, double accumulatedSubframeTime
         )
         {
             if (isFrozenEdge)
@@ -90,7 +90,8 @@ namespace PhysicsTestbed
                 Vector2 edgeCollisionPointGlobalDelta = edgeCollisionPoint_Pos - edgeCollisionPoint_Intersection;
                 Vector2 particleDeltaRelativeEdgeCollisionPoint = particleGlobalDelta - edgeCollisionPointGlobalDelta;
 
-                collisionBuffer.Add(new CollisionSubframe(newVelocity, particleDeltaRelativeEdgeCollisionPoint.Length() / velocityPointRelativeEdge.Length())); // ccdCollisionTime.Value
+                //collisionBuffer.Add(new CollisionSubframe(newVelocity, particleDeltaRelativeEdgeCollisionPoint.Length() / velocityPointRelativeEdge.Length()));
+                collisionBuffer.Add(new CollisionSubframe(newVelocity, (1.0 - accumulatedSubframeTime) * ccdCollisionTime.Value));
 
                 if (LsmBody.pauseOnBodyBodyCollision)
                     Testbed.Paused = true;
@@ -113,23 +114,24 @@ namespace PhysicsTestbed
             return ccd;
         }
 
-        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
+        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer, double accumulatedSubframeTime)
         {
             foreach (LsmBody body in Testbed.world.bodies)
             {
                 if (body.Equals(applyBody))
                     continue; // avoid self-collision here
+
                 // iterate all possible edges of body and test them with current subframed point
                 {
                     foreach (Particle bodyt in body.particles)
                     {
                         if (bodyt.xPos != null)
                         {
-                            CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
+                            CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
                         }
                         if (bodyt.yPos != null)
                         {
-                            CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
+                            CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
                         }
                     }
                 }

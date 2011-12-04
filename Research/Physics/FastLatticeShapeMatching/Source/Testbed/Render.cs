@@ -73,7 +73,7 @@ namespace PhysicsTestbed
             Gl.glLineWidth(1.0f);
             Gl.glBegin(Gl.GL_LINE_STRIP);
             Gl.glVertex2d(hPosition.X, hPosition.Y);
-            foreach (CollisionSubframe subframe in t.collisionSubframes)
+            foreach (CollisionSubframe subframe in t.collisionSubframes.Buffer)
             {
                 hPosition += subframe.v * subframe.timeCoefficient;
                 Gl.glVertex2d(hPosition.X, hPosition.Y);
@@ -84,7 +84,7 @@ namespace PhysicsTestbed
             Gl.glColor4d(1, 0.5, 0, 0.5);
             Gl.glPointSize(4.0f);
             Gl.glBegin(Gl.GL_POINTS);
-            foreach (CollisionSubframe subframe in t.collisionSubframes)
+            foreach (CollisionSubframe subframe in t.collisionSubframes.Buffer)
             {
                 hPosition += subframe.v * subframe.timeCoefficient;
                 Gl.glVertex2d(hPosition.X, hPosition.Y);
@@ -98,7 +98,7 @@ namespace PhysicsTestbed
             Gl.glPointSize(8.0f);
             foreach (Particle t in particles)
             {
-                if (t.collisionSubframes.Count > 0)
+                if (t.collisionSubframes.Buffer.Count > 0)
                 {
                     Gl.glBegin(Gl.GL_POINTS);
                     Gl.glVertex2d(t.goal.X, t.goal.Y);
@@ -185,7 +185,7 @@ namespace PhysicsTestbed
             Gl.glBegin(Gl.GL_LINES);
             foreach (Particle t in particles)
             {
-                if (t.collisionSubframes.Count == 0)
+                if (t.collisionSubframes.Buffer.Count == 0)
                 {
                     Gl.glVertex2d(t.goal.X, t.goal.Y);
                     Gl.glVertex2d(t.x.X, t.x.Y);
@@ -267,12 +267,12 @@ namespace PhysicsTestbed
 
         static Vector2 GetParticlePositionAtTime(Particle t, double givenTimeCoefficient)
         {
-            if (t.collisionSubframes.Count == 0)
+            if (t.collisionSubframes.Buffer.Count == 0)
                 return t.goal + givenTimeCoefficient * (t.x - t.goal);
 
             double time = 0.0;
             Vector2 hPosition = t.goal;
-            foreach (CollisionSubframe subframe in t.collisionSubframes)
+            foreach (CollisionSubframe subframe in t.collisionSubframes.Buffer)
             {
                 if (givenTimeCoefficient > time + subframe.timeCoefficient)
                 {
