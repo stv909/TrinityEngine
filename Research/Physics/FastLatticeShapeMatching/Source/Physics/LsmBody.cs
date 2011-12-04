@@ -274,7 +274,7 @@ namespace PhysicsTestbed
                 {
                     foreach (EnvironmentImpulse e in environmentImpulses)
                     {
-                        e.ApplyImpulse(this, pos, posNext, t.v, ref collisionBuffer);
+                        e.ApplyImpulse(this, t, pos, posNext, t.v, ref collisionBuffer);
                     }
 
                     if (collisionBuffer.Count > 0)

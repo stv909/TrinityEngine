@@ -45,56 +45,77 @@ namespace PhysicsTestbed
                 if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
                 Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
 
-                collisionBuffer.Add(new CollisionSubframe(newVelocity, (intersection - pos).Length() / velocity.Length()));
+                if (LsmBody.pauseOnBodyBodyCollision)
+                    collisionWasDetected = true; // HACK
+                else
+                    collisionBuffer.Add(new CollisionSubframe(newVelocity, (intersection - pos).Length() / velocity.Length()));
             }
         }
 
+        bool collisionWasDetected = false; // HACK for CCD DEBUG
+
         private void CheckParticleEdge(
+            bool isFrozenEdge, ref Vector2? ccdCollisionPoint01, ref Vector2? ccdCollisionPoint02,
             Particle origin, Particle neighbor,
             Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer
         )
         {
+            if (isFrozenEdge)
+            {
+                CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
+                return;
+            }
+
             // simple approximation of really swept approach // TODO: implement full featured swept for point-lineSegment
             CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
             CheckSegment(origin.x, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // next edge position
             CheckSegment(origin.goal, origin.x, pos, posNext, velocity, ref collisionBuffer); // origin current to next virtual edge 
             CheckSegment(neighbor.goal, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // neighbor current to next virtual edge
+
+            // HACK for CCD DEBUG
+            ccdCollisionPoint01 = null;
+            ccdCollisionPoint02 = null;
+            if (collisionWasDetected)
+            {
+                EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(new LineSegment(origin.goal, neighbor.goal), new LineSegment(origin.x, neighbor.x), pos, posNext);
+                //double? ccdCollisionTime = EdgePointCCDSolver.Solve(solverInput);
+                EdgePointCCDSolver.SolverResult result = EdgePointCCDSolver.SolveDebug(solverInput);
+                if (result != null)
+                {
+                    ccdCollisionPoint01 = GenerateDebugInfo(solverInput, result.root1.Value);
+                    if (result.root2 != null)
+                    {
+                        ccdCollisionPoint02 = GenerateDebugInfo(solverInput, result.root2.Value);
+                    }
+                }
+                Testbed.Paused = true;
+                collisionWasDetected = false;
+            }
         }
 
-        public override void ApplyImpulse(LsmBody applyBody, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
+        Vector2 GenerateDebugInfo(EdgePointCCDSolver.SolverInput solverInput, double time) // DEBUG
+        {
+            return solverInput.currentPoint + (solverInput.nextPoint - solverInput.currentPoint) * time;
+        }
+
+        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
         {
             foreach (LsmBody body in Testbed.world.bodies)
             {
                 if (body.Equals(applyBody))
                     continue; // avoid self-collision here
                 // iterate all possible edges of body and test them with current subframed point
-                if (body.frozen)
-                {
-                    // simple collision - swept particle only
-                    foreach (Particle bodyt in body.particles)
-                    {
-                        if (bodyt.xPos != null)
-                        {
-                            CheckSegment(bodyt.goal, bodyt.xPos.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
-                        }
-                        if (bodyt.yPos != null)
-                        {
-                            CheckSegment(bodyt.goal, bodyt.yPos.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
-                        }
-                    }
-                }
-                else
                 {
                     // swept collision for body
                     foreach (Particle bodyt in body.particles)
                     {
                         if (bodyt.xPos != null)
                         {
-                            CheckParticleEdge(bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
+                            CheckParticleEdge(body.frozen, ref applyParticle.ccdCollisionPoint01, ref applyParticle.ccdCollisionPoint02, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer);
                         }
                         if (bodyt.yPos != null)
                         {
-                            CheckParticleEdge(bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
+                            CheckParticleEdge(body.frozen, ref applyParticle.ccdCollisionPoint01, ref applyParticle.ccdCollisionPoint02, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer);
                         }
                     }
                 }

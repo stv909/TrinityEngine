@@ -15,7 +15,7 @@ namespace PhysicsTestbed
 			this.top = height;
 		}
 
-        public override void ApplyImpulse(LsmBody applyBody, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
+        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer)
 		{
             float left = this.left + border, right = this.right - border, bottom = this.bottom + border, top = this.top - border;
 

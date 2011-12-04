@@ -187,8 +187,8 @@ namespace PhysicsTestbed
             {
                 if (t.collisionSubframes.Count == 0)
                 {
-                    Gl.glVertex2d(t.x.X, t.x.Y);
                     Gl.glVertex2d(t.goal.X, t.goal.Y);
+                    Gl.glVertex2d(t.x.X, t.x.Y);
                 }
             }
             Gl.glEnd();
@@ -296,6 +296,19 @@ namespace PhysicsTestbed
                         Gl.glVertex2d(tHelperNeighbor.X, tHelperNeighbor.Y);
                     }
                     Gl.glEnd();
+
+                    if (t.ccdCollisionPoint01 != null || t.ccdCollisionPoint02 != null)
+                    {
+                        Gl.glColor3d(0, 0, 1);
+                        Gl.glPointSize(6.0f);
+                        Gl.glBegin(Gl.GL_POINTS);
+                        if (t.ccdCollisionPoint01 != null)
+                            Gl.glVertex2d(t.ccdCollisionPoint01.Value.X, t.ccdCollisionPoint01.Value.Y);
+                        if (t.ccdCollisionPoint02 != null)
+                            Gl.glVertex2d(t.ccdCollisionPoint02.Value.X, t.ccdCollisionPoint02.Value.Y);
+                        Gl.glEnd();
+                        Gl.glColor3d(ccdHelper.R, ccdHelper.G, ccdHelper.B);
+                    }
                 }
             }
         }

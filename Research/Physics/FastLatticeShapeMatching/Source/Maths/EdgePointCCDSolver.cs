@@ -23,7 +23,8 @@ namespace PhysicsTestbed
             }
         }
 
-        class SolverResult
+        public // DEBUG
+            class SolverResult
         {
             public double? root1;
             public double? root2;
@@ -37,7 +38,7 @@ namespace PhysicsTestbed
             }
         }
 
-        SolverResult SolveNecessaryCondition(SolverInput input)
+        static SolverResult SolveNecessaryCondition(SolverInput input)
         {
             // Let's define line (A,B) and point P that runs time interval [0, 1] from currentMoment to nextMoment:
             //
@@ -66,18 +67,26 @@ namespace PhysicsTestbed
 
             double A1x = input.nextEdge.start.X;
             double A1y = input.nextEdge.start.Y;
-            double B1y = input.nextEdge.end.X;
-            double B1x = input.nextEdge.end.Y;
+            double B1x = input.nextEdge.end.X;
+            double B1y = input.nextEdge.end.Y;
 
+            // a*t^2 + b*t + c = 0
             double a = ((-B1x + B0x - A1x + A0x) * P1y + (B1y - B0y + A1y - A0y) * P1x + (B1x - B0x + A1x - A0x) * P0y + (-B1y + B0y - A1y + A0y) * P0x + (A1x - A0x) * B1y + (A0y - A1y) * B1x + (A0x - A1x) * B0y + (A1y - A0y) * B0x);
-            double b = ((A0x - B0x) * P1y + (B0y - A0y) * P1x + (-B1x + 2 * B0x - A1x) * P0y + (B1y - 2 * B0y + A1y) * P0x - A0x * B1y + A0y * B1x + A1x * B0y - A1y * B0x);
+            double b = ((A0x - B0x) * P1y + (B0y - A0y) * P1x + (-B1x + 2.0 * B0x - A1x) * P0y + (B1y - 2.0 * B0y + A1y) * P0x - A0x * B1y + A0y * B1x + A1x * B0y - A1y * B0x);
             double c = (A0x - B0x) * P0y + (B0y - A0y) * P0x - A0x * B0y + A0y * B0x;
 
             if (a != 0.0)
             {
-                double D = Math.Sqrt(b * b - 4.0 * a * c);
-                double t1 = (D + b) / (2.0 * a);
-                double t2 = (D - b) / (2.0 * a);
+                // t^2 + 2*p*t + q = 0
+                double p = b/(a+a);
+                double q = c/a;
+
+                // t_1/2 = -p +/- sqrt(p^2 - q) = -p +/- sqrt(D)
+                double D = p * p - q;
+                if (D < 0)
+                    return null;
+                double t1 = -p - Math.Sqrt(D);
+                double t2 = -p + Math.Sqrt(D);
                 return new SolverResult(new double?(Math.Min(t1, t2)), new double?(Math.Max(t1, t2)));
             }
             else if (b != 0.0)
@@ -88,14 +97,14 @@ namespace PhysicsTestbed
             return null;
         }
 
-        bool IsPointBelongsToEdge(LineSegment edge, Vector2 point)
+        static bool IsPointBelongsToEdge(LineSegment edge, Vector2 point)
         {
             Vector2 edgeDirection = edge.end - edge.start;
             double edgeCoordinate = edgeDirection.Dot(point - edge.start) / edgeDirection.LengthSq();
             return edgeCoordinate >= 0.0 && edgeCoordinate <= 1.0;
         }
 
-        bool IsSufficientCondition(SolverInput input, double time)
+        static bool IsSufficientCondition(SolverInput input, double time)
         {
             Debug.Assert(time >= 0.0 && time <= 1.0);
             LineSegment edge = new LineSegment(input.currentEdge.start + (input.nextEdge.start - input.currentEdge.start) * time, input.currentEdge.end + (input.nextEdge.end - input.currentEdge.end) * time);
@@ -103,7 +112,7 @@ namespace PhysicsTestbed
             return IsPointBelongsToEdge(edge, point);
         }
 
-        SolverResult CorrectResultInterval(SolverResult resultIn, double leftRange, double rightRange)
+        static SolverResult CorrectResultInterval(SolverResult resultIn, double leftRange, double rightRange)
         {
             Debug.Assert(resultIn != null);
             if (resultIn.root1 != null && (resultIn.root1.Value < leftRange || resultIn.root1.Value > rightRange))
@@ -118,7 +127,7 @@ namespace PhysicsTestbed
                 return resultIn;
         }
 
-        SolverResult GetSufficientCondition(SolverInput input, SolverResult resultIn)
+        static SolverResult GetSufficientCondition(SolverInput input, SolverResult resultIn)
         {
             Debug.Assert(resultIn != null);
             if (resultIn.root1 != null && !IsSufficientCondition(input, resultIn.root1.Value))
@@ -133,7 +142,7 @@ namespace PhysicsTestbed
                 return resultIn;
         }
 
-        SolverResult SolveMath(SolverInput input)
+        static SolverResult SolveMath(SolverInput input)
         {
             SolverResult necessaryResult = SolveNecessaryCondition(input);
             if (necessaryResult != null)
@@ -145,10 +154,18 @@ namespace PhysicsTestbed
             return null;
         }
 
-        public double? Solve(SolverInput input)
+        public static double? Solve(SolverInput input)
         {
             SolverResult result = SolveMath(input);
             return result == null ? null : result.root1;
+        }
+
+        public static SolverResult SolveDebug(SolverInput input) // DEBUG
+        {
+            SolverResult necessaryResult = SolveNecessaryCondition(input);
+            if (necessaryResult != null)
+                return CorrectResultInterval(necessaryResult, 0.0, 1.0);
+            return null;
         }
     }
 }
