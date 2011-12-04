@@ -1,0 +1,5 @@
+X Tool Kit - is a set of tools to create X game and any other game with similar conception and feature-set.
+X Tool Kit parts:
+	1. Trinity Engine
+	2. Lattice Editor
+	3. X Scene Editor
