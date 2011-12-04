@@ -43,10 +43,12 @@ namespace PhysicsTestbed
         {
             public Vector2 point;
             public LineSegment edge;
+            public double coordinateOfPointOnEdge;
             public CCDDebugInfo(Vector2 point, LineSegment edge)
             { 
                 this.point = point;
                 this.edge = edge;
+                this.coordinateOfPointOnEdge = (point - edge.start).Dot(edge.end - edge.start) / (edge.end - edge.start).LengthSq();
             }
         }
         public CCDDebugInfo ccdDebugInfo = null; // DEBUG

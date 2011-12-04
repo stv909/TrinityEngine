@@ -70,18 +70,27 @@ namespace PhysicsTestbed
             if (ccdCollisionTime != null)
             {
                 ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
+                Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * ccd.coordinateOfPointOnEdge;
+                Vector2 velocityPointRelativeEdge = velocity - velocityEdgeCollisionPoint;
+
+                Vector2 edgeCollisionPoint_Pos = origin.goal + (neighbor.goal - origin.goal) * ccd.coordinateOfPointOnEdge;
+                Vector2 edgeCollisionPoint_Intersection = ccd.edge.start + (ccd.edge.end - ccd.edge.start) * ccd.coordinateOfPointOnEdge;
+
+                // compute velocity reflection relativly moving edge
                 Vector2 reflectSurface = ccd.edge.end - ccd.edge.start;
                 Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
-                if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
-                Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
+                if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
+                Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
+                newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
 
-                if (velocity.Length() > epsilon)
-                {
-                    collisionBuffer.Add(new CollisionSubframe(newVelocity, (ccd.point - pos).Length() / velocity.Length())); // ccdCollisionTime.Value
+                Vector2 particleGlobalDelta = ccd.point - pos;
+                Vector2 edgeCollisionPointGlobalDelta = edgeCollisionPoint_Pos - edgeCollisionPoint_Intersection;
+                Vector2 particleDeltaRelativeEdgeCollisionPoint = particleGlobalDelta - edgeCollisionPointGlobalDelta;
 
-                    if (LsmBody.pauseOnBodyBodyCollision)
-                        Testbed.Paused = true;
-                }
+                collisionBuffer.Add(new CollisionSubframe(newVelocity, particleDeltaRelativeEdgeCollisionPoint.Length() / velocityPointRelativeEdge.Length())); // ccdCollisionTime.Value
+
+                if (LsmBody.pauseOnBodyBodyCollision)
+                    Testbed.Paused = true;
             }
         }
 
