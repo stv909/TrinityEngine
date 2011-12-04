@@ -62,10 +62,12 @@ namespace PhysicsTestbed
         {
             if (isFrozenEdge)
             {
+                // simple collision for frozen body
                 CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
                 return;
             }
 
+            // swept collision for body
             // simple approximation of really swept approach // TODO: implement full featured swept for point-lineSegment
             CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
             CheckSegment(origin.x, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // next edge position
@@ -113,7 +115,6 @@ namespace PhysicsTestbed
                     continue; // avoid self-collision here
                 // iterate all possible edges of body and test them with current subframed point
                 {
-                    // swept collision for body
                     foreach (Particle bodyt in body.particles)
                     {
                         if (bodyt.xPos != null)
