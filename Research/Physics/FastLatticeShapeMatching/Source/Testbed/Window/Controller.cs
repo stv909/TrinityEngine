@@ -210,9 +210,10 @@ namespace PhysicsTestbed
 		protected override void SetupControls()
 		{
 			caption.Location = layoutPoint;
-			caption.Width = 160;
+			caption.Width = 260;
 			caption.Text = att.Caption + ":";
-			checkBox.Location = new Point(layoutPoint.X + 160, layoutPoint.Y - 5);
+            checkBox.Location = new Point(layoutPoint.X + caption.Width, layoutPoint.Y - 5);
+            checkBox.Width = 15;
 			//textBox.Size = new Size(100, 32);
 			panel.Controls.Add(caption);
 			panel.Controls.Add(checkBox);

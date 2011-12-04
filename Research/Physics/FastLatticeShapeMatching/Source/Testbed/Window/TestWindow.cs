@@ -131,11 +131,6 @@ namespace PhysicsTestbed
 			}
 		}
 
-		private void runButton_Click(object sender, EventArgs e)
-		{
-			Testbed.paused = false;
-		}
-
 		private void pauseStepButton_MouseDown(object sender, MouseEventArgs e)
 		{
 			pauseStepFrame = 0;

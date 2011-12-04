@@ -235,7 +235,6 @@ namespace PhysicsTestbed
             this.runButton.Text = "Run";
             this.runButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.runButton.UseVisualStyleBackColor = true;
-            this.runButton.Click += new System.EventHandler(this.runButton_Click);
             // 
             // dAngularMomentum
             // 
