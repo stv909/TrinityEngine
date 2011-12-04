@@ -45,14 +45,9 @@ namespace PhysicsTestbed
                 if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
                 Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
 
-                if (LsmBody.pauseOnBodyBodyCollision)
-                    collisionWasDetected = true; // HACK
-                else
-                    collisionBuffer.Add(new CollisionSubframe(newVelocity, (intersection - pos).Length() / velocity.Length()));
+                collisionBuffer.Add(new CollisionSubframe(newVelocity, (intersection - pos).Length() / velocity.Length()));
             }
         }
-
-        bool collisionWasDetected = false; // HACK for CCD DEBUG
 
         private void CheckParticleEdge(
             bool isFrozenEdge, ref Particle.CCDDebugInfo ccd,
@@ -68,24 +63,22 @@ namespace PhysicsTestbed
             }
 
             // swept collision for body
-            // simple approximation of really swept approach // TODO: implement full featured swept for point-lineSegment
-            CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
-            CheckSegment(origin.x, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // next edge position
-            CheckSegment(origin.goal, origin.x, pos, posNext, velocity, ref collisionBuffer); // origin current to next virtual edge 
-            CheckSegment(neighbor.goal, neighbor.x, pos, posNext, velocity, ref collisionBuffer); // neighbor current to next virtual edge
+            EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(new LineSegment(origin.goal, neighbor.goal), new LineSegment(origin.x, neighbor.x), pos, posNext);
+            double? ccdCollisionTime = EdgePointCCDSolver.Solve(solverInput);
 
-            // HACK for CCD DEBUG
             ccd = null;
-            if (collisionWasDetected)
+            if (ccdCollisionTime != null)
             {
-                EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(new LineSegment(origin.goal, neighbor.goal), new LineSegment(origin.x, neighbor.x), pos, posNext);
-                double? ccdCollisionTime = EdgePointCCDSolver.Solve(solverInput);
-                if (ccdCollisionTime != null)
-                {
-                    ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
+                ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
+                Vector2 reflectSurface = ccd.edge.end - ccd.edge.start;
+                Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
+                if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
+                Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
+
+                collisionBuffer.Add(new CollisionSubframe(newVelocity, ccdCollisionTime.Value));
+
+                if (LsmBody.pauseOnBodyBodyCollision)
                     Testbed.Paused = true;
-                }
-                collisionWasDetected = false;
             }
         }
 
