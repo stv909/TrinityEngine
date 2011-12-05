@@ -82,6 +82,10 @@ namespace PhysicsTestbed
         public static bool drawGoalXConnection = true;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw collision points and traces")]
         public static bool drawCollisionPointsAndTraces = true;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw ccd particle-edge points")]
+        public static bool drawCCDParticleEdgePoints = true;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw ccd particle-edge segments")]
+        public static bool drawCCDParticleEdgeSegments = true;
 
         public LsmBody(Vector2 offset, Color3 color)
         {

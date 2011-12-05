@@ -335,23 +335,29 @@ namespace PhysicsTestbed
                     }
                     Gl.glEnd();
 
-                    foreach (Particle.CCDDebugInfo ccdDebugInfo in t.ccdDebugInfos)
+                    Gl.glColor3d(0, 0, 1);
+                    if (LsmBody.drawCCDParticleEdgePoints)
                     {
-                        Gl.glColor3d(0, 0, 1);
-
                         Gl.glPointSize(6.0f);
                         Gl.glBegin(Gl.GL_POINTS);
-                        Gl.glVertex2d(ccdDebugInfo.point.X, ccdDebugInfo.point.Y);
+                        foreach (Particle.CCDDebugInfo ccdDebugInfo in t.ccdDebugInfos)
+                        {
+                            Gl.glVertex2d(ccdDebugInfo.point.X, ccdDebugInfo.point.Y);
+                        }
                         Gl.glEnd();
-
+                    }
+                    if (LsmBody.drawCCDParticleEdgeSegments)
+                    {
                         Gl.glLineWidth(2.0f);
                         Gl.glBegin(Gl.GL_LINES);
-                        Gl.glVertex2d(ccdDebugInfo.edge.start.X, ccdDebugInfo.edge.start.Y);
-                        Gl.glVertex2d(ccdDebugInfo.edge.end.X, ccdDebugInfo.edge.end.Y);
+                        foreach (Particle.CCDDebugInfo ccdDebugInfo in t.ccdDebugInfos)
+                        {
+                            Gl.glVertex2d(ccdDebugInfo.edge.start.X, ccdDebugInfo.edge.start.Y);
+                            Gl.glVertex2d(ccdDebugInfo.edge.end.X, ccdDebugInfo.edge.end.Y);
+                        }
                         Gl.glEnd();
-
-                        Gl.glColor3d(ccdHelper.R, ccdHelper.G, ccdHelper.B);
                     }
+                    Gl.glColor3d(ccdHelper.R, ccdHelper.G, ccdHelper.B);
                 }
             }
         }
