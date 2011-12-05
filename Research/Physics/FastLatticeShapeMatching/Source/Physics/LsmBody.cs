@@ -294,7 +294,7 @@ namespace PhysicsTestbed
                     {
                         collisionFound = false;
                     }
-                    if (++iterationsCounter > maxIterations) // HACK // to prevent deadlocks
+                    if (++iterationsCounter >= maxIterations) // HACK // to prevent deadlocks
                     {
                         Testbed.PostMessage(System.Drawing.Color.Red, "Deadlock detected in HandleCollisions!"); // DEBUG
                         if (pauseOnDeadlock) Testbed.Paused = true;

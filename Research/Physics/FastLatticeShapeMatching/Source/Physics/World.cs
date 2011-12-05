@@ -33,7 +33,10 @@ namespace PhysicsTestbed
                 {
                     foreach (EnvironmentForce e in environmentForces)
                     {
-                        if (e is WallForce && !b.pureForces)
+                        if (
+                            e is WallForce && !b.pureForces &&
+                            !b.Equals(bodyPassiveDebug) // DEBUG wallForce influence passive body anyway
+                        )
                             continue;
                         e.ApplyForce(b.particles);
                     }
@@ -41,7 +44,7 @@ namespace PhysicsTestbed
                     b.DoFracture();
                     b.UpdateParticlesVelocity();
 
-                    if (b.Equals(bodyActiveDebug)) // DEBUG
+                    if (b.Equals(bodyActiveDebug)) // DEBUG no collisions for passive body
                     {
                         b.HandleCollisions(environmentImpulses);
                     }

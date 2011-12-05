@@ -27,10 +27,14 @@ Trinity Engine. Conceptual design and research.
 								- vs moving object (rotating wall, kinematic body etc.)
 									+ visual continuous collision detection edge vs particle
 									+ implementation algorithm for edge vs particle CCD (use formulas and equations)
-									- correct contact generation for case of colliding of 2 moving bodies: 
+									- correct contact generation for case of colliding of 2 moving bodies:
+										- analize activeBody-passiveBody collisions with simplified bodies iteration test algorithm
+											+ make simplification
+											> explore deadlock issue when passive body (v > 0) strikes active body (v = 0)
+											- implement zoom-in/zoom-out
 										- velocity modification using Rule of conservative impulses
 										+ simple and obvious method to find timeCoefficient
-									> correct bodies iterating for collision detection: avoid double-checks per frame with conflicting results
+									- correct bodies iterating for collision detection: avoid double-checks per frame with conflicting results
 								- vs complex dynamic body
 							1.1.2.1.1.2.2 Single chunk of soft body
 								- vs moving wall
