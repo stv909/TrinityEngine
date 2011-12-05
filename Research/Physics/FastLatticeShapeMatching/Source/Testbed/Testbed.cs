@@ -78,14 +78,39 @@ namespace PhysicsTestbed
             int verticalIndex = 0;
             foreach (bool[,] blueprint in blueprints)
             {
-                LsmBody body = GenerateBody(verticalIndex++, blueprint);
+                LsmBody body = GenerateBody(verticalIndex, blueprint);
                 world.bodies.Add(body);
+
+                // DEBUG
+                switch (verticalIndex)
+                {
+                    case 0:
+                        world.bodyPassiveDebug = body;
+                        break;
+                    case 1:
+                        world.bodyActiveDebug = body;
+                        break;
+                }
+
+                ++verticalIndex;
             }
         }
 
         private static void RegenerateBody(int verticalIndex, bool[,] blueprint)
         {
-            world.bodies[verticalIndex] = GenerateBody(verticalIndex, blueprint);
+            LsmBody body = GenerateBody(verticalIndex, blueprint);
+            world.bodies[verticalIndex] = body;
+
+            // DEBUG
+            switch (verticalIndex)
+            {
+                case 0:
+                    world.bodyPassiveDebug = body;
+                    break;
+                case 1:
+                    world.bodyActiveDebug = body;
+                    break;
+            }
         }
 
 		public static void Reset()

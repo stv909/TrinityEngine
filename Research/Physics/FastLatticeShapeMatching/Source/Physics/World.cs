@@ -17,6 +17,9 @@ namespace PhysicsTestbed
         //[Controllable(Type=ControllableAttribute.ControllerType.Slider, Min=0.0, Max=1.0, Caption="Alpha")]
         public static double alpha = 1.0;
 
+        public LsmBody bodyActiveDebug = null;
+        public LsmBody bodyPassiveDebug = null;
+
 		public void Update()
 		{
 			foreach (EnvironmentForce e in environmentForces)
@@ -26,19 +29,25 @@ namespace PhysicsTestbed
 
 			foreach (LsmBody b in bodies)
 			{
-                if (b.frozen)
-                    continue;
-				foreach (EnvironmentForce e in environmentForces)
-				{
-                    if (e is WallForce && !b.pureForces)
-                        continue;
-                    e.ApplyForce(b.particles);
-				}
-				b.Smooth();
-				b.DoFracture();
-                b.UpdateParticlesVelocity();
-                b.HandleCollisions(environmentImpulses);
-                b.UpdateParticlesPosition();
+                if (!b.frozen)
+                {
+                    foreach (EnvironmentForce e in environmentForces)
+                    {
+                        if (e is WallForce && !b.pureForces)
+                            continue;
+                        e.ApplyForce(b.particles);
+                    }
+                    b.Smooth();
+                    b.DoFracture();
+                    b.UpdateParticlesVelocity();
+
+                    if (b.Equals(bodyActiveDebug)) // DEBUG
+                    {
+                        b.HandleCollisions(environmentImpulses);
+                    }
+
+                    b.UpdateParticlesPosition();
+                }
             }
 
             foreach (EnvironmentForce e in environmentForces)

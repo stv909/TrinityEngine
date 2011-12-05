@@ -116,22 +116,23 @@ namespace PhysicsTestbed
 
         public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer, double accumulatedSubframeTime)
         {
-            foreach (LsmBody body in Testbed.world.bodies)
+            //foreach (LsmBody body in Testbed.world.bodies)
+            LsmBody body = Testbed.world.bodyPassiveDebug; // DEBUG
             {
-                if (body.Equals(applyBody))
-                    continue; // avoid self-collision here
-
-                // iterate all possible edges of body and test them with current subframed point
+                if (!body.Equals(applyBody)) // avoid self-collision here
                 {
-                    foreach (Particle bodyt in body.particles)
+                    // iterate all possible edges of body and test them with current subframed point
                     {
-                        if (bodyt.xPos != null)
+                        foreach (Particle bodyt in body.particles)
                         {
-                            CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
-                        }
-                        if (bodyt.yPos != null)
-                        {
-                            CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
+                            if (bodyt.xPos != null)
+                            {
+                                CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
+                            }
+                            if (bodyt.yPos != null)
+                            {
+                                CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
+                            }
                         }
                     }
                 }
