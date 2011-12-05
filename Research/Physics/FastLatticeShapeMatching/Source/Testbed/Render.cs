@@ -360,8 +360,8 @@ namespace PhysicsTestbed
         {
             RenderWalls();
             RenderBodies();
-            if (BodyImpulse.ccdTimeOffset > 0.0 || LsmBody.pauseOnBodyBodyCollision) 
-                RenderCCDHelpers(BodyImpulse.ccdTimeOffset);
+            if (BodyImpulse.CCDTimeOffset > 0.0 || LsmBody.pauseOnBodyBodyCollision) 
+                RenderCCDHelpers(BodyImpulse.CCDTimeOffset);
             RenderForces();
         }
     }

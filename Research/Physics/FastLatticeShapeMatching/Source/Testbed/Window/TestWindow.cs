@@ -49,6 +49,12 @@ namespace PhysicsTestbed
 				{
 					Testbed.dragForce.ApplyForce(body.particles);
 				}
+
+                // Update interaction services
+                foreach (EnvironmentForce srv in Testbed.world.interactionServices)
+                {
+                    srv.Update();
+                }
 			}
 
 			this.Render();
@@ -91,59 +97,43 @@ namespace PhysicsTestbed
 
 		private void renderBox_MouseDown(object sender, MouseEventArgs e)
 		{
-			foreach (EnvironmentForce ef in Testbed.world.environmentForces)
+            foreach (MouseForce d in Testbed.world.mouseForces)
 			{
-				if (ef is MouseForce)
-				{
-					MouseForce d = (MouseForce)ef;
-                    if (e.Button == MouseButtons.Left)
-                        d.LmbDown();
-                    else if (e.Button == MouseButtons.Right)
-                        d.RmbDown();
-                    else if (e.Button == MouseButtons.Middle)
-                        d.MmbDown();
-				}
+                if (e.Button == MouseButtons.Left)
+                    d.LmbDown();
+                else if (e.Button == MouseButtons.Right)
+                    d.RmbDown();
+                else if (e.Button == MouseButtons.Middle)
+                    d.MmbDown();
 			}
 		}
 
 		private void renderBox_MouseUp(object sender, MouseEventArgs e)
 		{
-			foreach (EnvironmentForce ef in Testbed.world.environmentForces)
+            foreach (MouseForce d in Testbed.world.mouseForces)
 			{
-				if (ef is MouseForce)
-				{
-					MouseForce d = (MouseForce)ef;
-					if (e.Button == MouseButtons.Left)
-						d.LmbUp();
-					else if (e.Button == MouseButtons.Right)
-						d.RmbUp();
-                    else if (e.Button == MouseButtons.Middle)
-                        d.MmbUp();
-                }
+				if (e.Button == MouseButtons.Left)
+					d.LmbUp();
+				else if (e.Button == MouseButtons.Right)
+					d.RmbUp();
+                else if (e.Button == MouseButtons.Middle)
+                    d.MmbUp();
 			}
 		}
 
 		private void renderBox_MouseMove(object sender, MouseEventArgs e)
 		{
-			foreach (EnvironmentForce ef in Testbed.world.environmentForces)
+            foreach (MouseForce d in Testbed.world.mouseForces)
 			{
-				if (ef is MouseForce)
-				{
-					MouseForce d = (MouseForce)ef;
-					d.MouseMove(e.X, this.renderBox.Height - e.Y);
-				}
+    			d.MouseMove(e.X, this.renderBox.Height - e.Y);
 			}
 		}
 
         private void renderBox_MouseWheel(object sender, MouseEventArgs e)
         {
-            foreach (EnvironmentForce ef in Testbed.world.environmentForces)
+            foreach (MouseForce d in Testbed.world.mouseForces)
             {
-                if (ef is MouseForce)
-                {
-                    MouseForce d = (MouseForce)ef;
-                    if (e.Delta != 0) d.Wheel(e.Delta);
-                }
+                if (e.Delta != 0) d.Wheel(e.Delta);
             }
         }
 

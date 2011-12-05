@@ -5,11 +5,15 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-	public abstract class EnvironmentForce
+    public abstract class Updatable
+    {
+        public virtual void Update() { }
+        public virtual void PostUpdate() { }
+    }
+
+    public abstract class EnvironmentForce : Updatable
 	{
 		public abstract void ApplyForce(IEnumerable particles);
-		public virtual void Update() { }
-        public virtual void PostUpdate() { }
     }
 
     public abstract class EnvironmentImpulse
@@ -19,4 +23,6 @@ namespace PhysicsTestbed
             Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer, double accumulatedSubframeTime
         );
     }
+
+
 }

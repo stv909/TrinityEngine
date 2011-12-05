@@ -12,6 +12,9 @@ namespace PhysicsTestbed
 		public List<LsmBody> bodies = new List<LsmBody>();
 		public List<EnvironmentForce> environmentForces = new List<EnvironmentForce>();
 		public List<EnvironmentImpulse> environmentImpulses = new List<EnvironmentImpulse>();
+        public List<EnvironmentForce> interactionServices = new List<EnvironmentForce>();
+
+        public List<MouseForce> mouseForces = new List<MouseForce>();
 
         // Simulation parameters
         //[Controllable(Type=ControllableAttribute.ControllerType.Slider, Min=0.0, Max=1.0, Caption="Alpha")]
