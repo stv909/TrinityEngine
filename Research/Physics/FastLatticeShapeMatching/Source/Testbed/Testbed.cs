@@ -20,6 +20,8 @@ namespace PhysicsTestbed
         public static WallImpulse wallImpulse;
         public static BodyImpulse bodyImpulse;
 
+        public static PanAndZoom panAndZoom;
+
 		public static bool paused = false;
 		public static int updateFrame = 0;
 
@@ -54,6 +56,8 @@ namespace PhysicsTestbed
 			wallImpulse = new WallImpulse(9999, 9999);
             bodyImpulse = new BodyImpulse();
 
+            panAndZoom = new PanAndZoom();
+
 			world.environmentForces.Add(dragForce);
             world.environmentForces.Add(wallForce);
             world.environmentForces.Add(pushForce);
@@ -61,6 +65,8 @@ namespace PhysicsTestbed
 			world.environmentForces.Add(gravityForce);
             world.environmentImpulses.Add(wallImpulse);
             world.environmentImpulses.Add(bodyImpulse);
+
+            world.environmentForces.Add(panAndZoom);
         }
 
         private static LsmBody GenerateBody(int verticalIndex, bool[,] blueprint)

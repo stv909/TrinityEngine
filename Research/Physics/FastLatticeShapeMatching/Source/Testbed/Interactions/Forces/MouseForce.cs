@@ -2,15 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
 	public abstract class MouseForce : EnvironmentForce
 	{
-		protected bool lmbDown = false, rmbDown = false;
-		protected bool oldLmbDown, oldRmbDown;
-		protected bool lmbJustPressed, rmbJustPressed;
-		public Point mouse;
+		protected bool lmbDown = false, mmbDown = false, rmbDown = false;
+		protected bool oldLmbDown, oldMmbDown, oldRmbDown;
+		protected bool lmbJustPressed, mmbJustPressed, rmbJustPressed;
+        protected bool wheelPositive = false;
+        protected bool wheelNegative = false;
+        public Point mouse;
+        protected Point oldMouse;
 
 		public virtual void LmbDown()
 		{
@@ -21,6 +25,16 @@ namespace PhysicsTestbed
 		{
 			lmbDown = false;
 		}
+
+        public virtual void MmbDown()
+        {
+            mmbDown = true;
+        }
+
+        public virtual void MmbUp()
+        {
+            mmbDown = false;
+        }
 
 		public virtual void RmbDown()
 		{
@@ -38,15 +52,28 @@ namespace PhysicsTestbed
 			mouse.Y = y;
 		}
 
+        public virtual void Wheel(int delta)
+        {
+            Debug.Assert(delta != 0);
+            wheelPositive = delta > 0;
+            wheelNegative = delta < 0;
+        }
+
 		public override void Update()
 		{
 			base.Update();
 
 			lmbJustPressed = (lmbDown && !oldLmbDown);
-			rmbJustPressed = (rmbDown && !oldRmbDown);
+            mmbJustPressed = (mmbDown && !oldMmbDown);
+            rmbJustPressed = (rmbDown && !oldRmbDown);
 
 			oldLmbDown = lmbDown;
-			oldRmbDown = rmbDown;
+            oldMmbDown = mmbDown;
+            oldRmbDown = rmbDown;
+            oldMouse = mouse;
+
+            wheelPositive = false;
+            wheelNegative = false;
 		}
 	}
 }

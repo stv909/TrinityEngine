@@ -96,10 +96,12 @@ namespace PhysicsTestbed
 				if (ef is MouseForce)
 				{
 					MouseForce d = (MouseForce)ef;
-					if (e.Button == MouseButtons.Left)
-						d.LmbDown();
-					else if (e.Button == MouseButtons.Right)
-						d.RmbDown();
+                    if (e.Button == MouseButtons.Left)
+                        d.LmbDown();
+                    else if (e.Button == MouseButtons.Right)
+                        d.RmbDown();
+                    else if (e.Button == MouseButtons.Middle)
+                        d.MmbDown();
 				}
 			}
 		}
@@ -115,7 +117,9 @@ namespace PhysicsTestbed
 						d.LmbUp();
 					else if (e.Button == MouseButtons.Right)
 						d.RmbUp();
-				}
+                    else if (e.Button == MouseButtons.Middle)
+                        d.MmbUp();
+                }
 			}
 		}
 
@@ -130,6 +134,18 @@ namespace PhysicsTestbed
 				}
 			}
 		}
+
+        private void renderBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            foreach (EnvironmentForce ef in Testbed.world.environmentForces)
+            {
+                if (ef is MouseForce)
+                {
+                    MouseForce d = (MouseForce)ef;
+                    if (e.Delta != 0) d.Wheel(e.Delta);
+                }
+            }
+        }
 
 		private void pauseStepButton_MouseDown(object sender, MouseEventArgs e)
 		{

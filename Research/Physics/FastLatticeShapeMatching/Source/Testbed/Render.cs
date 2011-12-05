@@ -202,7 +202,8 @@ namespace PhysicsTestbed
             foreach (LsmBody body in world.bodies)
             {
                 RenderLockedParticlesSelection(body.particles);
-                if (LsmBody.drawCollisionPointsAndTraces) RenderCollisionedParticlesSelection(body.particles);
+                if (LsmBody.drawCollisionPointsAndTraces && LsmBody.drawBodyParticles_goal) 
+                    RenderCollisionedParticlesSelection(body.particles);
 
                 Color3 colorX = new Color3(0, 0.5, 1);
                 Color3 colorGoalX = new Color3(1, 0, 1);

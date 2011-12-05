@@ -94,6 +94,7 @@
     <Compile Include="Testbed\Interactions\Forces\LockForce.cs" />
     <Compile Include="Testbed\Interactions\Forces\WallForce.cs" />
     <Compile Include="Testbed\Interactions\Impulses\BodyImpulse.cs" />
+    <Compile Include="Testbed\Interactions\PanAndZoom.cs" />
     <Compile Include="Testbed\Render.cs" />
     <Compile Include="Testbed\Window\MessageTextBox.cs">
       <SubType>Component</SubType>
