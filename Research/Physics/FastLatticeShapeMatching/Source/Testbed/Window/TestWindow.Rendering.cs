@@ -44,20 +44,30 @@ namespace PhysicsTestbed
 			ResizeGL(renderBox.Width, renderBox.Height);
 		}
 
+        double currentWidth = 0.0;
+        double currentHeight = 0.0;
+
 		private void ResizeGL(int width, int height)
 		{
 			Gl.glViewport(0, 0, width, height);
-			Gl.glMatrixMode(Gl.GL_PROJECTION);
-			Gl.glLoadIdentity();
+            currentWidth = (double)width;
+            currentHeight = (double)height;
 
-			Gl.glOrtho(0.0f, (double)width, 0, (double)height, -10, 10);
-
-			this.Render();
+            this.Render();
 		}
 
 		public void Render()
 		{
-			renderBox.Invalidate(true);
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glLoadIdentity();
+
+            Gl.glOrtho(
+                Testbed.screenZoom * Testbed.screenTranslate.X, Testbed.screenZoom * (Testbed.screenTranslate.X + (double)currentWidth),
+                Testbed.screenZoom * Testbed.screenTranslate.Y, Testbed.screenZoom * (Testbed.screenTranslate.Y + (double)currentHeight),
+                -10.0, 10.0
+            );
+
+            renderBox.Invalidate(true);
 
 			Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
 

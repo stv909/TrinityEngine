@@ -53,6 +53,9 @@ namespace PhysicsTestbed
 
     public partial class Testbed
     {
+        public static Vector2 screenTranslate = new Vector2(0.0, 0.0);
+        public static double screenZoom = 1.0;
+
         static void RenderLockedParticlesSelection(List<Particle> particles)
         {
             Gl.glColor3d(1, 0, 0);
