@@ -31,10 +31,11 @@ Trinity Engine. Conceptual design and research.
 										- analize activeBody-passiveBody collisions with simplified bodies iteration test algorithm
 											+ make simplification
 											> explore deadlock issue when passive body (v > 0) strikes active body (v = 0)
-											- implement zoom-in/zoom-out
+											+ implement zoom-in/zoom-out
 										- velocity modification using Rule of conservative impulses
 										+ simple and obvious method to find timeCoefficient
 									- correct bodies iterating for collision detection: avoid double-checks per frame with conflicting results
+									- rotating impulse wall
 								- vs complex dynamic body
 							1.1.2.1.1.2.2 Single chunk of soft body
 								- vs moving wall
