@@ -12,19 +12,22 @@ namespace PhysicsTestbed
         { 
         }
 
+        double zoomMultiplier = 1.33;
+
         public override void Update()
         {
-            if (wheelPositive)
+            if (wheelPositive || wheelNegative)
             {
-                Testbed.screenZoom /= 1.33;
-            }
-            if (wheelNegative)
-            {
-                Testbed.screenZoom *= 1.33;
+                double priorZoom = Testbed.screenZoom;
+                if (wheelPositive)
+                    Testbed.screenZoom /= zoomMultiplier;
+                else
+                    Testbed.screenZoom *= zoomMultiplier;
+                Testbed.screenTranslate -= (Testbed.screenZoom - priorZoom) * new Vector2(mouse.X, mouse.Y);
             }
             if (mmbDown)
             {
-                Testbed.screenTranslate -= new Vector2(mouse.X - oldMouse.X, mouse.Y - oldMouse.Y);
+                Testbed.screenTranslate -= Testbed.screenZoom * new Vector2(mouse.X - oldMouse.X, mouse.Y - oldMouse.Y);
             }
 
             base.Update();

@@ -62,8 +62,10 @@ namespace PhysicsTestbed
             Gl.glLoadIdentity();
 
             Gl.glOrtho(
-                Testbed.screenZoom * Testbed.screenTranslate.X, Testbed.screenZoom * (Testbed.screenTranslate.X + (double)currentWidth),
-                Testbed.screenZoom * Testbed.screenTranslate.Y, Testbed.screenZoom * (Testbed.screenTranslate.Y + (double)currentHeight),
+                //Testbed.screenZoom * Testbed.screenTranslate.X, Testbed.screenZoom * (Testbed.screenTranslate.X + (double)currentWidth),
+                //Testbed.screenZoom * Testbed.screenTranslate.Y, Testbed.screenZoom * (Testbed.screenTranslate.Y + (double)currentHeight),
+                Testbed.screenTranslate.X, Testbed.screenTranslate.X + Testbed.screenZoom * ((double)currentWidth),
+                Testbed.screenTranslate.Y, Testbed.screenTranslate.Y + Testbed.screenZoom * ((double)currentHeight),
                 -10.0, 10.0
             );
 

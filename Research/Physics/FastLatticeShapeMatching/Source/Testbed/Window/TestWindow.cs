@@ -247,5 +247,11 @@ namespace PhysicsTestbed
             CheckBox cb = sender as CheckBox;
             Testbed.world.bodies[0].frozen = cb.Checked;
         }
+
+        private void originButton_Click(object sender, EventArgs e)
+        {
+            Testbed.screenTranslate = new Vector2(0.0, 0.0);
+            Testbed.screenZoom = 1.0;
+        }
     }
 }

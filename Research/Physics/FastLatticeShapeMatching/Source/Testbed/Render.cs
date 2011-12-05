@@ -103,9 +103,12 @@ namespace PhysicsTestbed
             {
                 if (t.collisionSubframes.Buffer.Count > 0)
                 {
-                    Gl.glBegin(Gl.GL_POINTS);
-                    Gl.glVertex2d(t.goal.X, t.goal.Y);
-                    Gl.glEnd();
+                    if (LsmBody.drawBodyParticles_goal)
+                    {
+                        Gl.glBegin(Gl.GL_POINTS);
+                        Gl.glVertex2d(t.goal.X, t.goal.Y);
+                        Gl.glEnd();
+                    }
                     RenderCollisionTrace(t);
                 }
             }
@@ -202,7 +205,7 @@ namespace PhysicsTestbed
             foreach (LsmBody body in world.bodies)
             {
                 RenderLockedParticlesSelection(body.particles);
-                if (LsmBody.drawCollisionPointsAndTraces && LsmBody.drawBodyParticles_goal) 
+                if (LsmBody.drawCollisionPointsAndTraces) 
                     RenderCollisionedParticlesSelection(body.particles);
 
                 Color3 colorX = new Color3(0, 0.5, 1);

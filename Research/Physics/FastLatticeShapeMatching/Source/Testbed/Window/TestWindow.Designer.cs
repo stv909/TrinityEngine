@@ -51,7 +51,6 @@ namespace PhysicsTestbed
             this.rmbPushRadioButton = new System.Windows.Forms.RadioButton();
             this.rmbLockRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.resetButton = new System.Windows.Forms.Button();
             this.model1Button = new System.Windows.Forms.Button();
             this.model2Button = new System.Windows.Forms.Button();
@@ -68,7 +67,9 @@ namespace PhysicsTestbed
             this.model01DisableCollisions = new System.Windows.Forms.CheckBox();
             this.model02Freeze = new System.Windows.Forms.CheckBox();
             this.model01Freeze = new System.Windows.Forms.CheckBox();
+            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.statusBox = new PhysicsTestbed.MessageTextBox();
+            this.originButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -125,7 +126,7 @@ namespace PhysicsTestbed
             this.renderBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.renderBox_MouseDown);
             this.renderBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.renderBox_MouseMove);
             this.renderBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.renderBox_MouseUp);
-            this.renderBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(renderBox_MouseWheel);
+            this.renderBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.renderBox_MouseWheel);
             this.renderBox.Resize += new System.EventHandler(this.renderBox_Resize);
             // 
             // menuStrip1
@@ -308,15 +309,6 @@ namespace PhysicsTestbed
             this.groupBox1.TabIndex = 59;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tunable parameters";
-            // 
-            // controllerPanel1
-            // 
-            this.controllerPanel1.AutoScroll = true;
-            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
-            this.controllerPanel1.Name = "controllerPanel1";
-            this.controllerPanel1.Size = new System.Drawing.Size(378, 431);
-            this.controllerPanel1.TabIndex = 0;
             // 
             // resetButton
             // 
@@ -507,6 +499,15 @@ namespace PhysicsTestbed
             this.model01Freeze.UseVisualStyleBackColor = true;
             this.model01Freeze.CheckedChanged += new System.EventHandler(this.model01Freeze_CheckedChanged);
             // 
+            // controllerPanel1
+            // 
+            this.controllerPanel1.AutoScroll = true;
+            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
+            this.controllerPanel1.Name = "controllerPanel1";
+            this.controllerPanel1.Size = new System.Drawing.Size(378, 431);
+            this.controllerPanel1.TabIndex = 0;
+            // 
             // statusBox
             // 
             this.statusBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -517,11 +518,23 @@ namespace PhysicsTestbed
             this.statusBox.TabIndex = 36;
             this.statusBox.Text = "";
             // 
+            // originButton
+            // 
+            this.originButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.originButton.Location = new System.Drawing.Point(245, 694);
+            this.originButton.Name = "originButton";
+            this.originButton.Size = new System.Drawing.Size(59, 48);
+            this.originButton.TabIndex = 76;
+            this.originButton.Text = "Origin";
+            this.originButton.UseVisualStyleBackColor = true;
+            this.originButton.Click += new System.EventHandler(this.originButton_Click);
+            // 
             // TestWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1035, 750);
+            this.Controls.Add(this.originButton);
             this.Controls.Add(this.model01Freeze);
             this.Controls.Add(this.model02Freeze);
             this.Controls.Add(this.model01DisableCollisions);
@@ -613,6 +626,7 @@ namespace PhysicsTestbed
         private System.Windows.Forms.CheckBox model01DisableCollisions;
         private System.Windows.Forms.CheckBox model02Freeze;
         private System.Windows.Forms.CheckBox model01Freeze;
+        private System.Windows.Forms.Button originButton;
 	}
 }
 
