@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
@@ -240,10 +241,10 @@ namespace PhysicsTestbed
 			PerformChunkDamping();
         }
 
-        private CollisionSubframe GetEarliestCollision(List<CollisionSubframe> collisions)
+        private CollisionSubframeBuffer GetEarliestCollision(List<CollisionSubframeBuffer> collisions)
         {
-            CollisionSubframe earliestCollision = null;
-            foreach (CollisionSubframe collision in collisions)
+            CollisionSubframeBuffer earliestCollision = null;
+            foreach (CollisionSubframeBuffer collision in collisions)
             {
                 if (earliestCollision == null || earliestCollision.timeCoefficient > collision.timeCoefficient)
                 {
@@ -262,15 +263,17 @@ namespace PhysicsTestbed
             {
                 // impulse & offset collision method
                 t.collisionSubframes.Clear();
+                t.ccdDebugInfos.Clear();
                 double timeCoefficientPrediction = 1.0;
                 // TODO: figureout what positions to use
                 Vector2 pos = t.x; // t.goal - ???
                 Vector2 posNext = pos + t.v * timeCoefficientPrediction; // t.x - ???
 
-                int iterationsCounter = 0; // HACK // to prevent deadlocks
-                const int maxIterations = 64; // HACK // to prevent deadlocks
+                int iterationsCounter = 0; // to prevent deadlocks
+                const int maxIterations = 64; // to prevent deadlocks
+                bool tooSmallTimeCoefficient = false;
                 bool collisionFound = false;
-                List<CollisionSubframe> collisionBuffer = new List<CollisionSubframe>();
+                List<CollisionSubframeBuffer> collisionBuffer = new List<CollisionSubframeBuffer>();
                 do
                 {
                     foreach (EnvironmentImpulse e in environmentImpulses)
@@ -280,21 +283,26 @@ namespace PhysicsTestbed
 
                     if (collisionBuffer.Count > 0)
                     {
-                        CollisionSubframe currentCollision = GetEarliestCollision(collisionBuffer);
-                        CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
-                        t.v = currentCollision.v;
-                        t.collisionSubframes.Add(subframe);
-                        pos += subframe.v * subframe.timeCoefficient;
-                        timeCoefficientPrediction -= subframe.timeCoefficient;
-                        posNext = pos + t.v * timeCoefficientPrediction;
-                        collisionFound = true;
-                        collisionBuffer.Clear();
+                        CollisionSubframeBuffer currentCollision = GetEarliestCollision(collisionBuffer);
+                        if (currentCollision.timeCoefficient > 0.0)
+                        {
+                            CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
+                            t.v = currentCollision.v;
+                            t.collisionSubframes.Add(subframe);
+                            pos += subframe.v * subframe.timeCoefficient;
+                            timeCoefficientPrediction -= subframe.timeCoefficient;
+                            posNext = pos + t.v * timeCoefficientPrediction;
+                            collisionFound = true;
+                            collisionBuffer.Clear();
+                        }
+                        else
+                            tooSmallTimeCoefficient = true;
                     }
                     else
                     {
                         collisionFound = false;
                     }
-                    if (++iterationsCounter >= maxIterations) // HACK // to prevent deadlocks
+                    if (++iterationsCounter >= maxIterations || tooSmallTimeCoefficient) // to prevent deadlocks
                     {
                         Testbed.PostMessage(System.Drawing.Color.Red, "Deadlock detected in HandleCollisions!"); // DEBUG
                         if (pauseOnDeadlock) Testbed.Paused = true;
@@ -303,7 +311,7 @@ namespace PhysicsTestbed
                 }
                 while (collisionFound);
 
-                if (t.collisionSubframes.Buffer.Count > 0)
+                if (t.collisionSubframes.Buffer.Count > 0 && timeCoefficientPrediction > 0.0)
                 {
                     t.collisionSubframes.Add(new CollisionSubframe(t.v, timeCoefficientPrediction));
                 }
@@ -319,18 +327,13 @@ namespace PhysicsTestbed
                 {
                     if (p.collisionSubframes.Buffer.Count > 0)
                     {
-                        //double velocityCheckLength = 0.0; // DEBUG
+                        double timeSumDebug = 0.0; // DEBUG
                         foreach (CollisionSubframe subframe in p.collisionSubframes.Buffer)
                         {
-                            //velocityCheckLength += (subframe.v * subframe.timeCoefficient).Length(); // DEBUG
+                            timeSumDebug += subframe.timeCoefficient; // DEBUG
                             p.x += subframe.v * subframe.timeCoefficient;
                         }
-                        // Debug metrics
-                        /*
-                        Testbed.PostMessage(
-                            System.Drawing.Color.Green, "Collision check: " + velocityCheckLength + " =?= " + p.v.Length() // DEBUG
-                        );
-                        */
+                        Debug.Assert(Math.Abs(timeSumDebug-1.0) < 0.0000001); // Debug
                     }
                     else
                     {

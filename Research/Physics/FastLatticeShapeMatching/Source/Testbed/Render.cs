@@ -335,19 +335,19 @@ namespace PhysicsTestbed
                     }
                     Gl.glEnd();
 
-                    if (t.ccdDebugInfo != null)
+                    foreach (Particle.CCDDebugInfo ccdDebugInfo in t.ccdDebugInfos)
                     {
                         Gl.glColor3d(0, 0, 1);
 
                         Gl.glPointSize(6.0f);
                         Gl.glBegin(Gl.GL_POINTS);
-                        Gl.glVertex2d(t.ccdDebugInfo.point.X, t.ccdDebugInfo.point.Y);
+                        Gl.glVertex2d(ccdDebugInfo.point.X, ccdDebugInfo.point.Y);
                         Gl.glEnd();
 
                         Gl.glLineWidth(2.0f);
                         Gl.glBegin(Gl.GL_LINES);
-                        Gl.glVertex2d(t.ccdDebugInfo.edge.start.X, t.ccdDebugInfo.edge.start.Y);
-                        Gl.glVertex2d(t.ccdDebugInfo.edge.end.X, t.ccdDebugInfo.edge.end.Y);
+                        Gl.glVertex2d(ccdDebugInfo.edge.start.X, ccdDebugInfo.edge.start.Y);
+                        Gl.glVertex2d(ccdDebugInfo.edge.end.X, ccdDebugInfo.edge.end.Y);
                         Gl.glEnd();
 
                         Gl.glColor3d(ccdHelper.R, ccdHelper.G, ccdHelper.B);

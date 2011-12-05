@@ -34,29 +34,30 @@ namespace PhysicsTestbed
 
         private void CheckSegment(
             Vector2 origin, Vector2 neighbor,
-            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer
+            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer
         )
         {
             Vector2 intersection = new Vector2();
-            if (
-                CollideSweptSegments(new LineSegment(origin, neighbor), new LineSegment(pos, posNext), ref intersection) &&
-                (intersection - pos).Length() > epsilon // to prevent slipping of start point to just reflected edge
-            )
+            if (CollideSweptSegments(new LineSegment(origin, neighbor), new LineSegment(pos, posNext), ref intersection))
             {
-                // reflect velocity relative edge
-                Vector2 reflectSurface = neighbor - origin;
-                Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
-                if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
-                Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
+                double particleOffset = (intersection - pos).Length();
+                if (particleOffset > epsilon) // to prevent slipping of start point to just reflected edge // TODO: check if this condition is really usefull. may be (timeOffset > 0.0) is a sufficient condition
+                {
+                    // reflect velocity relative edge
+                    Vector2 reflectSurface = neighbor - origin;
+                    Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
+                    if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
+                    Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
 
-                collisionBuffer.Add(new CollisionSubframe(newVelocity, (intersection - pos).Length() / velocity.Length()));
+                    collisionBuffer.Add(new CollisionSubframeBuffer(newVelocity, particleOffset / velocity.Length()));
+                }
             }
         }
 
         private void CheckParticleEdge(
-            bool isFrozenEdge, ref Particle.CCDDebugInfo ccd,
+            bool isFrozenEdge, ref List<Particle.CCDDebugInfo> ccds,
             Particle origin, Particle neighbor,
-            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer, double accumulatedSubframeTime
+            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime
         )
         {
             if (isFrozenEdge)
@@ -70,32 +71,31 @@ namespace PhysicsTestbed
             EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(new LineSegment(origin.goal, neighbor.goal), new LineSegment(origin.x, neighbor.x), pos, posNext);
             double? ccdCollisionTime = EdgePointCCDSolver.Solve(solverInput);
 
-            ccd = null;
             if (ccdCollisionTime != null)
             {
-                ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
+                Particle.CCDDebugInfo ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
 
                 // TODO: use the Rule of conservative impulse to handle this case. Simple reflection rule is not effective here.
 
                 Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * ccd.coordinateOfPointOnEdge;
                 Vector2 velocityPointRelativeEdge = velocity - velocityEdgeCollisionPoint;
 
-                Vector2 edgeCollisionPoint_Pos = origin.goal + (neighbor.goal - origin.goal) * ccd.coordinateOfPointOnEdge;
-                Vector2 edgeCollisionPoint_Intersection = ccd.edge.start + (ccd.edge.end - ccd.edge.start) * ccd.coordinateOfPointOnEdge;
-
                 // compute velocity reflection relativly moving edge
                 Vector2 reflectSurface = ccd.edge.end - ccd.edge.start;
                 Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
                 if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
                 Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
-                //newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
-
+                newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
+                /*
+                Vector2 edgeCollisionPoint_Pos = origin.goal + (neighbor.goal - origin.goal) * ccd.coordinateOfPointOnEdge;
+                Vector2 edgeCollisionPoint_Intersection = ccd.edge.start + (ccd.edge.end - ccd.edge.start) * ccd.coordinateOfPointOnEdge;
                 Vector2 particleGlobalDelta = ccd.point - pos;
                 Vector2 edgeCollisionPointGlobalDelta = edgeCollisionPoint_Pos - edgeCollisionPoint_Intersection;
                 Vector2 particleDeltaRelativeEdgeCollisionPoint = particleGlobalDelta - edgeCollisionPointGlobalDelta;
-
-                //collisionBuffer.Add(new CollisionSubframe(newVelocity, particleDeltaRelativeEdgeCollisionPoint.Length() / velocityPointRelativeEdge.Length()));
-                collisionBuffer.Add(new CollisionSubframe(newVelocity, (1.0 - accumulatedSubframeTime) * ccdCollisionTime.Value));
+                collisionBuffer.Add(new CollisionSubframe(newVelocity, particleDeltaRelativeEdgeCollisionPoint.Length() / velocityPointRelativeEdge.Length()));
+                */
+                collisionBuffer.Add(new CollisionSubframeBuffer(newVelocity, (1.0 - accumulatedSubframeTime) * ccdCollisionTime.Value));
+                ccds.Add(ccd);
 
                 if (LsmBody.pauseOnBodyBodyCollision)
                     Testbed.Paused = true;
@@ -118,7 +118,7 @@ namespace PhysicsTestbed
             return ccd;
         }
 
-        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframe> collisionBuffer, double accumulatedSubframeTime)
+        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime)
         {
             //foreach (LsmBody body in Testbed.world.bodies)
             LsmBody body = Testbed.world.bodyPassiveDebug; // DEBUG
@@ -131,11 +131,11 @@ namespace PhysicsTestbed
                         {
                             if (bodyt.xPos != null)
                             {
-                                CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
+                                CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
                             }
                             if (bodyt.yPos != null)
                             {
-                                CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfo, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
+                                CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
                             }
                         }
                     }

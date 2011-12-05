@@ -12,16 +12,29 @@ namespace PhysicsTestbed
         public Vector2 v;				        // Velocity before collision
         public double timeCoefficient = 0.0;    // Part of time step before collision - [0, 1]
 
+        public CollisionSubframe() 
+        {
+        }
+
         public CollisionSubframe(Vector2 v, double timeCoefficient)
         {
-            //Debug.Assert(timeCoefficient > 0.0);
+            Debug.Assert(timeCoefficient > 0.0);
+            this.v = v;
+            this.timeCoefficient = timeCoefficient;
+        }
+    }
+
+    public class CollisionSubframeBuffer : CollisionSubframe
+    {
+        public CollisionSubframeBuffer(Vector2 v, double timeCoefficient) // has no assertion for timeCoefficient
+        {
             this.v = v;
             this.timeCoefficient = timeCoefficient;
         }
     }
 
     // WARNING: not full functional class. it supports only constructor, Add and Clear.
-    public class CollisionSubframesBuffer
+    public class CollisionSubframeList
     {
         double currentTime = 0.0;
         public double CurrentTime { get { return currentTime; } }
@@ -59,8 +72,7 @@ namespace PhysicsTestbed
         public Vector2 fExt;						// External force
 
         // continues collision detection and impulse integration
-        //public List<CollisionSubframe> collisionSubframes = new List<CollisionSubframe>();
-        public CollisionSubframesBuffer collisionSubframes = new CollisionSubframesBuffer();
+        public CollisionSubframeList collisionSubframes = new CollisionSubframeList();
 
         public class CCDDebugInfo
         {
@@ -74,7 +86,7 @@ namespace PhysicsTestbed
                 this.coordinateOfPointOnEdge = (point - edge.start).Dot(edge.end - edge.start) / (edge.end - edge.start).LengthSq();
             }
         }
-        public CCDDebugInfo ccdDebugInfo = null; // DEBUG
+        public List<CCDDebugInfo> ccdDebugInfos = new List<CCDDebugInfo>(); // DEBUG
 
 		// Shape matching
         public Vector2 goal;
