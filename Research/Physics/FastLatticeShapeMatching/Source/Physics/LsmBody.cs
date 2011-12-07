@@ -291,26 +291,19 @@ namespace PhysicsTestbed
                     if (collisionBuffer.Count > 0)
                     {
                         CollisionSubframeBuffer currentCollision = GetEarliestCollision(collisionBuffer);
-                        if (currentCollision.timeCoefficient > 0.0)
-                        {
-                            CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
-                            t.v = currentCollision.v;
-                            t.collisionSubframes.Add(subframe);
-                            pos += subframe.v * subframe.timeCoefficient;
-                            timeCoefficientPrediction -= subframe.timeCoefficient;
-                            posNext = pos + t.v * timeCoefficientPrediction;
-                            collisionFound = true;
-                            collisionBuffer.Clear();
-                        }
-                        else
-                            tooSmallTimeCoefficient = true;
+                        CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
+                        t.v = currentCollision.v;
+                        t.collisionSubframes.Add(subframe);
+                        pos += subframe.v * subframe.timeCoefficient;
+                        timeCoefficientPrediction -= subframe.timeCoefficient;
+                        posNext = pos + t.v * timeCoefficientPrediction;
+                        collisionFound = true;
+                        collisionBuffer.Clear();
                     }
                     else
                     {
                         collisionFound = false;
                     }
-
-                    if (tooSmallTimeCoefficient) break; // HACK to work with not-resolved Zero-Distance problem // TODO: implement skinWidth to avoid Zero-Distance problem
 
                     if (++iterationsCounter >= maxIterations || tooSmallTimeCoefficient) // to prevent deadlocks
                     {
