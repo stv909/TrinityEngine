@@ -49,13 +49,13 @@ namespace PhysicsTestbed
 				{
 					Testbed.dragForce.ApplyForce(body.particles);
 				}
-
-                // Update interaction services
-                foreach (EnvironmentForce srv in Testbed.world.interactionServices)
-                {
-                    srv.Update();
-                }
 			}
+
+            // Update interaction services
+            foreach (EnvironmentForce srv in Testbed.world.interactionServices)
+            {
+                srv.Update();
+            }
 
 			this.Render();
 			UpdatePanels();

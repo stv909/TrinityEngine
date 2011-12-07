@@ -68,6 +68,7 @@ namespace PhysicsTestbed
 
             world.mouseForces.Add(dragForce);
             world.mouseForces.Add(pushForce);
+            world.mouseForces.Add(lockForce);
             world.mouseForces.Add(panAndZoom);
         }
 

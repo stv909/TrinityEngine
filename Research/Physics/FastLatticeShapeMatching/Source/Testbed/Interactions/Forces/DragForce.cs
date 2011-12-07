@@ -62,7 +62,7 @@ namespace PhysicsTestbed
 
         public override void PostUpdate()
         {
-            base.Update();
+            base.PostUpdate();
 
             oldLmbDown = lmbDown;
             dragBodyFound = false;
