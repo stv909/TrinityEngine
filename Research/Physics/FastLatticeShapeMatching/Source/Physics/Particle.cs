@@ -70,6 +70,7 @@ namespace PhysicsTestbed
 		public Vector2 v;							// Velocity
         public Vector2 x0;							// Material position
         public Vector2 fExt;						// External force
+        public Vector2 xPrior;                      // Position from prior frame
 
         // continues collision detection and impulse integration
         public CollisionSubframeList collisionSubframes = new CollisionSubframeList();

@@ -74,12 +74,16 @@ namespace PhysicsTestbed
         public static bool drawBodyParticles_goal = true;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body lattice - goal")]
         public static bool drawBodyLattice_goal = true;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body particles - xPrior")]
+        public static bool drawBodyParticles_xPrior = false;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body lattice - xPrior")]
+        public static bool drawBodyLattice_xPrior = false;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body particles - x")]
         public static bool drawBodyParticles_x = false;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw body lattice - x")]
         public static bool drawBodyLattice_x = false;
-        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw goal - x connection")]
-        public static bool drawGoalXConnection = true;
+        [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw xPrior - x connection")]
+        public static bool drawXPriorXConnection = true;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw collision points and traces")]
         public static bool drawCollisionPointsAndTraces = true;
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw ccd particle-edge points")]
@@ -229,7 +233,7 @@ namespace PhysicsTestbed
             {
                 if (p.parentRegions.Count != 0)
                 {
-                    p.v = p.v + (p.goal - p.x) + p.fExt / p.mass;		// Eqn. (1), h = 1.0
+                    p.v = p.v + (p.goal - p.x) + p.fExt / p.mass;		// Eqn. (1), h = 1.0 // TODO: try to change h in real-time
                 }
                 else
                 {
@@ -270,7 +274,7 @@ namespace PhysicsTestbed
                 t.ccdDebugInfos.Clear();
                 double timeCoefficientPrediction = 1.0;
                 // TODO: figureout what positions to use
-                Vector2 pos = t.x; // t.goal - ???
+                Vector2 pos = t.x; // TODO: think about: Why not t.goal ? May be we should affect t.goal to prevent it from violate collision? May be collision is a part of shape to match with?
                 Vector2 posNext = pos + t.v * timeCoefficientPrediction; // t.x - ???
 
                 int iterationsCounter = 0; // to prevent deadlocks
@@ -327,6 +331,7 @@ namespace PhysicsTestbed
             // Apply velocity
             foreach (Particle p in particles)
             {
+                p.xPrior = p.x;
                 if (p.locked == false)
                 {
                     if (p.collisionSubframes.Buffer.Count > 0)

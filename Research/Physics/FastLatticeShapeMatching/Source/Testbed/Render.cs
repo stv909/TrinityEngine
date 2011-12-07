@@ -184,7 +184,42 @@ namespace PhysicsTestbed
             Gl.glEnd();
         }
 
-        static void RenderConnection_Goal_X(List<Particle> particles, Color3 color)
+        static void RenderLattice_xPrior(List<Particle> particles, Color3 color)
+        {
+            Gl.glLineWidth(1.0f);
+            Gl.glColor3d(color.R, color.G, color.B);
+            Gl.glBegin(Gl.GL_LINES);
+            {
+                foreach (Particle t in particles)
+                {
+                    if (t.xPos != null)
+                    {
+                        Gl.glVertex2d(t.xPrior.X, t.xPrior.Y);
+                        Gl.glVertex2d(t.xPos.xPrior.X, t.xPos.xPrior.Y);
+                    }
+                    if (t.yPos != null)
+                    {
+                        Gl.glVertex2d(t.xPrior.X, t.xPrior.Y);
+                        Gl.glVertex2d(t.yPos.xPrior.X, t.yPos.xPrior.Y);
+                    }
+                }
+            }
+            Gl.glEnd();
+        }
+
+        static void RenderParticleGroup_xPrior(List<Particle> particles, Color3 color)
+        {
+            Gl.glColor3d(color.R, color.G, color.B);
+            Gl.glPointSize(4.0f);
+            Gl.glBegin(Gl.GL_POINTS);
+            foreach (Particle t in particles)
+            {
+                Gl.glVertex2d(t.xPrior.X, t.xPrior.Y);
+            }
+            Gl.glEnd();
+        }
+
+        static void RenderConnection_xPrior_x(List<Particle> particles, Color3 color)
         {
             Gl.glColor4d(color.R, color.G, color.B, 0.5);
             Gl.glLineWidth(1.0f);
@@ -193,7 +228,7 @@ namespace PhysicsTestbed
             {
                 if (t.collisionSubframes.Buffer.Count == 0)
                 {
-                    Gl.glVertex2d(t.goal.X, t.goal.Y);
+                    Gl.glVertex2d(t.xPrior.X, t.xPrior.Y);
                     Gl.glVertex2d(t.x.X, t.x.Y);
                 }
             }
@@ -209,8 +244,11 @@ namespace PhysicsTestbed
                     RenderCollisionedParticlesSelection(body.particles);
 
                 Color3 colorX = new Color3(0, 0.5, 1);
+                Color3 colorXPrior = new Color3(0, 1, 0.5);
                 Color3 colorGoalX = new Color3(1, 0, 1);
-                if (LsmBody.drawGoalXConnection) RenderConnection_Goal_X(body.particles, colorGoalX);
+                if (LsmBody.drawXPriorXConnection) RenderConnection_xPrior_x(body.particles, colorGoalX);
+                if (LsmBody.drawBodyLattice_xPrior) RenderLattice_xPrior(body.particles, 0.7 * colorXPrior);
+                if (LsmBody.drawBodyParticles_xPrior) RenderParticleGroup_xPrior(body.particles, colorXPrior);
                 if (LsmBody.drawBodyLattice_x) RenderLattice_x(body.particles, 0.7 * colorX);
                 if (LsmBody.drawBodyParticles_x) RenderParticleGroup_x(body.particles, colorX);
                 if (LsmBody.drawBodyLattice_goal) RenderLattice_Goal(body.particles, 0.7 * body.Color);
@@ -283,7 +321,7 @@ namespace PhysicsTestbed
         static Vector2 GetParticlePositionAtTime(Particle t, double givenTimeCoefficient)
         {
             if (t.collisionSubframes.Buffer.Count == 0)
-                return t.goal + givenTimeCoefficient * (t.x - t.goal);
+                return t.xPrior + givenTimeCoefficient * (t.x - t.xPrior);
 
             double time = 0.0;
             Vector2 hPosition = t.goal;
