@@ -324,7 +324,7 @@ namespace PhysicsTestbed
                 return t.xPrior + givenTimeCoefficient * (t.x - t.xPrior);
 
             double time = 0.0;
-            Vector2 hPosition = t.goal;
+            Vector2 hPosition = t.xPrior;
             foreach (CollisionSubframe subframe in t.collisionSubframes.Buffer)
             {
                 if (givenTimeCoefficient > time + subframe.timeCoefficient)
