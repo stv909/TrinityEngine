@@ -30,14 +30,18 @@ Trinity Engine. Conceptual design and research.
 									- correct contact generation for case of colliding of 2 moving bodies:
 										- analize activeBody-passiveBody collisions with simplified bodies iteration test algorithm
 											+ make simplification
-											> explore deadlock issue when passive body (v > 0) strikes active body (v = 0)
+											+ explore deadlock issue when passive body (v > 0) strikes active body (v = 0)
 											+ implement zoom-in/zoom-out
+											- fix CCD Helper debug drawing
+											- improve zoom-in/zoom-out and processing in world.paused mode
+											- avoid particle's energy growth while frequent collidings
 										- velocity modification using Rule of conservative impulses
 										+ simple and obvious method to find timeCoefficient
 									- correct bodies iterating for collision detection: avoid double-checks per frame with conflicting results
 									- rotating impulse wall
 								- vs complex dynamic body
 							1.1.2.1.1.2.2 Single chunk of soft body
+								- just being (drag it in empty scene)
 								- vs moving wall
 								- vs complex dynamic body
 								- self-collision
