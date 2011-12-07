@@ -273,9 +273,8 @@ namespace PhysicsTestbed
                 t.collisionSubframes.Clear();
                 t.ccdDebugInfos.Clear();
                 double timeCoefficientPrediction = 1.0;
-                // TODO: figureout what positions to use
                 Vector2 pos = t.x; // TODO: think about: Why not t.goal ? May be we should affect t.goal to prevent it from violate collision? May be collision is a part of shape to match with?
-                Vector2 posNext = pos + t.v * timeCoefficientPrediction; // t.x - ???
+                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
 
                 int iterationsCounter = 0; // to prevent deadlocks
                 const int maxIterations = 64; // to prevent deadlocks
