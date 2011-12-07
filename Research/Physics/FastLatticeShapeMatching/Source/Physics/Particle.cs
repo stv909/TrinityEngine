@@ -18,7 +18,7 @@ namespace PhysicsTestbed
 
         public CollisionSubframe(Vector2 v, double timeCoefficient)
         {
-            Debug.Assert(timeCoefficient > 0.0);
+            //Debug.Assert(timeCoefficient > 0.0);
             this.v = v;
             this.timeCoefficient = timeCoefficient;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
@@ -13,7 +14,7 @@ namespace PhysicsTestbed
 
         public static double CCDTimeOffset { get{ return ccdTimeOffset + ccdTimeOffset001x; } }
 
-        private double epsilon = 0.00001;
+        private const double epsilon = 0.00001;
 
         private bool CollideSweptSegments(LineSegment first, LineSegment second, ref Vector2 intersection)
         {
@@ -96,16 +97,12 @@ namespace PhysicsTestbed
                 Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
                 if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
                 Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
+                Debug.Assert(ccdCollisionTime.Value > 0.0); // Zero-Distance not allowed
+                double newTimeCoefficient = (1.0 - accumulatedSubframeTime) * ccdCollisionTime.Value;
+                newTimeCoefficient -= epsilon / newVelocity.Length(); // try to prevent Zero-Distances // HACK
+                if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
                 newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
-                /*
-                Vector2 edgeCollisionPoint_Pos = origin.x + (neighbor.x - origin.x) * ccd.coordinateOfPointOnEdge;
-                Vector2 edgeCollisionPoint_Intersection = ccd.edge.start + (ccd.edge.end - ccd.edge.start) * ccd.coordinateOfPointOnEdge;
-                Vector2 particleGlobalDelta = ccd.point - pos;
-                Vector2 edgeCollisionPointGlobalDelta = edgeCollisionPoint_Pos - edgeCollisionPoint_Intersection;
-                Vector2 particleDeltaRelativeEdgeCollisionPoint = particleGlobalDelta - edgeCollisionPointGlobalDelta;
-                collisionBuffer.Add(new CollisionSubframe(newVelocity, particleDeltaRelativeEdgeCollisionPoint.Length() / velocityPointRelativeEdge.Length()));
-                */
-                collisionBuffer.Add(new CollisionSubframeBuffer(newVelocity, (1.0 - accumulatedSubframeTime) * ccdCollisionTime.Value));
+                collisionBuffer.Add(new CollisionSubframeBuffer(newVelocity, newTimeCoefficient));
                 ccds.Add(ccd);
 
                 if (LsmBody.pauseOnBodyBodyCollision)
