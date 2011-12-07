@@ -138,11 +138,23 @@ namespace PhysicsTestbed
 		void Refresh()
 		{
 			double d = FieldValue;
-			value.Text = "" + d;
 			int val = (int)(((d - att.Min) / (att.Max - att.Min)) * numTicks);
-			if (trackBar.Value != val)
-				trackBar.Value = val;
-		}
+            if (trackBar.Value != val)
+            {
+                if (val < trackBar.Minimum)
+                {
+                    FieldValue = att.Min;
+                    val = trackBar.Minimum;
+                }
+                if (val > trackBar.Maximum)
+                {
+                    FieldValue = att.Max;
+                    val = trackBar.Maximum;
+                }
+                trackBar.Value = val;
+            }
+            value.Text = "" + d;
+        }
 
 		void trackBar_ValueChanged(object sender, EventArgs e)
 		{

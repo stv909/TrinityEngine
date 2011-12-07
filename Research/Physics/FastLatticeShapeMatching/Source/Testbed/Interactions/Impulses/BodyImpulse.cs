@@ -6,9 +6,9 @@ namespace PhysicsTestbed
 {
     public class BodyImpulse : EnvironmentImpulse
     {
-        [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "CCD time offset (pure visual)", Min = 0.0, Max = 0.99)]
+        [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "CCD time offset (pure visual)", Min = 0.01, Max = 0.99)]
         public static double ccdTimeOffset = 0.0;
-        [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "0.01x CCD time offset", Min = 0.0, Max = 0.01)]
+        [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "0.01x CCD time offset", Min = -0.01, Max = 0.01)]
         public static double ccdTimeOffset001x = 0.0;
 
         public static double CCDTimeOffset { get{ return ccdTimeOffset + ccdTimeOffset001x; } }
