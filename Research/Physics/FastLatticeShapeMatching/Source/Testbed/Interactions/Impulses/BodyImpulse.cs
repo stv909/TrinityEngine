@@ -57,7 +57,8 @@ namespace PhysicsTestbed
         private void CheckParticleEdge(
             bool isFrozenEdge, ref List<Particle.CCDDebugInfo> ccds,
             Particle origin, Particle neighbor,
-            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime
+            Vector2 pos, Vector2 posNext, Vector2 velocity,
+            ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime
         )
         {
             if (isFrozenEdge)
@@ -68,7 +69,17 @@ namespace PhysicsTestbed
             }
 
             // swept collision for body
-            EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(new LineSegment(origin.goal, neighbor.goal), new LineSegment(origin.x, neighbor.x), pos, posNext);
+            double timePrediction = (1.0 - accumulatedSubframeTime);
+            LineSegment edge = new LineSegment(origin.x + origin.v * accumulatedSubframeTime, neighbor.x + neighbor.v * accumulatedSubframeTime);
+            LineSegment edgeNext = new LineSegment(edge.start + origin.v * timePrediction, edge.end + neighbor.v * timePrediction);
+
+            //LineSegment edge = new LineSegment(origin.goal + origin.v * accumulatedSubframeTime, neighbor.goal + neighbor.v * accumulatedSubframeTime);
+            //LineSegment edgeNext = new LineSegment(edge.start + origin.v * timePrediction, edge.end + neighbor.v * timePrediction);
+
+            //LineSegment edge = new LineSegment(origin.goal, neighbor.goal);
+            //LineSegment edgeNext = new LineSegment(origin.x, neighbor.x);
+
+            EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(edge, edgeNext, pos, posNext);
             double? ccdCollisionTime = EdgePointCCDSolver.Solve(solverInput);
 
             if (ccdCollisionTime != null)
@@ -87,7 +98,7 @@ namespace PhysicsTestbed
                 Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
                 newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
                 /*
-                Vector2 edgeCollisionPoint_Pos = origin.goal + (neighbor.goal - origin.goal) * ccd.coordinateOfPointOnEdge;
+                Vector2 edgeCollisionPoint_Pos = origin.x + (neighbor.x - origin.x) * ccd.coordinateOfPointOnEdge;
                 Vector2 edgeCollisionPoint_Intersection = ccd.edge.start + (ccd.edge.end - ccd.edge.start) * ccd.coordinateOfPointOnEdge;
                 Vector2 particleGlobalDelta = ccd.point - pos;
                 Vector2 edgeCollisionPointGlobalDelta = edgeCollisionPoint_Pos - edgeCollisionPoint_Intersection;
@@ -118,7 +129,10 @@ namespace PhysicsTestbed
             return ccd;
         }
 
-        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime)
+        public override void ApplyImpulse(
+            LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity,
+            ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime
+        )
         {
             //foreach (LsmBody body in Testbed.world.bodies)
             LsmBody body = Testbed.world.bodyPassiveDebug; // DEBUG

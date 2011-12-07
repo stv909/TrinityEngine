@@ -71,7 +71,7 @@ namespace PhysicsTestbed
 
         static void RenderCollisionTrace(Particle t)
         {
-            Vector2 hPosition = t.goal; // WARNING: why t.x doesn't work correctly???
+            Vector2 hPosition = t.xPrior;
             Gl.glColor4d(0, 0, 0, 0.5);
             Gl.glLineWidth(1.0f);
             Gl.glBegin(Gl.GL_LINE_STRIP);
@@ -83,7 +83,7 @@ namespace PhysicsTestbed
             }
             Gl.glEnd();
 
-            hPosition = t.goal; // WARNING: why t.x doesn't work correctly???
+            hPosition = t.xPrior;
             Gl.glColor4d(1, 0.5, 0, 0.5);
             Gl.glPointSize(4.0f);
             Gl.glBegin(Gl.GL_POINTS);
