@@ -165,13 +165,6 @@ namespace PhysicsTestbed
 			world.Update();
 		}
 
-		public static void PauseStep()
-		{
-			paused = false;
-			Update();
-			paused = true;
-		}
-
 		public static void PostMessage(string message)
 		{
 			Program.window.statusBox.PostMessage(Color.Black, message);

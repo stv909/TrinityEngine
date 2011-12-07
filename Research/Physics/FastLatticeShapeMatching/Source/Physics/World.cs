@@ -37,8 +37,8 @@ namespace PhysicsTestbed
                     foreach (EnvironmentForce e in environmentForces)
                     {
                         if (
-                            e is WallForce && !b.pureForces &&
-                            !b.Equals(bodyPassiveDebug) // DEBUG wallForce influence passive body anyway
+                            e is WallForce && !b.pureForces
+                            && !b.Equals(bodyPassiveDebug) // DEBUG wallForce influence passive body anyway
                         )
                             continue;
                         e.ApplyForce(b.particles);

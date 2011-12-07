@@ -36,7 +36,7 @@ namespace PhysicsTestbed
 					double dist = (t.goal - mouseVec).Length();
 					if (dist < PUSH_DIST)
 					{
-						if(Testbed.Paused == false)
+						if(!Testbed.Paused)
 						{
 							Vector2 v = (t.goal - mouseVec);
 							v.Normalize();
