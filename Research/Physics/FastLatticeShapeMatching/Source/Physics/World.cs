@@ -46,12 +46,24 @@ namespace PhysicsTestbed
                     b.Smooth();
                     b.DoFracture();
                     b.UpdateParticlesVelocity();
+                }
+            }
 
+            foreach (LsmBody b in bodies)
+            {
+                if (!b.frozen)
+                {
                     if (b.Equals(bodyActiveDebug)) // DEBUG no collisions for passive body
                     {
                         b.HandleCollisions(environmentImpulses);
                     }
+                }
+            }
 
+            foreach (LsmBody b in bodies)
+            {
+                if (!b.frozen)
+                {
                     b.UpdateParticlesPosition();
                 }
             }
