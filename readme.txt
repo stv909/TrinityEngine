@@ -32,12 +32,13 @@ Trinity Engine. Conceptual design and research.
 											+ make simplification
 											+ explore deadlock issue when passive body (v > 0) strikes active body (v = 0)
 											+ implement zoom-in/zoom-out
-											- fix CCD Helper debug drawing
-											- improve zoom-in/zoom-out and processing in world.paused mode
+											+ fix CCD Helper debug drawing
+											> rewrite collision handling cycle - check whole world in every subframe
 											- avoid particle's energy growth while frequent collidings
-										- velocity modification using Rule of conservative impulses
+											- velocity modification using Rule of conservative impulses
 										+ simple and obvious method to find timeCoefficient
 									- correct bodies iterating for collision detection: avoid double-checks per frame with conflicting results
+									- improve zoom-in/zoom-out and processing in world.paused mode
 									- rotating impulse wall
 								- vs complex dynamic body
 							1.1.2.1.1.2.2 Single chunk of soft body
