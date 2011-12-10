@@ -44,7 +44,7 @@ namespace PhysicsTestbed
 		public static void Initialize()
 		{
             // SimpleX1Blueprint; SimpleX2Blueprint; SimpleX3Blueprint; RectangleBlueprint; HumanBlueprint; BuildingBlueprint; ChairBlueprint;
-            currentBlueprints = new Array[2] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint };
+            currentBlueprints = new Array[2] { SimpleX1Blueprint.blueprint, SimpleX2Blueprint.blueprint };
             //currentBlueprints = new Array[5] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint };
             GenerateBodies(currentBlueprints);
             
@@ -94,10 +94,10 @@ namespace PhysicsTestbed
                 switch (verticalIndex)
                 {
                     case 0:
-                        world.bodyPassiveDebug = body;
+                        world.bodyActiveDebug = body;
                         break;
                     case 1:
-                        world.bodyActiveDebug = body;
+                        world.bodyPassiveDebug = body;
                         break;
                 }
 
@@ -114,10 +114,10 @@ namespace PhysicsTestbed
             switch (verticalIndex)
             {
                 case 0:
-                    world.bodyPassiveDebug = body;
+                    world.bodyActiveDebug = body;
                     break;
                 case 1:
-                    world.bodyActiveDebug = body;
+                    world.bodyPassiveDebug = body;
                     break;
             }
         }
