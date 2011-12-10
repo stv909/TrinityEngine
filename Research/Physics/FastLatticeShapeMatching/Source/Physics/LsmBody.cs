@@ -261,11 +261,11 @@ namespace PhysicsTestbed
             }
             return earliestCollision;
         }
-
+        /*
         public void HandleCollisions(List<EnvironmentImpulse> environmentImpulses)
         {
-            if (pureForces || frozen)
-                return;
+            Debug.Assert(!frozen);
+            Debug.Assert(!pureForces);
 
             foreach (Particle t in particles)
             {
@@ -321,9 +321,11 @@ namespace PhysicsTestbed
                 }
             }
         }
-
+        *//*
         public void UpdateParticlesPosition()
         {
+            Debug.Assert(!frozen);
+
             // Apply velocity
             foreach (Particle p in particles)
             {
@@ -344,6 +346,75 @@ namespace PhysicsTestbed
                     {
                         p.x += p.v;
                     }
+                }
+                else
+                {
+                    p.v = Vector2.ZERO;
+                }
+            }
+        }
+        */
+        public static CollisionSubframeBuffer GetEarliestSubframe(List<CollisionSubframeBuffer> subframes)
+        {
+            CollisionSubframeBuffer earliestSubframe = null;
+            foreach (CollisionSubframeBuffer subframe in subframes)
+            {
+                if (earliestSubframe == null || earliestSubframe.timeCoefficient > subframe.timeCoefficient)
+                {
+                    earliestSubframe = subframe;
+                }
+            }
+            return earliestSubframe;
+        }
+
+        public void CollideWithWall(double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        {
+            Debug.Assert(!frozen);
+            Debug.Assert(!pureForces);
+
+            foreach (Particle t in particles)
+            {
+                // impulse & offset collision method
+                Vector2 pos = t.x;
+                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
+
+                // Collide with walls
+                Debug.Assert(Testbed.world.environmentImpulses[0] is WallImpulse); // TODO: fix this HACK
+                Testbed.world.environmentImpulses[0].ApplyImpulse(this, t, null, pos, posNext, t.v, ref collisionBuffer, timeCoefficientPrediction); // TODO: make refactoring for BodyImpulse
+            }
+        }
+
+        public void CollideWith(LsmBody body, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        {
+            Debug.Assert(!frozen);
+            Debug.Assert(!pureForces);
+
+            if (body != Testbed.world.bodyPassiveDebug) return; // DEBUG
+
+            foreach (Particle t in particles)
+            {
+                // impulse & offset collision method
+                t.ccdDebugInfos.Clear();
+                Vector2 pos = t.x;
+                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
+
+                // Collide with other body
+                Debug.Assert(Testbed.world.environmentImpulses[1] is BodyImpulse); // TODO: fix this HACK
+                Testbed.world.environmentImpulses[1].ApplyImpulse(this, t, body, pos, posNext, t.v, ref collisionBuffer, timeCoefficientPrediction); // TODO: make refactoring for BodyImpulse
+            }
+        }
+
+        public void UpdateParticlesPosition(double timeCoefficientIntegrate)
+        {
+            Debug.Assert(!frozen);
+
+            // Apply velocity
+            foreach (Particle p in particles)
+            {
+                p.xPrior = p.x;
+                if (!p.locked)
+                {
+                    p.x += p.v * timeCoefficientIntegrate;
                 }
                 else
                 {

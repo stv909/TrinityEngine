@@ -68,9 +68,10 @@ namespace PhysicsTestbed
             }
             Gl.glEnd();
         }
-
+        
         static void RenderCollisionTrace(Particle t)
         {
+            /*
             Vector2 hPosition = t.xPrior;
             Gl.glColor4d(0, 0, 0, 0.5);
             Gl.glLineWidth(1.0f);
@@ -93,10 +94,12 @@ namespace PhysicsTestbed
                 Gl.glVertex2d(hPosition.X, hPosition.Y);
             }
             Gl.glEnd();
+            */
         }
 
         static void RenderCollisionedParticlesSelection(List<Particle> particles)
         {
+            /*
             Gl.glColor3d(0, 0, 0);
             Gl.glPointSize(8.0f);
             foreach (Particle t in particles)
@@ -112,6 +115,7 @@ namespace PhysicsTestbed
                     RenderCollisionTrace(t);
                 }
             }
+            */
         }
 
         static void RenderLattice_Goal(List<Particle> particles, Color3 color)
@@ -226,11 +230,8 @@ namespace PhysicsTestbed
             Gl.glBegin(Gl.GL_LINES);
             foreach (Particle t in particles)
             {
-                if (t.collisionSubframes.Buffer.Count == 0)
-                {
-                    Gl.glVertex2d(t.xPrior.X, t.xPrior.Y);
-                    Gl.glVertex2d(t.x.X, t.x.Y);
-                }
+                Gl.glVertex2d(t.xPrior.X, t.xPrior.Y);
+                Gl.glVertex2d(t.x.X, t.x.Y);
             }
             Gl.glEnd();
         }
@@ -320,25 +321,7 @@ namespace PhysicsTestbed
 
         static Vector2 GetParticlePositionAtTime(Particle t, double givenTimeCoefficient)
         {
-            if (t.collisionSubframes.Buffer.Count == 0)
-                return t.xPrior + givenTimeCoefficient * (t.x - t.xPrior);
-
-            double time = 0.0;
-            Vector2 hPosition = t.xPrior;
-            foreach (CollisionSubframe subframe in t.collisionSubframes.Buffer)
-            {
-                if (givenTimeCoefficient > time + subframe.timeCoefficient)
-                {
-                    time += subframe.timeCoefficient;
-                    hPosition += subframe.v * subframe.timeCoefficient;
-                }
-                else
-                {
-                    hPosition += subframe.v * (givenTimeCoefficient - time);
-                    break;
-                }
-            }
-            return hPosition;
+            return t.xPrior + givenTimeCoefficient * (t.x - t.xPrior);
         }
 
         private static Color3 ccdHelper = new Color3(0.5, 0.5, 1);

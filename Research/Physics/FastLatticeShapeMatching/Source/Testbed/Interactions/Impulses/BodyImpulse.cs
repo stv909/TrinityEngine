@@ -35,7 +35,8 @@ namespace PhysicsTestbed
 
         private void CheckSegment(
             Vector2 origin, Vector2 neighbor,
-            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer
+            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer,
+            CollisionSubframeBuffer subframeToAdd
         )
         {
             Vector2 intersection = new Vector2();
@@ -50,7 +51,11 @@ namespace PhysicsTestbed
                     if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
                     Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
 
-                    collisionBuffer.Add(new CollisionSubframeBuffer(newVelocity, particleOffset / velocity.Length()));
+                    subframeToAdd.vParticle = newVelocity;
+                    subframeToAdd.vEdgeStart = new Vector2(0.0, 0.0);
+                    subframeToAdd.vEdgeEnd = new Vector2(0.0, 0.0);
+                    subframeToAdd.timeCoefficient = particleOffset / velocity.Length();
+                    collisionBuffer.Add(subframeToAdd);
                 }
             }
         }
@@ -59,20 +64,20 @@ namespace PhysicsTestbed
             bool isFrozenEdge, ref List<Particle.CCDDebugInfo> ccds,
             Particle origin, Particle neighbor,
             Vector2 pos, Vector2 posNext, Vector2 velocity,
-            ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime
+            ref List<CollisionSubframeBuffer> collisionBuffer, double timeCoefficientPrediction,
+            CollisionSubframeBuffer subframeToAdd
         )
         {
             if (isFrozenEdge)
             {
                 // simple collision for frozen body
-                CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer); // current edge position
+                CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer, subframeToAdd); // current edge position
                 return;
             }
 
             // swept collision for body
-            double timePrediction = (1.0 - accumulatedSubframeTime);
-            LineSegment edge = new LineSegment(origin.x + origin.v * accumulatedSubframeTime, neighbor.x + neighbor.v * accumulatedSubframeTime);
-            LineSegment edgeNext = new LineSegment(edge.start + origin.v * timePrediction, edge.end + neighbor.v * timePrediction);
+            LineSegment edge = new LineSegment(origin.x, neighbor.x);
+            LineSegment edgeNext = new LineSegment(edge.start + origin.v * timeCoefficientPrediction, edge.end + neighbor.v * timeCoefficientPrediction);
 
             //LineSegment edge = new LineSegment(origin.goal + origin.v * accumulatedSubframeTime, neighbor.goal + neighbor.v * accumulatedSubframeTime);
             //LineSegment edgeNext = new LineSegment(edge.start + origin.v * timePrediction, edge.end + neighbor.v * timePrediction);
@@ -98,11 +103,16 @@ namespace PhysicsTestbed
                 if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
                 Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
                 if (ccdCollisionTime.Value <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
-                double newTimeCoefficient = (1.0 - accumulatedSubframeTime) * ccdCollisionTime.Value;
+                double newTimeCoefficient = timeCoefficientPrediction * ccdCollisionTime.Value;
                 newTimeCoefficient -= epsilon / newVelocity.Length(); // try to prevent Zero-Distances // HACK
                 if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
                 newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
-                collisionBuffer.Add(new CollisionSubframeBuffer(newVelocity, newTimeCoefficient));
+
+                subframeToAdd.vParticle = newVelocity;  // TODO: correct newVelocity computation formula - remember about impulse concervation rule!
+                //subframeToAdd.vEdgeStart = ; // TODO: implement
+                //subframeToAdd.vEdgeEnd = ; // TODO: implement
+                subframeToAdd.timeCoefficient = newTimeCoefficient;
+                collisionBuffer.Add(subframeToAdd);
                 ccds.Add(ccd);
 
                 if (LsmBody.pauseOnBodyBodyCollision)
@@ -127,29 +137,29 @@ namespace PhysicsTestbed
         }
 
         public override void ApplyImpulse(
-            LsmBody applyBody, Particle applyParticle, Vector2 pos, Vector2 posNext, Vector2 velocity,
-            ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime
+            LsmBody applyBody, Particle applyParticle, LsmBody otherBody, Vector2 pos, Vector2 posNext, Vector2 velocity,
+            ref List<CollisionSubframeBuffer> collisionBuffer, double timeCoefficientPrediction
         )
         {
-            //foreach (LsmBody body in Testbed.world.bodies)
-            LsmBody body = Testbed.world.bodyPassiveDebug; // DEBUG
+            Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
+
+            LsmBody body = otherBody;
+            // iterate all possible edges of body and test them with current subframed point
+            foreach (Particle bodyt in body.particles)
             {
-                if (!body.Equals(applyBody)) // avoid self-collision here
+                if (bodyt.xPos != null)
                 {
-                    // iterate all possible edges of body and test them with current subframed point
-                    {
-                        foreach (Particle bodyt in body.particles)
-                        {
-                            if (bodyt.xPos != null)
-                            {
-                                CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
-                            }
-                            if (bodyt.yPos != null)
-                            {
-                                CheckParticleEdge(body.frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, accumulatedSubframeTime);
-                            }
-                        }
-                    }
+                    CheckParticleEdge(
+                        body.frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, timeCoefficientPrediction,
+                        new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.xPos), bodyt.v, bodyt.xPos.v, 0.0)
+                    );
+                }
+                if (bodyt.yPos != null)
+                {
+                    CheckParticleEdge(
+                        body.frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, timeCoefficientPrediction,
+                        new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.yPos), bodyt.v, bodyt.yPos.v, 0.0)
+                    );
                 }
             }
         }

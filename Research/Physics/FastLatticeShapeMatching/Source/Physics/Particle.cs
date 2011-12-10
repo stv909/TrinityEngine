@@ -9,26 +9,38 @@ namespace PhysicsTestbed
 {
     public class CollisionSubframe
     {
-        public Vector2 v;				        // Velocity before collision
+        public Particle particle;               // Particle in collision
+        public Vector2 vParticle;   	        //  Velocity after collision
+        public Edge edge;                       // Edge in collision
+        public Vector2 vEdgeStart;		        //  Velocity after collision
+        public Vector2 vEdgeEnd;		        //  Velocity after collision
         public double timeCoefficient = 0.0;    // Part of time step before collision - [0, 1]
 
         public CollisionSubframe() 
         {
         }
 
-        public CollisionSubframe(Vector2 v, double timeCoefficient)
+        public CollisionSubframe(Particle particle, Vector2 vParticle, Edge edge, Vector2 vEdgeStart, Vector2 vEdgeEnd, double timeCoefficient)
         {
             //Debug.Assert(timeCoefficient > 0.0);
-            this.v = v;
+            this.particle = particle;
+            this.vParticle = vParticle;
+            this.edge = edge;
+            this.vEdgeStart = vEdgeStart;
+            this.vEdgeEnd = vEdgeEnd;
             this.timeCoefficient = timeCoefficient;
         }
     }
 
     public class CollisionSubframeBuffer : CollisionSubframe
     {
-        public CollisionSubframeBuffer(Vector2 v, double timeCoefficient) // has no assertion for timeCoefficient
+        public CollisionSubframeBuffer(Particle particle, Vector2 vParticle, Edge edge, Vector2 vEdgeStart, Vector2 vEdgeEnd, double timeCoefficient)
         {
-            this.v = v;
+            this.particle = particle;
+            this.vParticle = vParticle;
+            this.edge = edge;
+            this.vEdgeStart = vEdgeStart;
+            this.vEdgeEnd = vEdgeEnd;
             this.timeCoefficient = timeCoefficient;
         }
     }
@@ -55,6 +67,18 @@ namespace PhysicsTestbed
         }
     }
 
+    public class Edge
+    {
+        public Particle start;
+        public Particle end;
+
+        public Edge(Particle start, Particle end)
+        {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
 	public class Particle
 	{
         public LsmBody body;
@@ -73,7 +97,7 @@ namespace PhysicsTestbed
         public Vector2 xPrior;                      // Position from prior frame
 
         // continues collision detection and impulse integration
-        public CollisionSubframeList collisionSubframes = new CollisionSubframeList();
+        //public CollisionSubframeList collisionSubframes = new CollisionSubframeList();
 
         public class CCDDebugInfo
         {
