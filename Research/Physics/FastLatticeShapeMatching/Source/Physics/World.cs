@@ -25,11 +25,13 @@ namespace PhysicsTestbed
 
 		public void Update()
 		{
+            // update all external forces
 			foreach (EnvironmentForce e in environmentForces)
 			{
 				e.Update();
 			}
 
+            // update internal processes in bodies, find velocities
 			foreach (LsmBody b in bodies)
 			{
                 if (!b.frozen)
@@ -49,6 +51,7 @@ namespace PhysicsTestbed
                 }
             }
 
+            // iterate subframes for collision and integration system of bodies
             foreach (LsmBody b in bodies)
             {
                 if (!b.frozen)
@@ -68,6 +71,7 @@ namespace PhysicsTestbed
                 }
             }
 
+            // postupdate external forces
             foreach (EnvironmentForce e in environmentForces)
             {
                 e.PostUpdate();
