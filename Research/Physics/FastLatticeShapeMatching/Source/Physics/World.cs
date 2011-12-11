@@ -27,11 +27,11 @@ namespace PhysicsTestbed
             // update internal processes in bodies, find velocities
 			foreach (LsmBody b in bodies)
 			{
-                if (!b.frozen)
+                if (!b.Frozen)
                 {
                     foreach (EnvironmentForce e in environmentForces)
                     {
-                        if (e is WallForce && !b.useWallForce) // HACK to apply custom forces // TODO: make correct system
+                        if (e is WallForce && !b.UseWallForce) // HACK to apply custom forces // TODO: make correct system
                             continue;
                         e.ApplyForce(b.particles);
                     }
@@ -52,7 +52,7 @@ namespace PhysicsTestbed
                 for (int i = 0; i < bodies.Count; ++i )
                 {
                     LsmBody bLeft = bodies[i];
-                    if (!bLeft.frozen && !bLeft.useWallForce)
+                    if (!bLeft.Frozen && !bLeft.UseWallForce)
                     {
                         bLeft.CollideWithWall(timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
                     }
@@ -91,7 +91,7 @@ namespace PhysicsTestbed
                 {
                     foreach (LsmBody b in bodies)
                     {
-                        if (!b.frozen)
+                        if (!b.Frozen)
                         {
                             b.UpdateParticlesPosition(timeCoefficientIntegrate);
                         }

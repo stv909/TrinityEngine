@@ -29,8 +29,8 @@ namespace PhysicsTestbed
         Color3 color = new Color3(0, 1, 0);
         public Color3 Color { get { return color; } }
 
-        public bool useWallForce = false;
-        public bool frozen = false;
+        private bool useWallForce = false;
+        private bool frozen = false;
 
         public bool UseWallForce {get{return useWallForce;} set{useWallForce = value;}}
         public bool Frozen { get { return frozen; } set { frozen = value; } }
@@ -281,8 +281,8 @@ namespace PhysicsTestbed
 
         public void CollideWithWall(double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
-            Debug.Assert(!frozen);
-            Debug.Assert(!useWallForce);
+            Debug.Assert(!Frozen);
+            Debug.Assert(!UseWallForce);
 
             foreach (Particle t in particles)
             {
@@ -311,7 +311,7 @@ namespace PhysicsTestbed
 
         public void UpdateParticlesPosition(double timeCoefficientIntegrate)
         {
-            Debug.Assert(!frozen);
+            Debug.Assert(!Frozen);
 
             // Apply velocity
             foreach (Particle p in particles)

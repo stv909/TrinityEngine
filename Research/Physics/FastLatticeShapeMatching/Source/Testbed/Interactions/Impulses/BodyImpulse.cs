@@ -141,14 +141,14 @@ namespace PhysicsTestbed
                 if (bodyt.xPos != null)
                 {
                     CheckParticleEdge(
-                        body.frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, timeCoefficientPrediction,
+                        body.Frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, timeCoefficientPrediction,
                         new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.xPos), bodyt.v, bodyt.xPos.v, 0.0)
                     );
                 }
                 if (bodyt.yPos != null)
                 {
                     CheckParticleEdge(
-                        body.frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, timeCoefficientPrediction,
+                        body.Frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, timeCoefficientPrediction,
                         new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.yPos), bodyt.v, bodyt.yPos.v, 0.0)
                     );
                 }
