@@ -36,23 +36,23 @@ Trinity Engine. Conceptual design and research.
 											- rewrite collision handling cycle
 												+ check whole world in every subframe
 												+ correct bodies iterating for collision detection: avoid double-checks per frame with conflicting results
-												> test new system in all cases
-												- remove bodyActiveDebug & bodyPassiveDebug, make proper and quality Ignore Collisions flag instead
+												+ test new system in all cases
+												+ remove bodyActiveDebug & bodyPassiveDebug, make proper and quality Frozen & UseWallForce flag instead
 												- make general refactoring of all algorithms and data structures to reflect new conception
 												- restore all debug drawings
-											- avoid particle's energy growth while frequent collidings
-											- velocity modification using Rule of conservative impulses
 										+ simple and obvious method to find timeCoefficient
 									- improve zoom-in/zoom-out and processing in world.paused mode
 									- rotating impulse wall
 								- vs complex dynamic body
+									> velocity modification using Rule of conservative impulses: particle <---infuence---> edge
+									- avoid particle's energy growth while frequent collidings
 							1.1.2.1.1.2.2 Single chunk of soft body
 								- just being (drag it in empty scene)
 								- vs moving wall
 								- vs complex dynamic body
 								- self-collision
 				1.1.2.2 Fast LSM implementation
-			1.1.3 Integration Powder Toys with FLSM
+			1.1.3 Integration Powder Toys concept with FLSM
 			
 		1.2 Multicore cloud computing
 		1.3 Editor for creating worlds with entities
