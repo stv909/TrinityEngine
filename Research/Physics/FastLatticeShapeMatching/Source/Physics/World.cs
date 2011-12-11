@@ -16,10 +16,6 @@ namespace PhysicsTestbed
 
         public List<MouseForce> mouseForces = new List<MouseForce>();
 
-        // Simulation parameters
-        //[Controllable(Type=ControllableAttribute.ControllerType.Slider, Min=0.0, Max=1.0, Caption="Alpha")]
-        public static double alpha = 1.0;
-
 		public void Update()
 		{
             // update all external forces
@@ -63,11 +59,8 @@ namespace PhysicsTestbed
                     for (int j = i + 1; j < bodies.Count; ++j) // TODO: implement self-collisions for j == i.
                     {
                         LsmBody bRight = bodies[j];
-
-                        //if (!bLeft.frozen && !bLeft.pureForces) // TODO: optimize this condition within such cycle
-                            LsmBody.CollideBodies(bLeft, bRight, timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
-                        //if (!bRight.frozen && !bRight.pureForces)
-                            LsmBody.CollideBodies(bRight, bLeft, timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
+                        LsmBody.CollideBodies(bLeft, bRight, timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
+                        LsmBody.CollideBodies(bRight, bLeft, timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
                     }
                 }
 

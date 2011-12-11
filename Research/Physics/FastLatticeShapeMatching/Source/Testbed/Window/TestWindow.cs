@@ -149,8 +149,6 @@ namespace PhysicsTestbed
 		private void pauseStepButton_MouseDown(object sender, MouseEventArgs e)
 		{
 			pauseStepFrame = 0;
-			//Program.instance.testbed.PauseStep();
-			//statusBox.PostMessage(Color.Blue, "Step");
 			Testbed.Update();
 		}
 
@@ -243,30 +241,6 @@ namespace PhysicsTestbed
         private void model27Button_Click(object sender, EventArgs e)
         {
             Testbed.SetModel(1, 6);
-        }
-
-        private void model02DisableCollisions_CheckedChanged(object sender, EventArgs e)
-        {
-//            CheckBox cb = sender as CheckBox;
-//            Testbed.world.bodies[1].pureForces = cb.Checked;
-        }
-        
-        private void model01DisableCollisions_CheckedChanged(object sender, EventArgs e)
-        {
-//            CheckBox cb = sender as CheckBox;
-//            Testbed.world.bodies[0].pureForces = cb.Checked;
-        }
-
-        private void model02Freeze_CheckedChanged(object sender, EventArgs e)
-        {
-//            CheckBox cb = sender as CheckBox;
-//            Testbed.world.bodies[1].frozen = cb.Checked;
-        }
-
-        private void model01Freeze_CheckedChanged(object sender, EventArgs e)
-        {
-//            CheckBox cb = sender as CheckBox;
-//            Testbed.world.bodies[0].frozen = cb.Checked;
         }
 
         private void originButton_Click(object sender, EventArgs e)

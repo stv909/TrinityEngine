@@ -47,6 +47,7 @@ namespace PhysicsTestbed
     }
 
     // WARNING: not full functional class. it supports only constructor, Add and Clear.
+    // TODO: move it to more appropriate file
     public class CollisionSubframeList
     {
         double currentTime = 0.0;
@@ -96,9 +97,6 @@ namespace PhysicsTestbed
         public Vector2 x0;							// Material position
         public Vector2 fExt;						// External force
         public Vector2 xPrior;                      // Position from prior frame
-
-        // continues collision detection and impulse integration
-        //public CollisionSubframeList collisionSubframes = new CollisionSubframeList();
 
         public class CCDDebugInfo
         {

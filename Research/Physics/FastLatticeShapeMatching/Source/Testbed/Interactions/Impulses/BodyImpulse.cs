@@ -79,12 +79,6 @@ namespace PhysicsTestbed
             LineSegment edge = new LineSegment(origin.x, neighbor.x);
             LineSegment edgeNext = new LineSegment(edge.start + origin.v * timeCoefficientPrediction, edge.end + neighbor.v * timeCoefficientPrediction);
 
-            //LineSegment edge = new LineSegment(origin.goal + origin.v * accumulatedSubframeTime, neighbor.goal + neighbor.v * accumulatedSubframeTime);
-            //LineSegment edgeNext = new LineSegment(edge.start + origin.v * timePrediction, edge.end + neighbor.v * timePrediction);
-
-            //LineSegment edge = new LineSegment(origin.goal, neighbor.goal);
-            //LineSegment edgeNext = new LineSegment(origin.x, neighbor.x);
-
             EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(edge, edgeNext, pos, posNext);
             double? ccdCollisionTime = EdgePointCCDSolver.Solve(solverInput);
 
@@ -129,10 +123,6 @@ namespace PhysicsTestbed
                     solverInput.currentEdge.end + (solverInput.nextEdge.end - solverInput.currentEdge.end) * time
                 )
             );
-
-            // DEBUG test (P-A)x(B-A) = 0
-            //Testbed.PostMessage(System.Drawing.Color.Blue, "Test CCD math: 0 =?= " + (ccd.point - ccd.edge.start).CrossProduct(ccd.edge.end - ccd.edge.start)); // DEBUG
-
             return ccd;
         }
 

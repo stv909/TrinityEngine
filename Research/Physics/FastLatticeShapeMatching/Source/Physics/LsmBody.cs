@@ -265,99 +265,7 @@ namespace PhysicsTestbed
             }
             return earliestCollision;
         }
-        /*
-        public void HandleCollisions(List<EnvironmentImpulse> environmentImpulses)
-        {
-            Debug.Assert(!frozen);
-            Debug.Assert(!pureForces);
 
-            foreach (Particle t in particles)
-            {
-                // impulse & offset collision method
-                t.collisionSubframes.Clear();
-                t.ccdDebugInfos.Clear();
-                double timeCoefficientPrediction = 1.0;
-                Vector2 pos = t.x; // TODO: think about: Why not t.goal ? May be we should affect t.goal to prevent it from violate collision? May be collision is a part of shape to match with?
-                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
-
-                int iterationsCounter = 0; // to prevent deadlocks
-                const int maxIterations = 64; // to prevent deadlocks
-                bool tooSmallTimeCoefficient = false;
-                bool collisionFound = false;
-                List<CollisionSubframeBuffer> collisionBuffer = new List<CollisionSubframeBuffer>();
-                do
-                {
-                    foreach (EnvironmentImpulse e in environmentImpulses)
-                    {
-                        e.ApplyImpulse(this, t, pos, posNext, t.v, ref collisionBuffer, t.collisionSubframes.CurrentTime);
-                    }
-
-                    if (collisionBuffer.Count > 0)
-                    {
-                        CollisionSubframeBuffer currentCollision = GetEarliestCollision(collisionBuffer);
-                        CollisionSubframe subframe = new CollisionSubframe(t.v, currentCollision.timeCoefficient);
-                        t.v = currentCollision.v;
-                        t.collisionSubframes.Add(subframe);
-                        pos += subframe.v * subframe.timeCoefficient;
-                        timeCoefficientPrediction -= subframe.timeCoefficient;
-                        posNext = pos + t.v * timeCoefficientPrediction;
-                        collisionFound = true;
-                        collisionBuffer.Clear();
-                    }
-                    else
-                    {
-                        collisionFound = false;
-                    }
-
-                    if (++iterationsCounter >= maxIterations || tooSmallTimeCoefficient) // to prevent deadlocks
-                    {
-                        Testbed.PostMessage(System.Drawing.Color.Red, "Deadlock detected in HandleCollisions!"); // DEBUG
-                        if (pauseOnDeadlock) Testbed.Paused = true;
-                        timeCoefficientPrediction = 0.0;
-                        break;
-                    }
-                }
-                while (collisionFound);
-
-                if (t.collisionSubframes.Buffer.Count > 0 && timeCoefficientPrediction > 0.0)
-                {
-                    t.collisionSubframes.Add(new CollisionSubframe(t.v, timeCoefficientPrediction));
-                }
-            }
-        }
-        *//*
-        public void UpdateParticlesPosition()
-        {
-            Debug.Assert(!frozen);
-
-            // Apply velocity
-            foreach (Particle p in particles)
-            {
-                p.xPrior = p.x;
-                if (p.locked == false)
-                {
-                    if (p.collisionSubframes.Buffer.Count > 0)
-                    {
-                        //double timeSumDebug = 0.0; // DEBUG
-                        foreach (CollisionSubframe subframe in p.collisionSubframes.Buffer)
-                        {
-                            //timeSumDebug += subframe.timeCoefficient; // DEBUG
-                            p.x += subframe.v * subframe.timeCoefficient;
-                        }
-                        //Debug.Assert(Math.Abs(timeSumDebug-1.0) < 0.0000001); // Debug
-                    }
-                    else
-                    {
-                        p.x += p.v;
-                    }
-                }
-                else
-                {
-                    p.v = Vector2.ZERO;
-                }
-            }
-        }
-        */
         public static CollisionSubframeBuffer GetEarliestSubframe(List<CollisionSubframeBuffer> subframes)
         {
             CollisionSubframeBuffer earliestSubframe = null;
@@ -390,9 +298,6 @@ namespace PhysicsTestbed
 
         public static void CollideBodies(LsmBody movingBody, LsmBody blockingBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
-            //Debug.Assert(!movingBody.frozen);
-            //Debug.Assert(!movingBody.pureForces);
-
             foreach (Particle particleOfMovingBody in movingBody.particles)
             {
                 // impulse & offset collision method

@@ -51,6 +51,7 @@ namespace PhysicsTestbed
             this.rmbPushRadioButton = new System.Windows.Forms.RadioButton();
             this.rmbLockRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.resetButton = new System.Windows.Forms.Button();
             this.model1Button2 = new System.Windows.Forms.Button();
             this.model2Button2 = new System.Windows.Forms.Button();
@@ -72,7 +73,6 @@ namespace PhysicsTestbed
             this.model7Button2 = new System.Windows.Forms.Button();
             this.model6Button1 = new System.Windows.Forms.Button();
             this.model6Button2 = new System.Windows.Forms.Button();
-            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.statusBox = new PhysicsTestbed.MessageTextBox();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -314,6 +314,15 @@ namespace PhysicsTestbed
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tunable parameters";
             // 
+            // controllerPanel1
+            // 
+            this.controllerPanel1.AutoScroll = true;
+            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
+            this.controllerPanel1.Name = "controllerPanel1";
+            this.controllerPanel1.Size = new System.Drawing.Size(378, 431);
+            this.controllerPanel1.TabIndex = 0;
+            // 
             // resetButton
             // 
             this.resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -465,7 +474,6 @@ namespace PhysicsTestbed
             this.model02DisableCollisions.TabIndex = 72;
             this.model02DisableCollisions.Text = "disable collisions";
             this.model02DisableCollisions.UseVisualStyleBackColor = true;
-            this.model02DisableCollisions.CheckedChanged += new System.EventHandler(this.model02DisableCollisions_CheckedChanged);
             // 
             // model01DisableCollisions
             // 
@@ -477,7 +485,6 @@ namespace PhysicsTestbed
             this.model01DisableCollisions.TabIndex = 73;
             this.model01DisableCollisions.Text = "disable collisions";
             this.model01DisableCollisions.UseVisualStyleBackColor = true;
-            this.model01DisableCollisions.CheckedChanged += new System.EventHandler(this.model01DisableCollisions_CheckedChanged);
             // 
             // model02Freeze
             // 
@@ -489,7 +496,6 @@ namespace PhysicsTestbed
             this.model02Freeze.TabIndex = 74;
             this.model02Freeze.Text = "freeze";
             this.model02Freeze.UseVisualStyleBackColor = true;
-            this.model02Freeze.CheckedChanged += new System.EventHandler(this.model02Freeze_CheckedChanged);
             // 
             // model01Freeze
             // 
@@ -501,7 +507,6 @@ namespace PhysicsTestbed
             this.model01Freeze.TabIndex = 75;
             this.model01Freeze.Text = "freeze";
             this.model01Freeze.UseVisualStyleBackColor = true;
-            this.model01Freeze.CheckedChanged += new System.EventHandler(this.model01Freeze_CheckedChanged);
             // 
             // originButton
             // 
@@ -561,15 +566,6 @@ namespace PhysicsTestbed
             this.model6Button2.Text = "6";
             this.model6Button2.UseVisualStyleBackColor = false;
             this.model6Button2.Click += new System.EventHandler(this.model26Button_Click);
-            // 
-            // controllerPanel1
-            // 
-            this.controllerPanel1.AutoScroll = true;
-            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
-            this.controllerPanel1.Name = "controllerPanel1";
-            this.controllerPanel1.Size = new System.Drawing.Size(378, 431);
-            this.controllerPanel1.TabIndex = 0;
             // 
             // statusBox
             // 

@@ -23,8 +23,7 @@ namespace PhysicsTestbed
             }
         }
 
-        public // DEBUG
-            class SolverResult
+        class SolverResult
         {
             public double? root1;
             public double? root2;
