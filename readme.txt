@@ -113,3 +113,7 @@ Character Animation
 	http://grail.cs.washington.edu/projects/graph-optimal-control/
 	http://www.youtube.com/watch?v=JzAEx6d4ow4&feature=related
 	http://graphics.cs.ucr.edu/projects/mocsim/mocsim.html
+
+Math Support
+	http://math-blog.com/2007/06/02/3-awesome-free-math-programs/
+	http://maxima.sourceforge.net/
