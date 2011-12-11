@@ -51,7 +51,6 @@ namespace PhysicsTestbed
             this.rmbPushRadioButton = new System.Windows.Forms.RadioButton();
             this.rmbLockRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.resetButton = new System.Windows.Forms.Button();
             this.model1Button2 = new System.Windows.Forms.Button();
             this.model2Button2 = new System.Windows.Forms.Button();
@@ -68,12 +67,13 @@ namespace PhysicsTestbed
             this.model01DisableCollisions = new System.Windows.Forms.CheckBox();
             this.model02Freeze = new System.Windows.Forms.CheckBox();
             this.model01Freeze = new System.Windows.Forms.CheckBox();
-            this.statusBox = new PhysicsTestbed.MessageTextBox();
             this.originButton = new System.Windows.Forms.Button();
             this.model7Button1 = new System.Windows.Forms.Button();
             this.model7Button2 = new System.Windows.Forms.Button();
             this.model6Button1 = new System.Windows.Forms.Button();
             this.model6Button2 = new System.Windows.Forms.Button();
+            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
+            this.statusBox = new PhysicsTestbed.MessageTextBox();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -314,15 +314,6 @@ namespace PhysicsTestbed
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tunable parameters";
             // 
-            // controllerPanel1
-            // 
-            this.controllerPanel1.AutoScroll = true;
-            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
-            this.controllerPanel1.Name = "controllerPanel1";
-            this.controllerPanel1.Size = new System.Drawing.Size(378, 431);
-            this.controllerPanel1.TabIndex = 0;
-            // 
             // resetButton
             // 
             this.resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -512,16 +503,6 @@ namespace PhysicsTestbed
             this.model01Freeze.UseVisualStyleBackColor = true;
             this.model01Freeze.CheckedChanged += new System.EventHandler(this.model01Freeze_CheckedChanged);
             // 
-            // statusBox
-            // 
-            this.statusBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.statusBox.Location = new System.Drawing.Point(8, 560);
-            this.statusBox.Name = "statusBox";
-            this.statusBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.statusBox.Size = new System.Drawing.Size(384, 80);
-            this.statusBox.TabIndex = 36;
-            this.statusBox.Text = "";
-            // 
             // originButton
             // 
             this.originButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -580,6 +561,25 @@ namespace PhysicsTestbed
             this.model6Button2.Text = "6";
             this.model6Button2.UseVisualStyleBackColor = false;
             this.model6Button2.Click += new System.EventHandler(this.model26Button_Click);
+            // 
+            // controllerPanel1
+            // 
+            this.controllerPanel1.AutoScroll = true;
+            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
+            this.controllerPanel1.Name = "controllerPanel1";
+            this.controllerPanel1.Size = new System.Drawing.Size(378, 431);
+            this.controllerPanel1.TabIndex = 0;
+            // 
+            // statusBox
+            // 
+            this.statusBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.statusBox.Location = new System.Drawing.Point(8, 560);
+            this.statusBox.Name = "statusBox";
+            this.statusBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.statusBox.Size = new System.Drawing.Size(384, 80);
+            this.statusBox.TabIndex = 36;
+            this.statusBox.Text = "";
             // 
             // TestWindow
             // 

@@ -17,15 +17,24 @@ namespace PhysicsTestbed
 		Vector2 velocity = new Vector2(0f, 0f);
 
 		public TestWindow()
-		{
-			InitializeComponent();
-			Testbed.wallImpulse.right = renderBox.Width;
-			Testbed.wallImpulse.top = renderBox.Height;
+        {
+            InitializeComponent();
+
+            // TODO: make refactoring for this Testbed initializations [
+            Testbed.wallImpulse.right = renderBox.Width;
+            Testbed.wallImpulse.top = renderBox.Height;
+
             Testbed.wallForce.right = renderBox.Width;
             Testbed.wallForce.top = renderBox.Height;
 
-			statusBox.PostMessage(Color.Green, "Simulation started");
-		}
+            for (int i = 0; i < 2; ++i )
+            {
+                Testbed.MakeDataBindingForBody(this, Testbed.world.bodies[i], i);
+            }
+            // ]
+
+            statusBox.PostMessage(Color.Green, "Simulation started");
+        }
 
 		private void TimerTick(object sender, EventArgs e)
 		{
@@ -147,11 +156,13 @@ namespace PhysicsTestbed
 
 		private void renderBox_Resize(object sender, EventArgs e)
 		{
+            // TODO: make refactoring for this Testbed initializations [
 			Testbed.wallImpulse.right = renderBox.Width;
 			Testbed.wallImpulse.top = renderBox.Height;
 
             Testbed.wallForce.right = renderBox.Width;
             Testbed.wallForce.top = renderBox.Height;
+            // ]
         }
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -236,26 +247,26 @@ namespace PhysicsTestbed
 
         private void model02DisableCollisions_CheckedChanged(object sender, EventArgs e)
         {
-            CheckBox cb = sender as CheckBox;
-            Testbed.world.bodies[1].pureForces = cb.Checked;
+//            CheckBox cb = sender as CheckBox;
+//            Testbed.world.bodies[1].pureForces = cb.Checked;
         }
         
         private void model01DisableCollisions_CheckedChanged(object sender, EventArgs e)
         {
-            CheckBox cb = sender as CheckBox;
-            Testbed.world.bodies[0].pureForces = cb.Checked;
+//            CheckBox cb = sender as CheckBox;
+//            Testbed.world.bodies[0].pureForces = cb.Checked;
         }
 
         private void model02Freeze_CheckedChanged(object sender, EventArgs e)
         {
-            CheckBox cb = sender as CheckBox;
-            Testbed.world.bodies[1].frozen = cb.Checked;
+//            CheckBox cb = sender as CheckBox;
+//            Testbed.world.bodies[1].frozen = cb.Checked;
         }
 
         private void model01Freeze_CheckedChanged(object sender, EventArgs e)
         {
-            CheckBox cb = sender as CheckBox;
-            Testbed.world.bodies[0].frozen = cb.Checked;
+//            CheckBox cb = sender as CheckBox;
+//            Testbed.world.bodies[0].frozen = cb.Checked;
         }
 
         private void originButton_Click(object sender, EventArgs e)

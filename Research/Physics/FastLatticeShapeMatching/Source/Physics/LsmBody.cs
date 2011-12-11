@@ -29,8 +29,12 @@ namespace PhysicsTestbed
         Color3 color = new Color3(0, 1, 0);
         public Color3 Color { get { return color; } }
 
-        public bool pureForces = false;
+        public bool useWallForce = false;
         public bool frozen = false;
+
+        public bool UseWallForce {get{return useWallForce;} set{useWallForce = value;}}
+        public bool Frozen { get { return frozen; } set { frozen = value; } }
+
         public List<LsmBody> collisionCash = new List<LsmBody>();
 
 		protected static int w = 3;
@@ -370,7 +374,7 @@ namespace PhysicsTestbed
         public void CollideWithWall(double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
             Debug.Assert(!frozen);
-            Debug.Assert(!pureForces);
+            Debug.Assert(!useWallForce);
 
             foreach (Particle t in particles)
             {
@@ -380,27 +384,23 @@ namespace PhysicsTestbed
 
                 // Collide with walls
                 Debug.Assert(Testbed.world.environmentImpulses[0] is WallImpulse); // TODO: fix this HACK
-                Testbed.world.environmentImpulses[0].ApplyImpulse(this, t, null, pos, posNext, t.v, ref collisionBuffer, timeCoefficientPrediction); // TODO: make refactoring for BodyImpulse
+                Testbed.world.environmentImpulses[0].ApplyImpulse(this, t, null, timeCoefficientPrediction, ref collisionBuffer); // TODO: make refactoring for BodyImpulse
             }
         }
 
-        public void CollideWith(LsmBody body, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        public static void CollideBodies(LsmBody movingBody, LsmBody blockingBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
-            Debug.Assert(!frozen);
-            Debug.Assert(!pureForces);
+            //Debug.Assert(!movingBody.frozen);
+            //Debug.Assert(!movingBody.pureForces);
 
-            if (body != Testbed.world.bodyPassiveDebug) return; // DEBUG
-
-            foreach (Particle t in particles)
+            foreach (Particle particleOfMovingBody in movingBody.particles)
             {
                 // impulse & offset collision method
-                t.ccdDebugInfos.Clear();
-                Vector2 pos = t.x;
-                Vector2 posNext = pos + t.v * timeCoefficientPrediction;
+                particleOfMovingBody.ccdDebugInfos.Clear();
 
                 // Collide with other body
                 Debug.Assert(Testbed.world.environmentImpulses[1] is BodyImpulse); // TODO: fix this HACK
-                Testbed.world.environmentImpulses[1].ApplyImpulse(this, t, body, pos, posNext, t.v, ref collisionBuffer, timeCoefficientPrediction); // TODO: make refactoring for BodyImpulse
+                Testbed.world.environmentImpulses[1].ApplyImpulse(movingBody, particleOfMovingBody, blockingBody, timeCoefficientPrediction, ref collisionBuffer); // TODO: make refactoring for BodyImpulse
             }
         }
 

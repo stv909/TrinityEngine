@@ -247,9 +247,12 @@ namespace PhysicsTestbed
                 Color3 colorX = new Color3(0, 0.5, 1);
                 Color3 colorXPrior = new Color3(0, 1, 0.5);
                 Color3 colorGoalX = new Color3(1, 0, 1);
-                if (LsmBody.drawXPriorXConnection) RenderConnection_xPrior_x(body.particles, colorGoalX);
-                if (LsmBody.drawBodyLattice_xPrior) RenderLattice_xPrior(body.particles, 0.7 * colorXPrior);
-                if (LsmBody.drawBodyParticles_xPrior) RenderParticleGroup_xPrior(body.particles, colorXPrior);
+                if (!body.frozen)
+                {
+                    if (LsmBody.drawXPriorXConnection) RenderConnection_xPrior_x(body.particles, colorGoalX);
+                    if (LsmBody.drawBodyLattice_xPrior) RenderLattice_xPrior(body.particles, 0.7 * colorXPrior);
+                    if (LsmBody.drawBodyParticles_xPrior) RenderParticleGroup_xPrior(body.particles, colorXPrior);
+                }
                 if (LsmBody.drawBodyLattice_x) RenderLattice_x(body.particles, 0.7 * colorX);
                 if (LsmBody.drawBodyParticles_x) RenderParticleGroup_x(body.particles, colorX);
                 if (LsmBody.drawBodyLattice_goal) RenderLattice_Goal(body.particles, 0.7 * body.Color);

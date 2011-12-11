@@ -36,6 +36,7 @@ namespace PhysicsTestbed
     {
         public CollisionSubframeBuffer(Particle particle, Vector2 vParticle, Edge edge, Vector2 vEdgeStart, Vector2 vEdgeEnd, double timeCoefficient)
         {
+            Debug.Assert(!double.IsInfinity(timeCoefficient) && !double.IsNaN(timeCoefficient));
             this.particle = particle;
             this.vParticle = vParticle;
             this.edge = edge;

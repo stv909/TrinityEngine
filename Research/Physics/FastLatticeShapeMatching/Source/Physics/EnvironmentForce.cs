@@ -20,7 +20,7 @@ namespace PhysicsTestbed
     {
         public abstract void ApplyImpulse(
             LsmBody applyBody, Particle applyParticle, LsmBody otherBody, // HACK // TODO: try to don't use such information for collisions or formilize this ussage
-            Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime
+            double accumulatedSubframeTime, ref List<CollisionSubframeBuffer> collisionBuffer // HACK // TODO: remove ref List<>
         );
     }
 

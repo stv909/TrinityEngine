@@ -75,6 +75,36 @@ namespace PhysicsTestbed
             world.mouseForces.Add(panAndZoom);
         }
 
+        public static void PostMessage(string message)
+        {
+            Program.window.statusBox.PostMessage(Color.Black, message);
+        }
+
+        public static void PostMessage(Color color, string message)
+        {
+            Program.window.statusBox.PostMessage(color, message);
+        }
+
+        static void MakeCheckBoxDataBinding(TestWindow window, string checkBoxName, string checkBoxPropertyName, LsmBody body, string bodyPropertyName)
+        {
+            System.Windows.Forms.Control[] controls = window.Controls.Find(checkBoxName, true);
+            if (controls.Length > 0 && controls.GetValue(0) != null && controls.GetValue(0) is System.Windows.Forms.CheckBox)
+            {
+                System.Windows.Forms.CheckBox checkBox = controls.GetValue(0) as System.Windows.Forms.CheckBox;
+                checkBox.DataBindings.Clear();
+                checkBox.DataBindings.Add(checkBoxPropertyName, body, bodyPropertyName).DataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged;
+            }
+        }
+
+        public static void MakeDataBindingForBody(TestWindow window, LsmBody body, int bodyIndex)
+        {
+            if (window != null && (bodyIndex == 0 || bodyIndex == 1))
+            {
+                MakeCheckBoxDataBinding(window, "model0" + (bodyIndex + 1) + "DisableCollisions", "Checked", body, "UseWallForce");
+                MakeCheckBoxDataBinding(window, "model0" + (bodyIndex + 1) + "Freeze", "Checked", body, "Frozen");
+            }
+        }
+
         private static LsmBody GenerateBody(int verticalIndex, bool[,] blueprint)
         {
             LsmBody body = new LsmBody(
@@ -82,6 +112,10 @@ namespace PhysicsTestbed
                 new Color3(verticalIndex == 1 ? 1 : 0, verticalIndex == 0 ? 1 : 0, verticalIndex == 2 ? 1 : 0)
             );
             body.GenerateFromBlueprint(blueprint);
+            if (verticalIndex < 2)
+            {
+                MakeDataBindingForBody(Program.window, body, verticalIndex);
+            }
             return body;
         }
 
@@ -92,37 +126,19 @@ namespace PhysicsTestbed
             {
                 LsmBody body = GenerateBody(verticalIndex, blueprint);
                 world.bodies.Add(body);
-
-                // DEBUG
-                switch (verticalIndex)
-                {
-                    case 0:
-                        world.bodyActiveDebug = body;
-                        break;
-                    case 1:
-                        world.bodyPassiveDebug = body;
-                        break;
-                }
-
                 ++verticalIndex;
             }
         }
 
         private static void RegenerateBody(int bodyIndex, bool[,] blueprint)
         {
+            if (bodyIndex < 0 || bodyIndex >= world.bodies.Count)
+            {
+                PostMessage(Color.Red, "Invalud world.body index: " + bodyIndex + ". Failed to regenerate body.");
+                return;
+            }
             LsmBody body = GenerateBody(bodyIndex, blueprint);
             world.bodies[bodyIndex] = body;
-
-            // DEBUG
-            switch (bodyIndex)
-            {
-                case 0:
-                    world.bodyActiveDebug = body;
-                    break;
-                case 1:
-                    world.bodyPassiveDebug = body;
-                    break;
-            }
         }
 
 		public static void Reset()
@@ -145,16 +161,6 @@ namespace PhysicsTestbed
 		public static void Update()
 		{
 			world.Update();
-		}
-
-		public static void PostMessage(string message)
-		{
-			Program.window.statusBox.PostMessage(Color.Black, message);
-		}
-
-		public static void PostMessage(Color color, string message)
-		{
-			Program.window.statusBox.PostMessage(color, message);
 		}
 	}
 }

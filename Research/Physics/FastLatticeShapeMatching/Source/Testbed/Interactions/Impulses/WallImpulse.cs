@@ -16,10 +16,16 @@ namespace PhysicsTestbed
 			this.top = height;
 		}
 
-        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer, double accumulatedSubframeTime)
+        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
 		{
             Debug.Assert(otherBody == null);
             float left = this.left + border, right = this.right - border, bottom = this.bottom + border, top = this.top - border;
+            if (left < 0.0 || right < 0.0 || bottom < 0.0 || top < 0.0) // to prevent computation for incorrect case
+                return;
+
+            Vector2 pos = applyParticle.x;
+            Vector2 velocity = applyParticle.v;
+            Vector2 posNext = pos + velocity * timeCoefficientPrediction;
 
             if (posNext.X < left)
             {

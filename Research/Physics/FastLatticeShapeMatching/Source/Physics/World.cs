@@ -20,9 +20,6 @@ namespace PhysicsTestbed
         //[Controllable(Type=ControllableAttribute.ControllerType.Slider, Min=0.0, Max=1.0, Caption="Alpha")]
         public static double alpha = 1.0;
 
-        public LsmBody bodyActiveDebug = null;
-        public LsmBody bodyPassiveDebug = null;
-
 		public void Update()
 		{
             // update all external forces
@@ -38,10 +35,7 @@ namespace PhysicsTestbed
                 {
                     foreach (EnvironmentForce e in environmentForces)
                     {
-                        if (
-                            e is WallForce && !b.pureForces
-                            && !b.Equals(bodyPassiveDebug) // DEBUG wallForce influence passive body anyway
-                        )
+                        if (e is WallForce && !b.useWallForce) // HACK to apply custom forces // TODO: make correct system
                             continue;
                         e.ApplyForce(b.particles);
                     }
@@ -62,20 +56,18 @@ namespace PhysicsTestbed
                 for (int i = 0; i < bodies.Count; ++i )
                 {
                     LsmBody bLeft = bodies[i];
-                    if (!bLeft.frozen && !bLeft.pureForces)
+                    if (!bLeft.frozen && !bLeft.useWallForce)
                     {
-                        if (bLeft.Equals(bodyActiveDebug)) // DEBUG no collisions for passive body
-                        {
-                            bLeft.CollideWithWall(timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
-                            for (int j = i + 1; j < bodies.Count; ++j) // TODO: implement self-collisions for j == i.
-                            {
-                                LsmBody bRight = bodies[j];
-                                if (bRight.Equals(bodyPassiveDebug)) // DEBUG no collisions for passive body
-                                {
-                                    bLeft.CollideWith(bRight, timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
-                                }
-                            }
-                        }
+                        bLeft.CollideWithWall(timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
+                    }
+                    for (int j = i + 1; j < bodies.Count; ++j) // TODO: implement self-collisions for j == i.
+                    {
+                        LsmBody bRight = bodies[j];
+
+                        //if (!bLeft.frozen && !bLeft.pureForces) // TODO: optimize this condition within such cycle
+                            LsmBody.CollideBodies(bLeft, bRight, timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
+                        //if (!bRight.frozen && !bRight.pureForces)
+                            LsmBody.CollideBodies(bRight, bLeft, timeCoefficientPrediction, ref collisionBuffer); // TODO: refactor to remove 'ref collisionBuffer'
                     }
                 }
 

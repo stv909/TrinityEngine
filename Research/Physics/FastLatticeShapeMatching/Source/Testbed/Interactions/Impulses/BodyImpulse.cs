@@ -136,12 +136,13 @@ namespace PhysicsTestbed
             return ccd;
         }
 
-        public override void ApplyImpulse(
-            LsmBody applyBody, Particle applyParticle, LsmBody otherBody, Vector2 pos, Vector2 posNext, Vector2 velocity,
-            ref List<CollisionSubframeBuffer> collisionBuffer, double timeCoefficientPrediction
-        )
+        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
             Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
+
+            Vector2 pos = applyParticle.x;
+            Vector2 velocity = applyParticle.v;
+            Vector2 posNext = pos + velocity * timeCoefficientPrediction;
 
             LsmBody body = otherBody;
             // iterate all possible edges of body and test them with current subframed point
