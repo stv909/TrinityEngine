@@ -51,25 +51,29 @@ namespace PhysicsTestbed
             this.rmbPushRadioButton = new System.Windows.Forms.RadioButton();
             this.rmbLockRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.resetButton = new System.Windows.Forms.Button();
-            this.model1Button = new System.Windows.Forms.Button();
-            this.model2Button = new System.Windows.Forms.Button();
-            this.model4Button = new System.Windows.Forms.Button();
-            this.model3Button = new System.Windows.Forms.Button();
+            this.model1Button2 = new System.Windows.Forms.Button();
+            this.model2Button2 = new System.Windows.Forms.Button();
+            this.model4Button2 = new System.Windows.Forms.Button();
+            this.model3Button2 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.model4Button1 = new System.Windows.Forms.Button();
+            this.model3Button1 = new System.Windows.Forms.Button();
+            this.model2Button1 = new System.Windows.Forms.Button();
+            this.model1Button1 = new System.Windows.Forms.Button();
+            this.model5Button2 = new System.Windows.Forms.Button();
+            this.model5Button1 = new System.Windows.Forms.Button();
             this.model02DisableCollisions = new System.Windows.Forms.CheckBox();
             this.model01DisableCollisions = new System.Windows.Forms.CheckBox();
             this.model02Freeze = new System.Windows.Forms.CheckBox();
             this.model01Freeze = new System.Windows.Forms.CheckBox();
-            this.controllerPanel1 = new PhysicsTestbed.ControllerPanel();
             this.statusBox = new PhysicsTestbed.MessageTextBox();
             this.originButton = new System.Windows.Forms.Button();
+            this.model7Button1 = new System.Windows.Forms.Button();
+            this.model7Button2 = new System.Windows.Forms.Button();
+            this.model6Button1 = new System.Windows.Forms.Button();
+            this.model6Button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -310,6 +314,15 @@ namespace PhysicsTestbed
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tunable parameters";
             // 
+            // controllerPanel1
+            // 
+            this.controllerPanel1.AutoScroll = true;
+            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
+            this.controllerPanel1.Name = "controllerPanel1";
+            this.controllerPanel1.Size = new System.Drawing.Size(378, 431);
+            this.controllerPanel1.TabIndex = 0;
+            // 
             // resetButton
             // 
             this.resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -321,53 +334,53 @@ namespace PhysicsTestbed
             this.resetButton.UseVisualStyleBackColor = true;
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
-            // model1Button
+            // model1Button2
             // 
-            this.model1Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.model1Button.BackColor = System.Drawing.Color.HotPink;
-            this.model1Button.Location = new System.Drawing.Point(56, 641);
-            this.model1Button.Name = "model1Button";
-            this.model1Button.Size = new System.Drawing.Size(24, 23);
-            this.model1Button.TabIndex = 61;
-            this.model1Button.Text = "1";
-            this.model1Button.UseVisualStyleBackColor = false;
-            this.model1Button.Click += new System.EventHandler(this.model21Button_Click);
+            this.model1Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model1Button2.BackColor = System.Drawing.Color.HotPink;
+            this.model1Button2.Location = new System.Drawing.Point(56, 641);
+            this.model1Button2.Name = "model1Button2";
+            this.model1Button2.Size = new System.Drawing.Size(24, 23);
+            this.model1Button2.TabIndex = 61;
+            this.model1Button2.Text = "1";
+            this.model1Button2.UseVisualStyleBackColor = false;
+            this.model1Button2.Click += new System.EventHandler(this.model21Button_Click);
             // 
-            // model2Button
+            // model2Button2
             // 
-            this.model2Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.model2Button.BackColor = System.Drawing.Color.HotPink;
-            this.model2Button.Location = new System.Drawing.Point(80, 641);
-            this.model2Button.Name = "model2Button";
-            this.model2Button.Size = new System.Drawing.Size(24, 23);
-            this.model2Button.TabIndex = 62;
-            this.model2Button.Text = "2";
-            this.model2Button.UseVisualStyleBackColor = false;
-            this.model2Button.Click += new System.EventHandler(this.model22Button_Click);
+            this.model2Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model2Button2.BackColor = System.Drawing.Color.HotPink;
+            this.model2Button2.Location = new System.Drawing.Point(80, 641);
+            this.model2Button2.Name = "model2Button2";
+            this.model2Button2.Size = new System.Drawing.Size(24, 23);
+            this.model2Button2.TabIndex = 62;
+            this.model2Button2.Text = "2";
+            this.model2Button2.UseVisualStyleBackColor = false;
+            this.model2Button2.Click += new System.EventHandler(this.model22Button_Click);
             // 
-            // model4Button
+            // model4Button2
             // 
-            this.model4Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.model4Button.BackColor = System.Drawing.Color.HotPink;
-            this.model4Button.Location = new System.Drawing.Point(128, 641);
-            this.model4Button.Name = "model4Button";
-            this.model4Button.Size = new System.Drawing.Size(24, 23);
-            this.model4Button.TabIndex = 64;
-            this.model4Button.Text = "4";
-            this.model4Button.UseVisualStyleBackColor = false;
-            this.model4Button.Click += new System.EventHandler(this.model24Button_Click);
+            this.model4Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model4Button2.BackColor = System.Drawing.Color.HotPink;
+            this.model4Button2.Location = new System.Drawing.Point(128, 641);
+            this.model4Button2.Name = "model4Button2";
+            this.model4Button2.Size = new System.Drawing.Size(24, 23);
+            this.model4Button2.TabIndex = 64;
+            this.model4Button2.Text = "4";
+            this.model4Button2.UseVisualStyleBackColor = false;
+            this.model4Button2.Click += new System.EventHandler(this.model24Button_Click);
             // 
-            // model3Button
+            // model3Button2
             // 
-            this.model3Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.model3Button.BackColor = System.Drawing.Color.HotPink;
-            this.model3Button.Location = new System.Drawing.Point(104, 641);
-            this.model3Button.Name = "model3Button";
-            this.model3Button.Size = new System.Drawing.Size(24, 23);
-            this.model3Button.TabIndex = 63;
-            this.model3Button.Text = "3";
-            this.model3Button.UseVisualStyleBackColor = false;
-            this.model3Button.Click += new System.EventHandler(this.model23Button_Click);
+            this.model3Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model3Button2.BackColor = System.Drawing.Color.HotPink;
+            this.model3Button2.Location = new System.Drawing.Point(104, 641);
+            this.model3Button2.Name = "model3Button2";
+            this.model3Button2.Size = new System.Drawing.Size(24, 23);
+            this.model3Button2.TabIndex = 63;
+            this.model3Button2.Text = "3";
+            this.model3Button2.UseVisualStyleBackColor = false;
+            this.model3Button2.Click += new System.EventHandler(this.model23Button_Click);
             // 
             // label2
             // 
@@ -379,83 +392,83 @@ namespace PhysicsTestbed
             this.label2.Text = "Models:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // button1
+            // model4Button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.BackColor = System.Drawing.Color.LawnGreen;
-            this.button1.Location = new System.Drawing.Point(128, 664);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 23);
-            this.button1.TabIndex = 69;
-            this.button1.Text = "4";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.model14Button_Click);
+            this.model4Button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model4Button1.BackColor = System.Drawing.Color.LawnGreen;
+            this.model4Button1.Location = new System.Drawing.Point(128, 664);
+            this.model4Button1.Name = "model4Button1";
+            this.model4Button1.Size = new System.Drawing.Size(24, 23);
+            this.model4Button1.TabIndex = 69;
+            this.model4Button1.Text = "4";
+            this.model4Button1.UseVisualStyleBackColor = false;
+            this.model4Button1.Click += new System.EventHandler(this.model14Button_Click);
             // 
-            // button2
+            // model3Button1
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.BackColor = System.Drawing.Color.LawnGreen;
-            this.button2.Location = new System.Drawing.Point(104, 664);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(24, 23);
-            this.button2.TabIndex = 68;
-            this.button2.Text = "3";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.model13Button_Click);
+            this.model3Button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model3Button1.BackColor = System.Drawing.Color.LawnGreen;
+            this.model3Button1.Location = new System.Drawing.Point(104, 664);
+            this.model3Button1.Name = "model3Button1";
+            this.model3Button1.Size = new System.Drawing.Size(24, 23);
+            this.model3Button1.TabIndex = 68;
+            this.model3Button1.Text = "3";
+            this.model3Button1.UseVisualStyleBackColor = false;
+            this.model3Button1.Click += new System.EventHandler(this.model13Button_Click);
             // 
-            // button3
+            // model2Button1
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.BackColor = System.Drawing.Color.LawnGreen;
-            this.button3.Location = new System.Drawing.Point(80, 664);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(24, 23);
-            this.button3.TabIndex = 67;
-            this.button3.Text = "2";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.model12Button_Click);
+            this.model2Button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model2Button1.BackColor = System.Drawing.Color.LawnGreen;
+            this.model2Button1.Location = new System.Drawing.Point(80, 664);
+            this.model2Button1.Name = "model2Button1";
+            this.model2Button1.Size = new System.Drawing.Size(24, 23);
+            this.model2Button1.TabIndex = 67;
+            this.model2Button1.Text = "2";
+            this.model2Button1.UseVisualStyleBackColor = false;
+            this.model2Button1.Click += new System.EventHandler(this.model12Button_Click);
             // 
-            // button4
+            // model1Button1
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button4.BackColor = System.Drawing.Color.LawnGreen;
-            this.button4.Location = new System.Drawing.Point(56, 664);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(24, 23);
-            this.button4.TabIndex = 66;
-            this.button4.Text = "1";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.model11Button_Click);
+            this.model1Button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model1Button1.BackColor = System.Drawing.Color.LawnGreen;
+            this.model1Button1.Location = new System.Drawing.Point(56, 664);
+            this.model1Button1.Name = "model1Button1";
+            this.model1Button1.Size = new System.Drawing.Size(24, 23);
+            this.model1Button1.TabIndex = 66;
+            this.model1Button1.Text = "1";
+            this.model1Button1.UseVisualStyleBackColor = false;
+            this.model1Button1.Click += new System.EventHandler(this.model11Button_Click);
             // 
-            // button5
+            // model5Button2
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button5.BackColor = System.Drawing.Color.HotPink;
-            this.button5.Location = new System.Drawing.Point(152, 641);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(24, 23);
-            this.button5.TabIndex = 70;
-            this.button5.Text = "5";
-            this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.model25Button_Click);
+            this.model5Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model5Button2.BackColor = System.Drawing.Color.HotPink;
+            this.model5Button2.Location = new System.Drawing.Point(152, 641);
+            this.model5Button2.Name = "model5Button2";
+            this.model5Button2.Size = new System.Drawing.Size(24, 23);
+            this.model5Button2.TabIndex = 70;
+            this.model5Button2.Text = "5";
+            this.model5Button2.UseVisualStyleBackColor = false;
+            this.model5Button2.Click += new System.EventHandler(this.model25Button_Click);
             // 
-            // button6
+            // model5Button1
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.BackColor = System.Drawing.Color.LawnGreen;
-            this.button6.Location = new System.Drawing.Point(152, 664);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(24, 23);
-            this.button6.TabIndex = 71;
-            this.button6.Text = "5";
-            this.button6.UseVisualStyleBackColor = false;
-            this.button6.Click += new System.EventHandler(this.model15Button_Click);
+            this.model5Button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model5Button1.BackColor = System.Drawing.Color.LawnGreen;
+            this.model5Button1.Location = new System.Drawing.Point(152, 664);
+            this.model5Button1.Name = "model5Button1";
+            this.model5Button1.Size = new System.Drawing.Size(24, 23);
+            this.model5Button1.TabIndex = 71;
+            this.model5Button1.Text = "5";
+            this.model5Button1.UseVisualStyleBackColor = false;
+            this.model5Button1.Click += new System.EventHandler(this.model15Button_Click);
             // 
             // model02DisableCollisions
             // 
             this.model02DisableCollisions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.model02DisableCollisions.AutoSize = true;
-            this.model02DisableCollisions.Location = new System.Drawing.Point(182, 645);
+            this.model02DisableCollisions.Location = new System.Drawing.Point(236, 645);
             this.model02DisableCollisions.Name = "model02DisableCollisions";
             this.model02DisableCollisions.Size = new System.Drawing.Size(104, 17);
             this.model02DisableCollisions.TabIndex = 72;
@@ -467,7 +480,7 @@ namespace PhysicsTestbed
             // 
             this.model01DisableCollisions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.model01DisableCollisions.AutoSize = true;
-            this.model01DisableCollisions.Location = new System.Drawing.Point(182, 669);
+            this.model01DisableCollisions.Location = new System.Drawing.Point(236, 669);
             this.model01DisableCollisions.Name = "model01DisableCollisions";
             this.model01DisableCollisions.Size = new System.Drawing.Size(104, 17);
             this.model01DisableCollisions.TabIndex = 73;
@@ -479,7 +492,7 @@ namespace PhysicsTestbed
             // 
             this.model02Freeze.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.model02Freeze.AutoSize = true;
-            this.model02Freeze.Location = new System.Drawing.Point(285, 645);
+            this.model02Freeze.Location = new System.Drawing.Point(339, 645);
             this.model02Freeze.Name = "model02Freeze";
             this.model02Freeze.Size = new System.Drawing.Size(55, 17);
             this.model02Freeze.TabIndex = 74;
@@ -491,22 +504,13 @@ namespace PhysicsTestbed
             // 
             this.model01Freeze.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.model01Freeze.AutoSize = true;
-            this.model01Freeze.Location = new System.Drawing.Point(285, 668);
+            this.model01Freeze.Location = new System.Drawing.Point(339, 668);
             this.model01Freeze.Name = "model01Freeze";
             this.model01Freeze.Size = new System.Drawing.Size(55, 17);
             this.model01Freeze.TabIndex = 75;
             this.model01Freeze.Text = "freeze";
             this.model01Freeze.UseVisualStyleBackColor = true;
             this.model01Freeze.CheckedChanged += new System.EventHandler(this.model01Freeze_CheckedChanged);
-            // 
-            // controllerPanel1
-            // 
-            this.controllerPanel1.AutoScroll = true;
-            this.controllerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controllerPanel1.Location = new System.Drawing.Point(3, 16);
-            this.controllerPanel1.Name = "controllerPanel1";
-            this.controllerPanel1.Size = new System.Drawing.Size(378, 431);
-            this.controllerPanel1.TabIndex = 0;
             // 
             // statusBox
             // 
@@ -529,28 +533,80 @@ namespace PhysicsTestbed
             this.originButton.UseVisualStyleBackColor = true;
             this.originButton.Click += new System.EventHandler(this.originButton_Click);
             // 
+            // model7Button1
+            // 
+            this.model7Button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model7Button1.BackColor = System.Drawing.Color.LawnGreen;
+            this.model7Button1.Location = new System.Drawing.Point(200, 664);
+            this.model7Button1.Name = "model7Button1";
+            this.model7Button1.Size = new System.Drawing.Size(24, 23);
+            this.model7Button1.TabIndex = 80;
+            this.model7Button1.Text = "7";
+            this.model7Button1.UseVisualStyleBackColor = false;
+            this.model7Button1.Click += new System.EventHandler(this.model17Button_Click);
+            // 
+            // model7Button2
+            // 
+            this.model7Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model7Button2.BackColor = System.Drawing.Color.HotPink;
+            this.model7Button2.Location = new System.Drawing.Point(200, 641);
+            this.model7Button2.Name = "model7Button2";
+            this.model7Button2.Size = new System.Drawing.Size(24, 23);
+            this.model7Button2.TabIndex = 79;
+            this.model7Button2.Text = "7";
+            this.model7Button2.UseVisualStyleBackColor = false;
+            this.model7Button2.Click += new System.EventHandler(this.model27Button_Click);
+            // 
+            // model6Button1
+            // 
+            this.model6Button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model6Button1.BackColor = System.Drawing.Color.LawnGreen;
+            this.model6Button1.Location = new System.Drawing.Point(176, 664);
+            this.model6Button1.Name = "model6Button1";
+            this.model6Button1.Size = new System.Drawing.Size(24, 23);
+            this.model6Button1.TabIndex = 78;
+            this.model6Button1.Text = "6";
+            this.model6Button1.UseVisualStyleBackColor = false;
+            this.model6Button1.Click += new System.EventHandler(this.model16Button_Click);
+            // 
+            // model6Button2
+            // 
+            this.model6Button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.model6Button2.BackColor = System.Drawing.Color.HotPink;
+            this.model6Button2.Location = new System.Drawing.Point(176, 641);
+            this.model6Button2.Name = "model6Button2";
+            this.model6Button2.Size = new System.Drawing.Size(24, 23);
+            this.model6Button2.TabIndex = 77;
+            this.model6Button2.Text = "6";
+            this.model6Button2.UseVisualStyleBackColor = false;
+            this.model6Button2.Click += new System.EventHandler(this.model26Button_Click);
+            // 
             // TestWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1035, 750);
+            this.Controls.Add(this.model7Button1);
+            this.Controls.Add(this.model7Button2);
+            this.Controls.Add(this.model6Button1);
+            this.Controls.Add(this.model6Button2);
             this.Controls.Add(this.originButton);
             this.Controls.Add(this.model01Freeze);
             this.Controls.Add(this.model02Freeze);
             this.Controls.Add(this.model01DisableCollisions);
             this.Controls.Add(this.model02DisableCollisions);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.model5Button1);
+            this.Controls.Add(this.model5Button2);
+            this.Controls.Add(this.model4Button1);
+            this.Controls.Add(this.model3Button1);
+            this.Controls.Add(this.model2Button1);
+            this.Controls.Add(this.model1Button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.centerOfMassX);
-            this.Controls.Add(this.model4Button);
-            this.Controls.Add(this.model3Button);
-            this.Controls.Add(this.model2Button);
-            this.Controls.Add(this.model1Button);
+            this.Controls.Add(this.model4Button2);
+            this.Controls.Add(this.model3Button2);
+            this.Controls.Add(this.model2Button2);
+            this.Controls.Add(this.model1Button2);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.linearMomentumY);
             this.Controls.Add(this.centerOfMassY);
@@ -611,22 +667,26 @@ namespace PhysicsTestbed
 		private System.Windows.Forms.GroupBox groupBox1;
 		private ControllerPanel controllerPanel1;
 		private System.Windows.Forms.Button resetButton;
-		private System.Windows.Forms.Button model1Button;
-		private System.Windows.Forms.Button model2Button;
-		private System.Windows.Forms.Button model4Button;
-		private System.Windows.Forms.Button model3Button;
+		private System.Windows.Forms.Button model1Button2;
+		private System.Windows.Forms.Button model2Button2;
+		private System.Windows.Forms.Button model4Button2;
+		private System.Windows.Forms.Button model3Button2;
 		private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button model4Button1;
+        private System.Windows.Forms.Button model3Button1;
+        private System.Windows.Forms.Button model2Button1;
+        private System.Windows.Forms.Button model1Button1;
+        private System.Windows.Forms.Button model5Button2;
+        private System.Windows.Forms.Button model5Button1;
         private System.Windows.Forms.CheckBox model02DisableCollisions;
         private System.Windows.Forms.CheckBox model01DisableCollisions;
         private System.Windows.Forms.CheckBox model02Freeze;
         private System.Windows.Forms.CheckBox model01Freeze;
         private System.Windows.Forms.Button originButton;
+        private System.Windows.Forms.Button model7Button1;
+        private System.Windows.Forms.Button model7Button2;
+        private System.Windows.Forms.Button model6Button1;
+        private System.Windows.Forms.Button model6Button2;
 	}
 }
 

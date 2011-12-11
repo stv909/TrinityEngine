@@ -166,52 +166,72 @@ namespace PhysicsTestbed
 
 		private void model11Button_Click(object sender, EventArgs e)
 		{
-			Testbed.SetModel(0, 1);
+			Testbed.SetModel(0, 0);
 		}
 
 		private void model12Button_Click(object sender, EventArgs e)
 		{
-            Testbed.SetModel(0, 2);
+            Testbed.SetModel(0, 1);
 		}
 
 		private void model13Button_Click(object sender, EventArgs e)
 		{
-            Testbed.SetModel(0, 3);
+            Testbed.SetModel(0, 2);
 		}
 
 		private void model14Button_Click(object sender, EventArgs e)
 		{
-            Testbed.SetModel(0, 4);
+            Testbed.SetModel(0, 3);
 		}
 
         private void model15Button_Click(object sender, EventArgs e)
         {
+            Testbed.SetModel(0, 4);
+        }
+
+        private void model16Button_Click(object sender, EventArgs e)
+        {
             Testbed.SetModel(0, 5);
+        }
+
+        private void model17Button_Click(object sender, EventArgs e)
+        {
+            Testbed.SetModel(0, 6);
         }
 
         private void model21Button_Click(object sender, EventArgs e)
         {
-            Testbed.SetModel(1, 1);
+            Testbed.SetModel(1, 0);
         }
 
         private void model22Button_Click(object sender, EventArgs e)
         {
-            Testbed.SetModel(1, 2);
+            Testbed.SetModel(1, 1);
         }
 
         private void model23Button_Click(object sender, EventArgs e)
         {
-            Testbed.SetModel(1, 3);
+            Testbed.SetModel(1, 2);
         }
 
         private void model24Button_Click(object sender, EventArgs e)
         {
-            Testbed.SetModel(1, 4);
+            Testbed.SetModel(1, 3);
         }
 
         private void model25Button_Click(object sender, EventArgs e)
         {
+            Testbed.SetModel(1, 4);
+        }
+
+        private void model26Button_Click(object sender, EventArgs e)
+        {
             Testbed.SetModel(1, 5);
+        }
+        
+        private void model27Button_Click(object sender, EventArgs e)
+        {
+            Testbed.SetModel(1, 6);
         }
 
         private void model02DisableCollisions_CheckedChanged(object sender, EventArgs e)
