@@ -95,6 +95,23 @@ namespace PhysicsTestbed
                 Vector2 reflectSurface = ccd.edge.end - ccd.edge.start;
                 Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
                 if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
+
+                // TODO: 
+                //  1. find mass of EdgeCollisionPoint:
+                //    double massEdgeCollisionPoint = origin.mass + neighbor.mass;
+                //
+                //  2. use rule of impact for 2 bodies - it defines normal components of velocity of EdgeCollisionPoint (v2) and collisionParticle (v1). tangent components of velocities have no changes.
+                //          v1new = v1 - m2*(v1-v2)*(1+k)/(m1+m2)
+                //          v2new = v2 + m1*(v1-v2)*(1+k)/(m1+m2)
+                //
+                //      k is a coefficient of elasticity, it belongs to [0..1]
+                //      note that system lose some kinetic energy: dT = (0.5*(1-k^2)*m1*m2*(v1-v2)^2)/(m1+m2)
+                //
+                //  3. find new origin.v and new neighbor.v (origin.v' and neighbor.v') from found velocity of EdgeCollisionPoint
+                //          velocityEdgeCollisionPoint' = origin.v' + (neighbor.v' - origin.v') * ccd.coordinateOfPointOnEdge
+                //          // TODO: find simple logical rule of distribution for the EdgeCollisionPoint velocity on origin and neighbor
+                //          velocityEdgeCenterOfMass' - velocityEdgeCenterOfMass = (1.0 - 2.0 * |ccd.coordinateOfPointOnEdge - 0.5|) * (velocityEdgeCollisionPoint' - velocityEdgeCollisionPoint) // ???
+
                 Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
                 if (ccdCollisionTime.Value <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
                 double newTimeCoefficient = timeCoefficientPrediction * ccdCollisionTime.Value;
