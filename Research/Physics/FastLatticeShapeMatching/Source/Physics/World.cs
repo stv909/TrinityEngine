@@ -67,7 +67,8 @@ namespace PhysicsTestbed
                 double timeCoefficientIntegrate = 0.0;
                 if (collisionBuffer.Count > 0)
                 {
-                    CollisionSubframeBuffer subframe = LsmBody.GetEarliestSubframe(collisionBuffer);
+                    CollisionSubframeBuffer subframe = LsmBody.GetEarliestSubframe(collisionBuffer);	// WARNING: now we assume that in 1 time moment we have maximum 1 collision in subframe.
+																									    // TODO: make system ready to handle multi-collision subframes. For example, we'll need to accumulate velocity deltas for every particle and then make summation - not just direct assign of values.
                     timeCoefficientIntegrate = subframe.timeCoefficient;
                     timeCoefficientPrediction -= subframe.timeCoefficient;
 

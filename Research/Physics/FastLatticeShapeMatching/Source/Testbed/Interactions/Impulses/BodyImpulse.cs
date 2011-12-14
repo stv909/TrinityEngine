@@ -98,7 +98,7 @@ namespace PhysicsTestbed
 
                 // TODO: 
                 //  1. find mass of EdgeCollisionPoint:
-                //    double massEdgeCollisionPoint = origin.mass + neighbor.mass;
+                //    double massEdgeCollisionPoint = origin.mass + neighbor.mass; // ??? // mass of virtual point
                 //
                 //  2. use rule of impact for 2 bodies - it defines normal components of velocity of EdgeCollisionPoint (v2) and collisionParticle (v1). tangent components of velocities have no changes.
                 //          v1new = v1 - m2*(v1-v2)*(1+k)/(m1+m2)
@@ -108,9 +108,10 @@ namespace PhysicsTestbed
                 //      note that system lose some kinetic energy: dT = (0.5*(1-k^2)*m1*m2*(v1-v2)^2)/(m1+m2)
                 //
                 //  3. find new origin.v and new neighbor.v (origin.v' and neighbor.v') from found velocity of EdgeCollisionPoint
-                //          velocityEdgeCollisionPoint' = origin.v' + (neighbor.v' - origin.v') * ccd.coordinateOfPointOnEdge
-                //          // TODO: find simple logical rule of distribution for the EdgeCollisionPoint velocity on origin and neighbor
-                //          velocityEdgeCenterOfMass' - velocityEdgeCenterOfMass = (1.0 - 2.0 * |ccd.coordinateOfPointOnEdge - 0.5|) * (velocityEdgeCollisionPoint' - velocityEdgeCollisionPoint) // ???
+                //          // Rule of distribution for the EdgeCollisionPoint velocity on origin and neighbor
+                //          velocityEdgeCollisionPoint' = origin.v' + (neighbor.v' - origin.v') * ccd.coordinateOfPointOnEdge				// linear velocity distribution on edge
+                //          massEdgeCollisionPoint * velocityEdgeCollisionPoint' = origin.mass * origin.v' + neighbor.mass * neighbor.v'	// impulse of virtual point = sum of impulses of edge-vertex points
+				//																															//		to distribute velocity from virtual points to edge vertices with impulse conservation
 
                 Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
                 if (ccdCollisionTime.Value <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
