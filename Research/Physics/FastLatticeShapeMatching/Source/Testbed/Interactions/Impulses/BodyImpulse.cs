@@ -60,6 +60,59 @@ namespace PhysicsTestbed
             }
         }
 
+        private CollisionSubframeBuffer GenerateContact_Reflection(
+            Vector2 velocity, Particle origin, Particle neighbor, Particle.CCDDebugInfo ccd, double ccdCollisionTime, double timeCoefficientPrediction,
+            CollisionSubframeBuffer subframeToAdd
+        )
+        {
+            Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * ccd.coordinateOfPointOnEdge;
+            Vector2 velocityPointRelativeEdge = velocity - velocityEdgeCollisionPoint;
+
+            // compute velocity reflection relativly moving edge
+            Vector2 reflectSurface = ccd.edge.end - ccd.edge.start;
+            Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
+            if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
+
+            Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
+            if (ccdCollisionTime <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
+            double newTimeCoefficient = timeCoefficientPrediction * ccdCollisionTime;
+            newTimeCoefficient -= epsilon / newVelocity.Length(); // try to prevent Zero-Distances // HACK
+            if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
+            newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
+
+            subframeToAdd.vParticle = newVelocity;  // TODO: correct newVelocity computation formula - remember about impulse concervation rule!
+            //subframeToAdd.vEdgeStart = ; // TODO: implement
+            //subframeToAdd.vEdgeEnd = ; // TODO: implement
+            subframeToAdd.timeCoefficient = newTimeCoefficient;
+
+            return subframeToAdd;
+        }
+
+        private CollisionSubframeBuffer GenerateContact_ImpulseConservation(
+            Vector2 velocity, Particle origin, Particle neighbor, Particle.CCDDebugInfo ccd, double ccdCollisionTime, double timeCoefficientPrediction,
+            CollisionSubframeBuffer subframeToAdd
+        )
+        {
+            // TODO: 
+            //  1. find mass of EdgeCollisionPoint:
+            //    double massEdgeCollisionPoint = origin.mass + neighbor.mass; // ??? // mass of virtual point
+            //
+            //  2. use rule of impact for 2 bodies - it defines normal components of velocity of EdgeCollisionPoint (v2) and collisionParticle (v1). tangent components of velocities have no changes.
+            //          v1new = v1 - m2*(v1-v2)*(1+k)/(m1+m2)
+            //          v2new = v2 + m1*(v1-v2)*(1+k)/(m1+m2)
+            //
+            //      k is a coefficient of elasticity, it belongs to [0..1]
+            //      note that system lose some kinetic energy: dT = (0.5*(1-k^2)*m1*m2*(v1-v2)^2)/(m1+m2)
+            //
+            //  3. find new origin.v and new neighbor.v (origin.v' and neighbor.v') from found velocity of EdgeCollisionPoint
+            //          // Rule of distribution for the EdgeCollisionPoint velocity on origin and neighbor
+            //          velocityEdgeCollisionPoint' = origin.v' + (neighbor.v' - origin.v') * ccd.coordinateOfPointOnEdge				// linear velocity distribution on edge
+            //          massEdgeCollisionPoint * velocityEdgeCollisionPoint' = origin.mass * origin.v' + neighbor.mass * neighbor.v'	// impulse of virtual point = sum of impulses of edge-vertex points
+            //																															//		to distribute velocity from virtual points to edge vertices with impulse conservation
+
+            return null;
+        }
+
         private void CheckParticleEdge(
             bool isFrozenEdge, ref List<Particle.CCDDebugInfo> ccds,
             Particle origin, Particle neighbor,
@@ -85,46 +138,13 @@ namespace PhysicsTestbed
             if (ccdCollisionTime != null)
             {
                 Particle.CCDDebugInfo ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
-
-                // TODO: use the Rule of conservative impulse to handle this case. Simple reflection rule is not effective here.
-
-                Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * ccd.coordinateOfPointOnEdge;
-                Vector2 velocityPointRelativeEdge = velocity - velocityEdgeCollisionPoint;
-
-                // compute velocity reflection relativly moving edge
-                Vector2 reflectSurface = ccd.edge.end - ccd.edge.start;
-                Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
-                if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
-
-                // TODO: 
-                //  1. find mass of EdgeCollisionPoint:
-                //    double massEdgeCollisionPoint = origin.mass + neighbor.mass; // ??? // mass of virtual point
-                //
-                //  2. use rule of impact for 2 bodies - it defines normal components of velocity of EdgeCollisionPoint (v2) and collisionParticle (v1). tangent components of velocities have no changes.
-                //          v1new = v1 - m2*(v1-v2)*(1+k)/(m1+m2)
-                //          v2new = v2 + m1*(v1-v2)*(1+k)/(m1+m2)
-                //
-                //      k is a coefficient of elasticity, it belongs to [0..1]
-                //      note that system lose some kinetic energy: dT = (0.5*(1-k^2)*m1*m2*(v1-v2)^2)/(m1+m2)
-                //
-                //  3. find new origin.v and new neighbor.v (origin.v' and neighbor.v') from found velocity of EdgeCollisionPoint
-                //          // Rule of distribution for the EdgeCollisionPoint velocity on origin and neighbor
-                //          velocityEdgeCollisionPoint' = origin.v' + (neighbor.v' - origin.v') * ccd.coordinateOfPointOnEdge				// linear velocity distribution on edge
-                //          massEdgeCollisionPoint * velocityEdgeCollisionPoint' = origin.mass * origin.v' + neighbor.mass * neighbor.v'	// impulse of virtual point = sum of impulses of edge-vertex points
-				//																															//		to distribute velocity from virtual points to edge vertices with impulse conservation
-
-                Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
-                if (ccdCollisionTime.Value <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
-                double newTimeCoefficient = timeCoefficientPrediction * ccdCollisionTime.Value;
-                newTimeCoefficient -= epsilon / newVelocity.Length(); // try to prevent Zero-Distances // HACK
-                if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
-                newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
-
-                subframeToAdd.vParticle = newVelocity;  // TODO: correct newVelocity computation formula - remember about impulse concervation rule!
-                //subframeToAdd.vEdgeStart = ; // TODO: implement
-                //subframeToAdd.vEdgeEnd = ; // TODO: implement
-                subframeToAdd.timeCoefficient = newTimeCoefficient;
-                collisionBuffer.Add(subframeToAdd);
+                collisionBuffer.Add(
+                    // TODO: use the Rule of conservative impulse to handle this case. Simple reflection rule is not effective here.
+                    // GenerateContact_ImpulseConservation(
+                    GenerateContact_Reflection(
+                        velocity, origin, neighbor, ccd, ccdCollisionTime.Value, timeCoefficientPrediction, subframeToAdd
+                    )
+                );
                 ccds.Add(ccd);
 
                 if (LsmBody.pauseOnBodyBodyCollision)
