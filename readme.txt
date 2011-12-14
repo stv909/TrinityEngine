@@ -51,11 +51,21 @@ Trinity Engine. Conceptual design and research.
 								- vs moving wall
 								- vs complex dynamic body
 								- self-collision
+					1.1.2.1.2 Elastic-Visco-Plastic model of the body
+						1.1.2.1.2.1 Linear and non-linear elasticity
+						1.1.2.1.2.2 Plasticity
+						1.1.2.1.2.3 Viscosity
+							1.1.2.1.2.3.1 Pure viscosity
+							1.1.2.1.2.3.2 Viscoelastic
+							1.1.2.1.2.3.3 Viscoplastic
 				1.1.2.2 Fast LSM implementation
 			1.1.3 Integration Powder Toys concept with FLSM
 			
 		1.2 Multicore cloud computing
 		1.3 Editor for creating worlds with entities
+			1.3.1 Material editor and testing polygone
+			1.3.2 Physical body designer
+			1.3.3 System of physical bodies editor
 
 	2. Programming language system
 		2.1 Declarative language
