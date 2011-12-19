@@ -121,7 +121,18 @@ namespace PhysicsTestbed
             //          massEdgeCollisionPoint * velocityEdgeCollisionPoint' = origin.mass * origin.v' + neighbor.mass * neighbor.v'	// impulse of virtual point = sum of impulses of edge-vertex points
             //																															//		to distribute velocity from virtual points to edge vertices with impulse conservation
 
-            double massEdgeCollisionPoint = origin.mass + neighbor.mass; // TODO: test more complex formula
+            double alphaCenterOfMass = neighbor.mass / (origin.mass + neighbor.mass);
+            double betaLeft = alpha / alphaCenterOfMass;
+            double betaRight = (alpha - alphaCenterOfMass) / (1.0 - alphaCenterOfMass);
+
+            /**/
+            double massEdgeCollisionPoint = origin.mass + neighbor.mass;        // simple mass approach
+            /*/
+            double massEdgeCollisionPoint = alpha < alphaCenterOfMass ?       // complex mass approach
+                origin.mass * (1.0 - betaLeft) + (origin.mass + neighbor.mass) * betaLeft :
+                (origin.mass + neighbor.mass) * (1.0 - betaRight ) + neighbor.mass * betaRight;
+            /**/
+
             Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * alpha;
             Vector2 velocityEdgeCollisionPoint_Tangent = (velocityEdgeCollisionPoint.Dot(edge) / edgeLengthSq) * edge;
             Vector2 velocityEdgeCollisionPoint_Normal = velocityEdgeCollisionPoint - velocityEdgeCollisionPoint_Tangent;
@@ -143,9 +154,6 @@ namespace PhysicsTestbed
             newTimeCoefficient -= epsilon / (newVelocityParticle - newVelocityECP).Length(); // try to prevent Zero-Distances // HACK // TODO: check Length() > epsilon
             if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
 
-            double alphaCenterOfMass = neighbor.mass / (origin.mass + neighbor.mass);
-            double betaLeft = alpha / alphaCenterOfMass;
-            double betaRight = (alpha - alphaCenterOfMass) / (1.0 - alphaCenterOfMass);
             Vector2 newVelocityOrigin = alpha < alphaCenterOfMass ?
                 newVelocityECP * (1.0 - betaLeft) + (origin.v + newVelocityECP - velocityEdgeCollisionPoint) * betaLeft :
                 (origin.v + newVelocityECP - velocityEdgeCollisionPoint) * (1.0 - betaRight) + origin.v * betaRight;
