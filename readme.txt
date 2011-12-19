@@ -44,7 +44,9 @@ Trinity Engine. Conceptual design and research.
 									- improve zoom-in/zoom-out and processing in world.paused mode
 									- rotating impulse wall
 								- vs complex dynamic body
-									> velocity modification using Rule of conservative impulses: particle <---infuence---> edge
+									+ velocity modification using Rule of conservative impulses: particle <---infuence---> edge
+									> place all algorithms and principles description to Wiki
+									- analyse how does Rule of conservative impulses work, debug it
 									- avoid particle's energy growth while frequent collidings
 							1.1.2.1.1.2.2 Single chunk of soft body
 								- just being (drag it in empty scene)
