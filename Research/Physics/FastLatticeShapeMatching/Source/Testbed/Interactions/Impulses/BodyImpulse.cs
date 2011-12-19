@@ -11,6 +11,8 @@ namespace PhysicsTestbed
         public static double ccdTimeOffset = 0.01;
         [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "0.01x CCD time offset", Min = -0.01, Max = 0.01)]
         public static double ccdTimeOffset001x = -0.01;
+        [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "coefficient of elasticity", Min = 0.0, Max = 1.0)]
+        public static double coefficientElasticity = 1.0;
 
         public static double CCDTimeOffset { get{ return ccdTimeOffset + ccdTimeOffset001x; } }
 
@@ -61,12 +63,13 @@ namespace PhysicsTestbed
         }
 
         private CollisionSubframeBuffer GenerateContact_Reflection(
-            Vector2 velocity, Particle origin, Particle neighbor, Particle.CCDDebugInfo ccd, double ccdCollisionTime, double timeCoefficientPrediction,
+            Particle particle, Particle origin, Particle neighbor, Particle.CCDDebugInfo ccd, double ccdCollisionTime, double timeCoefficientPrediction,
             CollisionSubframeBuffer subframeToAdd
         )
         {
-            Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * ccd.coordinateOfPointOnEdge;
-            Vector2 velocityPointRelativeEdge = velocity - velocityEdgeCollisionPoint;
+            double alpha = ccd.coordinateOfPointOnEdge;
+            Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * alpha;
+            Vector2 velocityPointRelativeEdge = particle.v - velocityEdgeCollisionPoint;
 
             // compute velocity reflection relativly moving edge
             Vector2 reflectSurface = ccd.edge.end - ccd.edge.start;
@@ -76,7 +79,7 @@ namespace PhysicsTestbed
             Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
             if (ccdCollisionTime <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
             double newTimeCoefficient = timeCoefficientPrediction * ccdCollisionTime;
-            newTimeCoefficient -= epsilon / newVelocity.Length(); // try to prevent Zero-Distances // HACK
+            newTimeCoefficient -= epsilon / newVelocity.Length(); // try to prevent Zero-Distances // HACK // TODO: check Length() > epsilon
             if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
             newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
 
@@ -89,13 +92,21 @@ namespace PhysicsTestbed
         }
 
         private CollisionSubframeBuffer GenerateContact_ImpulseConservation(
-            Vector2 velocity, Particle origin, Particle neighbor, Particle.CCDDebugInfo ccd, double ccdCollisionTime, double timeCoefficientPrediction,
+            Particle particle, Particle origin, Particle neighbor, Particle.CCDDebugInfo ccd, double ccdCollisionTime, double timeCoefficientPrediction,
             CollisionSubframeBuffer subframeToAdd
         )
         {
-            // TODO: 
+            double alpha = ccd.coordinateOfPointOnEdge;
+            Vector2 edge = neighbor.x - origin.x;
+            double edgeLengthSq = edge.LengthSq();
+            if (edgeLengthSq < epsilon) // don't collide with too short edges // TODO: figure out how to solve this case
+                return null;
+
             //  1. find mass of EdgeCollisionPoint:
-            //    double massEdgeCollisionPoint = origin.mass + neighbor.mass; // ??? // mass of virtual point
+            //    double massEdgeCollisionPoint = origin.mass + neighbor.mass; // ??? // mass of virtual point // alternative:
+            //                                                                                                      m = origin.mass,                    alpha = 0
+            //                                                                                                      m = origin.mass + neighbor.mass,    alpha = neighbor.mass/(origin.mass + neighbor.mass)
+            //                                                                                                      m = neighbor.mass,                  alpha = 1
             //
             //  2. use rule of impact for 2 bodies - it defines normal components of velocity of EdgeCollisionPoint (v2) and collisionParticle (v1). tangent components of velocities have no changes.
             //          v1new = v1 - m2*(v1-v2)*(1+k)/(m1+m2)
@@ -110,17 +121,58 @@ namespace PhysicsTestbed
             //          massEdgeCollisionPoint * velocityEdgeCollisionPoint' = origin.mass * origin.v' + neighbor.mass * neighbor.v'	// impulse of virtual point = sum of impulses of edge-vertex points
             //																															//		to distribute velocity from virtual points to edge vertices with impulse conservation
 
-            return null;
+            double massEdgeCollisionPoint = origin.mass + neighbor.mass; // TODO: test more complex formula
+            Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * alpha;
+            Vector2 velocityEdgeCollisionPoint_Tangent = (velocityEdgeCollisionPoint.Dot(edge) / edgeLengthSq) * edge;
+            Vector2 velocityEdgeCollisionPoint_Normal = velocityEdgeCollisionPoint - velocityEdgeCollisionPoint_Tangent;
+            Vector2 velocityParticle_Tangent = (particle.v.Dot(edge) / edgeLengthSq) * edge;
+            Vector2 velocityParticle_Normal = particle.v - velocityParticle_Tangent;
+
+            Vector2 newVelocityECP_Tangent = velocityEdgeCollisionPoint_Tangent; // it means that we have no perticle-edge friction // TODO: implement some friction model
+            Vector2 newVelocityECP_Normal = velocityEdgeCollisionPoint_Normal +
+                ((1.0 + coefficientElasticity) * particle.mass / (particle.mass + massEdgeCollisionPoint)) * (velocityParticle_Normal - velocityEdgeCollisionPoint_Normal);
+            Vector2 newVelocityECP = newVelocityECP_Tangent + newVelocityECP_Normal;
+
+            Vector2 newVelocityParticle_Tangent = velocityParticle_Tangent; // it means that we have no perticle-edge friction // TODO: implement some friction model
+            Vector2 newVelocityParticle_Normal = velocityParticle_Normal -
+                ((1.0 + coefficientElasticity) * massEdgeCollisionPoint / (particle.mass + massEdgeCollisionPoint)) * (velocityParticle_Normal - velocityEdgeCollisionPoint_Normal);
+            Vector2 newVelocityParticle = newVelocityParticle_Tangent + newVelocityParticle_Normal;
+
+            if (ccdCollisionTime <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
+            double newTimeCoefficient = timeCoefficientPrediction * ccdCollisionTime;
+            newTimeCoefficient -= epsilon / (newVelocityParticle - newVelocityECP).Length(); // try to prevent Zero-Distances // HACK // TODO: check Length() > epsilon
+            if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
+
+            double alphaCenterOfMass = neighbor.mass / (origin.mass + neighbor.mass);
+            double betaLeft = alpha / alphaCenterOfMass;
+            double betaRight = (alpha - alphaCenterOfMass) / (1.0 - alphaCenterOfMass);
+            Vector2 newVelocityOrigin = alpha < alphaCenterOfMass ?
+                newVelocityECP * (1.0 - betaLeft) + (origin.v + newVelocityECP - velocityEdgeCollisionPoint) * betaLeft :
+                (origin.v + newVelocityECP - velocityEdgeCollisionPoint) * (1.0 - betaRight) + origin.v * betaRight;
+            Vector2 newVelocityNeighbor = alpha < alphaCenterOfMass ?
+                neighbor.v * (1.0 - betaLeft) + (neighbor.v + newVelocityECP - velocityEdgeCollisionPoint) * betaLeft :
+                (neighbor.v + newVelocityECP - velocityEdgeCollisionPoint) * (1.0 - betaRight) + newVelocityECP * betaRight;
+
+            subframeToAdd.vParticle = newVelocityParticle;
+            subframeToAdd.vEdgeStart = newVelocityOrigin;
+            subframeToAdd.vEdgeEnd = newVelocityNeighbor;
+            subframeToAdd.timeCoefficient = newTimeCoefficient;
+
+            return subframeToAdd;
         }
 
         private void CheckParticleEdge(
             bool isFrozenEdge, ref List<Particle.CCDDebugInfo> ccds,
+            Particle particle,
             Particle origin, Particle neighbor,
-            Vector2 pos, Vector2 posNext, Vector2 velocity,
             ref List<CollisionSubframeBuffer> collisionBuffer, double timeCoefficientPrediction,
             CollisionSubframeBuffer subframeToAdd
         )
         {
+            Vector2 pos = particle.x;
+            Vector2 velocity = particle.v;
+            Vector2 posNext = pos + velocity * timeCoefficientPrediction;
+
             if (isFrozenEdge)
             {
                 // simple collision for frozen body
@@ -138,13 +190,15 @@ namespace PhysicsTestbed
             if (ccdCollisionTime != null)
             {
                 Particle.CCDDebugInfo ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
-                collisionBuffer.Add(
-                    // TODO: use the Rule of conservative impulse to handle this case. Simple reflection rule is not effective here.
-                    // GenerateContact_ImpulseConservation(
-                    GenerateContact_Reflection(
-                        velocity, origin, neighbor, ccd, ccdCollisionTime.Value, timeCoefficientPrediction, subframeToAdd
-                    )
-                );
+                CollisionSubframeBuffer contact = // TODO: use the Rule of conservative impulse to handle this case. Simple reflection rule is not effective here.
+                    GenerateContact_ImpulseConservation(
+                    // GenerateContact_Reflection(
+                        particle, origin, neighbor, ccd, ccdCollisionTime.Value, timeCoefficientPrediction, subframeToAdd
+                    );
+                if (contact != null)
+                {
+                    collisionBuffer.Add(contact);
+                }
                 ccds.Add(ccd);
 
                 if (LsmBody.pauseOnBodyBodyCollision)
@@ -168,10 +222,6 @@ namespace PhysicsTestbed
         {
             Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
 
-            Vector2 pos = applyParticle.x;
-            Vector2 velocity = applyParticle.v;
-            Vector2 posNext = pos + velocity * timeCoefficientPrediction;
-
             LsmBody body = otherBody;
             // iterate all possible edges of body and test them with current subframed point
             foreach (Particle bodyt in body.particles)
@@ -179,14 +229,14 @@ namespace PhysicsTestbed
                 if (bodyt.xPos != null)
                 {
                     CheckParticleEdge(
-                        body.Frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.xPos, pos, posNext, velocity, ref collisionBuffer, timeCoefficientPrediction,
+                        body.Frozen, ref applyParticle.ccdDebugInfos, applyParticle, bodyt, bodyt.xPos, ref collisionBuffer, timeCoefficientPrediction,
                         new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.xPos), bodyt.v, bodyt.xPos.v, 0.0)
                     );
                 }
                 if (bodyt.yPos != null)
                 {
                     CheckParticleEdge(
-                        body.Frozen, ref applyParticle.ccdDebugInfos, bodyt, bodyt.yPos, pos, posNext, velocity, ref collisionBuffer, timeCoefficientPrediction,
+                        body.Frozen, ref applyParticle.ccdDebugInfos, applyParticle, bodyt, bodyt.yPos, ref collisionBuffer, timeCoefficientPrediction,
                         new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.yPos), bodyt.v, bodyt.yPos.v, 0.0)
                     );
                 }
