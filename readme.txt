@@ -104,6 +104,8 @@ Deformable Objects
 		http://vimeo.com/16652171
 	http://grail.cs.washington.edu/projects/deformation/
 	http://graphics.ewha.ac.kr/FAST/
+	http://graphics.ethz.ch/research/physics/fast_shape_matching.php
+	http://nis-lab.is.s.u-tokyo.ac.jp/nis/cdrom/casa/ohtaCASA.pdf
 
 Continuous Collision Detection
 	http://www.wildbunny.co.uk/blog/2011/04/20/collision-detection-for-dummies/
