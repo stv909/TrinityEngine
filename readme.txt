@@ -46,6 +46,7 @@ Trinity Engine. Conceptual design and research.
 								- vs complex dynamic body
 									+ velocity modification using Rule of conservative impulses: particle <---infuence---> edge
 									> place all algorithms and principles description to Wiki
+									- make debug test for impulse conservation rule (per particle impulse summation)
 									- analyse how does Rule of conservative impulses work, debug it
 									- avoid particle's energy growth while frequent collidings
 							1.1.2.1.1.2.2 Single chunk of soft body
