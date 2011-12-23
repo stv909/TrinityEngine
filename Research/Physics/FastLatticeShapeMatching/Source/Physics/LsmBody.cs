@@ -253,6 +253,17 @@ namespace PhysicsTestbed
 			PerformChunkDamping();
         }
 
+        public void UpdateFrozenParticlesVelocity()
+        {
+            Debug.Assert(Frozen);
+
+            foreach (Particle p in particles)
+            {
+                p.v = Vector2.ZERO;
+                p.fExt = Vector2.ZERO;
+            }
+        }
+
         private CollisionSubframeBuffer GetEarliestCollision(List<CollisionSubframeBuffer> collisions)
         {
             CollisionSubframeBuffer earliestCollision = null;
@@ -298,14 +309,34 @@ namespace PhysicsTestbed
 
         public static void CollideBodies(LsmBody movingBody, LsmBody blockingBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
+            Debug.Assert(Testbed.world.environmentImpulses[1] is BodyImpulse); // TODO: fix this HACK
             foreach (Particle particleOfMovingBody in movingBody.particles)
             {
                 // impulse & offset collision method
                 particleOfMovingBody.ccdDebugInfos.Clear();
+            }
 
-                // Collide with other body
-                Debug.Assert(Testbed.world.environmentImpulses[1] is BodyImpulse); // TODO: fix this HACK
-                Testbed.world.environmentImpulses[1].ApplyImpulse(movingBody, particleOfMovingBody, blockingBody, timeCoefficientPrediction, ref collisionBuffer); // TODO: make refactoring for BodyImpulse
+            // Collide with other body
+            if (!movingBody.Frozen && !blockingBody.Frozen)
+            {
+                foreach (Particle particleOfMovingBody in movingBody.particles)
+                    Testbed.world.environmentImpulses[1].ApplyImpulse(
+                        movingBody, particleOfMovingBody, blockingBody, timeCoefficientPrediction, ref collisionBuffer
+                    ); // TODO: make refactoring for BodyImpulse
+            }
+            else if (!movingBody.Frozen && blockingBody.Frozen)
+            {
+                foreach (Particle particleOfMovingBody in movingBody.particles)
+                    Testbed.world.environmentImpulses[1].ApplyImpulse_DynamicToFrozen(
+                        movingBody, particleOfMovingBody, blockingBody, timeCoefficientPrediction, ref collisionBuffer
+                    ); // TODO: make refactoring for BodyImpulse
+            }
+            else if (movingBody.Frozen && !blockingBody.Frozen)
+            {
+                foreach (Particle particleOfBlockingBody in blockingBody.particles)
+                    Testbed.world.environmentImpulses[1].ApplyImpulse_FrozenToDynamic(
+                        blockingBody, particleOfBlockingBody, movingBody, timeCoefficientPrediction, ref collisionBuffer
+                    ); // TODO: make refactoring for BodyImpulse
             }
         }
 
@@ -325,6 +356,17 @@ namespace PhysicsTestbed
                 {
                     p.v = Vector2.ZERO;
                 }
+            }
+        }
+
+        public void UpdateFrozenParticlesPosition()
+        {
+            Debug.Assert(Frozen);
+
+            foreach (Particle p in particles)
+            {
+                p.xPrior = p.goal;
+                p.x = p.goal;
             }
         }
 

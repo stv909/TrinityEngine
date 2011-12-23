@@ -35,7 +35,7 @@ namespace PhysicsTestbed
             return false;
         }
 
-        private void CheckSegment(
+        private void CheckFrozenEdge(
             Vector2 origin, Vector2 neighbor,
             Vector2 pos, Vector2 posNext, Vector2 velocity, ref List<CollisionSubframeBuffer> collisionBuffer,
             CollisionSubframeBuffer subframeToAdd
@@ -165,24 +165,18 @@ namespace PhysicsTestbed
             return subframeToAdd;
         }
 
-        private void CheckParticleEdge(
-            bool isFrozenEdge, ref List<Particle.CCDDebugInfo> ccds,
+        private void CheckParticleEdge_D2D(
+            ref List<Particle.CCDDebugInfo> ccds,
             Particle particle,
             Particle origin, Particle neighbor,
             ref List<CollisionSubframeBuffer> collisionBuffer, double timeCoefficientPrediction,
             CollisionSubframeBuffer subframeToAdd
         )
         {
+            // TODO: avoid code coping (see below)
             Vector2 pos = particle.x;
             Vector2 velocity = particle.v;
             Vector2 posNext = pos + velocity * timeCoefficientPrediction;
-
-            if (isFrozenEdge)
-            {
-                // simple collision for frozen body
-                CheckSegment(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer, subframeToAdd); // current edge position
-                return;
-            }
 
             // swept collision for body
             LineSegment edge = new LineSegment(origin.x, neighbor.x);
@@ -222,26 +216,119 @@ namespace PhysicsTestbed
             return ccd;
         }
 
+        private void CheckParticleEdge_D2F(
+            ref List<Particle.CCDDebugInfo> ccds,
+            Particle particle,
+            Particle origin, Particle neighbor,
+            ref List<CollisionSubframeBuffer> collisionBuffer, double timeCoefficientPrediction,
+            CollisionSubframeBuffer subframeToAdd
+        )
+        {
+            // TODO: avoid code coping
+            Vector2 pos = particle.x;
+            Vector2 velocity = particle.v;
+            Vector2 posNext = pos + velocity * timeCoefficientPrediction;
+
+            // simple collision for frozen body
+            CheckFrozenEdge(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer, subframeToAdd); // current edge position
+        }
+
+        private void CheckParticleEdge_F2D(
+            ref List<Particle.CCDDebugInfo> ccds,
+            Particle particle,
+            Particle origin, Particle neighbor,
+            ref List<CollisionSubframeBuffer> collisionBuffer, double timeCoefficientPrediction,
+            CollisionSubframeBuffer subframeToAdd
+        )
+        {
+            // swept collision for body
+            LineSegment edge = new LineSegment(origin.x, neighbor.x);
+            LineSegment edgeNext = new LineSegment(edge.start + origin.v * timeCoefficientPrediction, edge.end + neighbor.v * timeCoefficientPrediction);
+
+            EdgePointCCDSolver.SolverInput solverInput = new EdgePointCCDSolver.SolverInput(edge, edgeNext, particle.x, particle.x);
+            double? ccdCollisionTime = EdgePointCCDSolver.Solve(solverInput);
+
+            if (ccdCollisionTime != null)
+            { 
+                // TODO: implement proper contact generation for this case
+                // TODO: JUST DO IT!
+            }
+        }
+
         public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
             Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
+            Debug.Assert(!applyBody.Frozen && !otherBody.Frozen);
 
-            LsmBody body = otherBody;
             // iterate all possible edges of body and test them with current subframed point
-            foreach (Particle bodyt in body.particles)
+            foreach (Particle bodyt in otherBody.particles)
             {
                 if (bodyt.xPos != null)
                 {
-                    CheckParticleEdge(
-                        body.Frozen, ref applyParticle.ccdDebugInfos, applyParticle, bodyt, bodyt.xPos, ref collisionBuffer, timeCoefficientPrediction,
+                    CheckParticleEdge_D2D(
+                        ref applyParticle.ccdDebugInfos, applyParticle, bodyt, bodyt.xPos, 
+                        ref collisionBuffer, timeCoefficientPrediction,
                         new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.xPos), bodyt.v, bodyt.xPos.v, 0.0)
                     );
                 }
                 if (bodyt.yPos != null)
                 {
-                    CheckParticleEdge(
-                        body.Frozen, ref applyParticle.ccdDebugInfos, applyParticle, bodyt, bodyt.yPos, ref collisionBuffer, timeCoefficientPrediction,
+                    CheckParticleEdge_D2D(
+                        ref applyParticle.ccdDebugInfos, applyParticle, bodyt, bodyt.yPos, 
+                        ref collisionBuffer, timeCoefficientPrediction,
                         new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.yPos), bodyt.v, bodyt.yPos.v, 0.0)
+                    );
+                }
+            }
+        }
+
+        public override void ApplyImpulse_DynamicToFrozen(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        {
+            Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
+            Debug.Assert(!applyBody.Frozen && otherBody.Frozen);
+
+            foreach (Particle bodyt in otherBody.particles)
+            {
+                if (bodyt.xPos != null)
+                {
+                    CheckParticleEdge_D2F(
+                        ref applyParticle.ccdDebugInfos, applyParticle, bodyt, bodyt.xPos,
+                        ref collisionBuffer, timeCoefficientPrediction,
+                        new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.xPos), bodyt.v, bodyt.xPos.v, 0.0)
+                    );
+                }
+                if (bodyt.yPos != null)
+                {
+                    CheckParticleEdge_D2F(
+                        ref applyParticle.ccdDebugInfos, applyParticle, bodyt, bodyt.yPos,
+                        ref collisionBuffer, timeCoefficientPrediction,
+                        new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(bodyt, bodyt.yPos), bodyt.v, bodyt.yPos.v, 0.0)
+                    );
+                }
+            }
+        }
+
+        public override void ApplyImpulse_FrozenToDynamic(LsmBody otherBody, Particle otherParticle, LsmBody applyBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        {
+            Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
+            Debug.Assert(applyBody.Frozen && !otherBody.Frozen);
+
+            foreach (Particle applyParticle in applyBody.particles)
+            {
+                if (otherParticle.xPos != null)
+                {
+                    CheckParticleEdge_F2D(
+                        ref applyParticle.ccdDebugInfos, applyParticle, otherParticle, otherParticle.xPos,
+                        ref collisionBuffer, timeCoefficientPrediction,
+                        new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(otherParticle, otherParticle.xPos), otherParticle.v, otherParticle.xPos.v, 0.0)
+                    );
+                }
+                if (otherParticle.yPos != null)
+                {
+                    CheckParticleEdge_F2D(
+                        ref applyParticle.ccdDebugInfos, applyParticle, otherParticle, otherParticle.yPos,
+                        ref collisionBuffer, timeCoefficientPrediction,
+                        new CollisionSubframeBuffer(applyParticle, applyParticle.v, new Edge(otherParticle, otherParticle.yPos), otherParticle.v, otherParticle.yPos.v, 0.0)
                     );
                 }
             }

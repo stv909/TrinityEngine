@@ -39,6 +39,10 @@ namespace PhysicsTestbed
                     b.DoFracture();
                     b.UpdateParticlesVelocity();
                 }
+                else
+                {
+                    b.UpdateFrozenParticlesVelocity();
+                }
             }
 
             // iterate subframes for collision and integration system of bodies
@@ -95,6 +99,10 @@ namespace PhysicsTestbed
                         if (!b.Frozen)
                         {
                             b.UpdateParticlesPosition(timeCoefficientIntegrate);
+                        }
+                        else
+                        {
+                            b.UpdateFrozenParticlesPosition();
                         }
                     }
                 }

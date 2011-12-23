@@ -44,5 +44,16 @@ namespace PhysicsTestbed
                 collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y * BodyImpulse.coefficientElasticity), null, Vector2.ZERO, Vector2.ZERO, (top - pos.Y) / velocity.Y));
             }
         }
+
+        public override void ApplyImpulse_DynamicToFrozen(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        {
+            Debug.Assert(false);
+        }
+
+        public override void ApplyImpulse_FrozenToDynamic(LsmBody otherBody, Particle otherParticle, LsmBody applyBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        {
+            Debug.Assert(false);
+        }
+
 	}
 }

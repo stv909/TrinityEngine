@@ -20,7 +20,17 @@ namespace PhysicsTestbed
     {
         public abstract void ApplyImpulse(
             LsmBody applyBody, Particle applyParticle, LsmBody otherBody, // HACK // TODO: try to don't use such information for collisions or formilize this ussage
-            double accumulatedSubframeTime, ref List<CollisionSubframeBuffer> collisionBuffer // HACK // TODO: remove ref List<>
+            double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer // HACK // TODO: remove ref List<>
+        );
+
+        public abstract void ApplyImpulse_FrozenToDynamic( // HACK // TODO: implement it in elegant way
+            LsmBody otherBody, Particle otherParticle, LsmBody applyBody, // HACK // TODO: try to don't use such information for collisions or formilize this ussage
+            double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer // HACK // TODO: remove ref List<>
+        );
+
+        public abstract void ApplyImpulse_DynamicToFrozen( // HACK // TODO: implement it in elegant way
+            LsmBody applyBody, Particle applyParticle, LsmBody otherBody, // HACK // TODO: try to don't use such information for collisions or formilize this ussage
+            double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer // HACK // TODO: remove ref List<>
         );
     }
 
