@@ -51,7 +51,7 @@ namespace PhysicsTestbed
                     Vector2 reflectSurface = neighbor - origin;
                     Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
                     if (reflectNormal.Dot(velocity) < 0) reflectNormal = -reflectNormal;
-                    Vector2 newVelocity = velocity - 2.0 * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
+                    Vector2 newVelocity = velocity - (1.0 + coefficientElasticity) * reflectNormal * (reflectNormal.Dot(velocity) / reflectNormal.LengthSq());
 
                     subframeToAdd.vParticle = newVelocity;
                     subframeToAdd.vEdgeStart = new Vector2(0.0, 0.0);
@@ -83,11 +83,8 @@ namespace PhysicsTestbed
             if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
             newVelocity += velocityEdgeCollisionPoint; // newVelocity should be in global coordinates
 
-            subframeToAdd.vParticle = newVelocity;  // TODO: correct newVelocity computation formula - remember about impulse concervation rule!
-            //subframeToAdd.vEdgeStart = ; // TODO: implement
-            //subframeToAdd.vEdgeEnd = ; // TODO: implement
+            subframeToAdd.vParticle = newVelocity;
             subframeToAdd.timeCoefficient = newTimeCoefficient;
-
             return subframeToAdd;
         }
 
@@ -165,7 +162,6 @@ namespace PhysicsTestbed
             subframeToAdd.vEdgeStart = newVelocityOrigin;
             subframeToAdd.vEdgeEnd = newVelocityNeighbor;
             subframeToAdd.timeCoefficient = newTimeCoefficient;
-
             return subframeToAdd;
         }
 

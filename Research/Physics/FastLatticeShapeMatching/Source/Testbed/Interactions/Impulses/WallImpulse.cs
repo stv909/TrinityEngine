@@ -29,19 +29,19 @@ namespace PhysicsTestbed
 
             if (posNext.X < left)
             {
-                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(-velocity.X, velocity.Y), null, new Vector2(0.0, 0.0), new Vector2(0.0, 0.0), (left - pos.X) / velocity.X));
+                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(-velocity.X * BodyImpulse.coefficientElasticity, velocity.Y), null, Vector2.ZERO, Vector2.ZERO, (left - pos.X) / velocity.X));
             }
             if (posNext.X > right)
             {
-                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(-velocity.X, velocity.Y), null, new Vector2(0.0, 0.0), new Vector2(0.0, 0.0), (right - pos.X) / velocity.X));
+                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(-velocity.X * BodyImpulse.coefficientElasticity, velocity.Y), null, Vector2.ZERO, Vector2.ZERO, (right - pos.X) / velocity.X));
             }
             if (posNext.Y < bottom)
             {
-                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y), null, new Vector2(0.0, 0.0), new Vector2(0.0, 0.0), (bottom - pos.Y) / velocity.Y));
+                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y * BodyImpulse.coefficientElasticity), null, Vector2.ZERO, Vector2.ZERO, (bottom - pos.Y) / velocity.Y));
             }
             if (posNext.Y > top)
             {
-                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y), null, new Vector2(0.0, 0.0), new Vector2(0.0, 0.0), (top - pos.Y) / velocity.Y));
+                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y * BodyImpulse.coefficientElasticity), null, Vector2.ZERO, Vector2.ZERO, (top - pos.Y) / velocity.Y));
             }
         }
 	}
