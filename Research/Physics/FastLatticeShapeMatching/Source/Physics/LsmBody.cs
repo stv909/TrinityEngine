@@ -24,7 +24,7 @@ namespace PhysicsTestbed
 		public List<SmoothingRegion> smoothingRegions = new List<SmoothingRegion>();
 		public List<Chunk> chunks = new List<Chunk>();
 
-		Point spacing = new Point(250, 250); // 25, 25
+		Point spacing = new Point(25, 25);
 		Vector2 offset = new Vector2(200, 200);
         Color3 color = new Color3(0, 1, 0);
         public Color3 Color { get { return color; } }
@@ -95,9 +95,15 @@ namespace PhysicsTestbed
         [Controllable(Type = ControllableAttribute.ControllerType.Checkbox, Caption = "Draw ccd particle-edge segments")]
         public static bool drawCCDParticleEdgeSegments = true;
 
-        public LsmBody(Vector2 offset, Color3 color)
+        [Controllable(Type = ControllableAttribute.ControllerType.Textbox, Caption = "blueprint spacing x", Min = 1, Max = 1000, Integral = true)]
+        public static int blueprintSpacingX = 250;
+        [Controllable(Type = ControllableAttribute.ControllerType.Textbox, Caption = "blueprint spacing y", Min = 1, Max = 1000, Integral = true)]
+        public static int blueprintSpacingY = 250;
+
+        public LsmBody(Vector2 offset, Point spacing, Color3 color)
         {
             this.offset = offset;
+            this.spacing = spacing;
             this.color = color;
         }
 

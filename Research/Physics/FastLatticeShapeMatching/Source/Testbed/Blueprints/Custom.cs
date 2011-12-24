@@ -10,7 +10,7 @@ namespace PhysicsTestbed
         {
             public static bool[,] blueprint = new bool[50, 50]; // TODO: use dynamic array here for all blueprints
 
-            static Custom(string sourceFilename)
+            static Custom()
             {
                 // TODO: implement loading data from file
             }

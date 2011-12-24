@@ -109,6 +109,7 @@ namespace PhysicsTestbed
         {
             LsmBody body = new LsmBody(
                 new Vector2(50, 50 + 150 * verticalIndex),
+                new Point(LsmBody.blueprintSpacingX, LsmBody.blueprintSpacingY),
                 new Color3(verticalIndex == 1 ? 1 : 0, verticalIndex == 0 ? 1 : 0, verticalIndex == 2 ? 1 : 0)
             );
             body.GenerateFromBlueprint(blueprint);

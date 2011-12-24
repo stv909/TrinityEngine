@@ -86,11 +86,12 @@
     <Compile Include="Physics\SmoothingRegion.cs" />
     <Compile Include="Physics\Particle.cs" />
     <Compile Include="Physics\World.cs" />
-    <Compile Include="Testbed\Blueprints\ChairBlueprint.cs" />
-    <Compile Include="Testbed\Blueprints\BuildingBlueprint.cs" />
+    <Compile Include="Testbed\Blueprints\Chair.cs" />
+    <Compile Include="Testbed\Blueprints\Building.cs" />
+    <Compile Include="Testbed\Blueprints\Custom.cs" />
     <Compile Include="Testbed\Interactions\Forces\DragForce.cs" />
     <Compile Include="Testbed\Interactions\Forces\GravityForce.cs" />
-    <Compile Include="Testbed\Blueprints\HumanBlueprint.cs" />
+    <Compile Include="Testbed\Blueprints\Human.cs" />
     <Compile Include="Testbed\Interactions\Forces\LockForce.cs" />
     <Compile Include="Testbed\Interactions\Forces\WallForce.cs" />
     <Compile Include="Testbed\Interactions\Impulses\BodyImpulse.cs" />
@@ -101,8 +102,8 @@
     </Compile>
     <Compile Include="Testbed\Interactions\Forces\MouseForce.cs" />
     <Compile Include="Testbed\Interactions\Forces\PushForce.cs" />
-    <Compile Include="Testbed\Blueprints\RectangleBlueprint.cs" />
-    <Compile Include="Testbed\Blueprints\SimpleBlueprint.cs" />
+    <Compile Include="Testbed\Blueprints\Rectangle.cs" />
+    <Compile Include="Testbed\Blueprints\Simple.cs" />
     <Compile Include="Testbed\Window\Controller.cs" />
     <Compile Include="Testbed\Window\ControllerPanel.cs">
       <SubType>Component</SubType>
