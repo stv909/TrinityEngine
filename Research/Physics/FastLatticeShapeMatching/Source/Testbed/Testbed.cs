@@ -42,13 +42,13 @@ namespace PhysicsTestbed
 		public static void Initialize()
 		{
             blueprintsCollection = new Array[7] { 
-                SimpleX1Blueprint.blueprint, SimpleX2Blueprint.blueprint, SimpleX3Blueprint.blueprint, 
-                RectangleBlueprint.blueprint, BuildingBlueprint.blueprint, ChairBlueprint.blueprint, HumanBlueprint.blueprint 
+                Blueprints.SimpleX1.blueprint, Blueprints.SimpleX2.blueprint, Blueprints.SimpleX3.blueprint, 
+                Blueprints.Rectangle.blueprint, Blueprints.Building.blueprint, Blueprints.Chair.blueprint, Blueprints.Human.blueprint 
             };
 
-            // SimpleX1Blueprint; SimpleX2Blueprint; SimpleX3Blueprint; RectangleBlueprint; HumanBlueprint; BuildingBlueprint; ChairBlueprint; //
-            bodiesCollection = new Array[2] { SimpleX1Blueprint.blueprint, SimpleX2Blueprint.blueprint };
-            //currentBlueprints = new Array[5] { SimpleX2Blueprint.blueprint, SimpleX1Blueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint, RectangleBlueprint.blueprint };
+            // SimpleX1; SimpleX2; SimpleX3; Rectangle; Human; Building; Chair; //
+            bodiesCollection = new Array[2] { Blueprints.SimpleX1.blueprint, Blueprints.SimpleX2.blueprint };
+            //currentBlueprints = new Array[5] { Blueprints.SimpleX2.blueprint, Blueprints.SimpleX1.blueprint, Blueprints.Rectangle.blueprint, Blueprints.Rectangle.blueprint, Blueprints.Rectangle.blueprint };
             GenerateBodies(bodiesCollection);
             
             dragForce = new DragForce();
