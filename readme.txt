@@ -38,14 +38,15 @@ Trinity Engine. Conceptual design and research.
 												+ correct bodies iterating for collision detection: avoid double-checks per frame with conflicting results
 												+ test new system in all cases
 												+ remove bodyActiveDebug & bodyPassiveDebug, make proper and quality Frozen & UseWallForce flag instead
-												- make general refactoring of all algorithms and data structures to reflect new conception
+												> make general refactoring of all algorithms and data structures to reflect new conception
 												- restore all debug drawings
+												- fix collision response for edges with locked vertices
 										+ simple and obvious method to find timeCoefficient
 									- improve zoom-in/zoom-out and processing in world.paused mode
 									- rotating impulse wall
 								- vs complex dynamic body
 									+ velocity modification using Rule of conservative impulses: particle <---infuence---> edge
-									> place all algorithms and principles description to Wiki
+									! place all algorithms and principles description to Wiki
 									- make debug test for impulse conservation rule (per particle impulse summation)
 									- analyse how does Rule of conservative impulses work, debug it
 									- avoid particle's energy growth while frequent collidings
@@ -61,7 +62,17 @@ Trinity Engine. Conceptual design and research.
 							1.1.2.1.2.3.1 Pure viscosity
 							1.1.2.1.2.3.2 Viscoelastic
 							1.1.2.1.2.3.3 Viscoplastic
-				1.1.2.2 Fast LSM implementation
+				1.1.2.2 Testbed
+					1.1.2.2.1 Materials loading
+					1.1.2.2.2 Bodies loading
+					1.1.2.2.3 Mechanisms loading
+					1.1.2.2.4 Objects loading
+				1.1.2.3 Editors
+					1.1.2.2.1 Physical materials
+					1.1.2.2.2 Physical objects (bodies, mechanisms)
+					1.1.2.2.3 Physical world
+					1.1.2.2.4 Physical universe
+				1.1.2.4 Fast LSM implementation
 			1.1.3 Integration Powder Toys concept with FLSM
 			
 		1.2 Multicore cloud computing
