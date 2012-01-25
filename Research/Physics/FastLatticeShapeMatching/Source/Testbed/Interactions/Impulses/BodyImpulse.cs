@@ -233,6 +233,62 @@ namespace PhysicsTestbed
             CheckFrozenEdge(origin.goal, neighbor.goal, pos, posNext, velocity, ref collisionBuffer, subframeToAdd); // current edge position
         }
 
+        private CollisionSubframeBuffer GenerateContact_ImpulseConservation_F2D(
+            Particle particle, Particle origin, Particle neighbor, Particle.CCDDebugInfo ccd, double ccdCollisionTime, double timeCoefficientPrediction,
+            CollisionSubframeBuffer subframeToAdd
+        )
+        {
+            double alpha = ccd.coordinateOfPointOnEdge;
+            Vector2 edge = neighbor.x - origin.x;
+            double edgeLengthSq = edge.LengthSq();
+            if (edgeLengthSq < epsilon)
+                return null;
+
+            double alphaCenterOfMass = neighbor.mass / (origin.mass + neighbor.mass);
+            double betaLeft = alpha / alphaCenterOfMass;
+            double betaRight = (alpha - alphaCenterOfMass) / (1.0 - alphaCenterOfMass);
+
+            /**/
+            double massEdgeCollisionPoint = origin.mass + neighbor.mass;    // simple mass approach
+            /*/
+            double massEdgeCollisionPoint = alpha < alphaCenterOfMass ?     // complex mass approach
+                origin.mass * (1.0 - betaLeft) + (origin.mass + neighbor.mass) * betaLeft :
+                (origin.mass + neighbor.mass) * (1.0 - betaRight ) + neighbor.mass * betaRight;
+            /**/
+
+            Vector2 velocityEdgeCollisionPoint = origin.v + (neighbor.v - origin.v) * alpha;
+            Vector2 velocityEdgeCollisionPoint_Tangent = (velocityEdgeCollisionPoint.Dot(edge) / edgeLengthSq) * edge;
+            Vector2 velocityEdgeCollisionPoint_Normal = velocityEdgeCollisionPoint - velocityEdgeCollisionPoint_Tangent;
+            Vector2 velocityParticle_Tangent = Vector2.ZERO;
+            Vector2 velocityParticle_Normal = Vector2.ZERO;
+            // particle.mass = infinity
+            // particle.v = newVelocityParticle = Vector2.ZERO
+
+            Vector2 newVelocityECP_Tangent = velocityEdgeCollisionPoint_Tangent; // it means that we have no particle-edge friction // TODO: implement some friction model
+            Vector2 newVelocityECP_Normal = -(1.0 + coefficientElasticity) * velocityEdgeCollisionPoint_Normal;
+            Vector2 newVelocityECP = newVelocityECP_Tangent + newVelocityECP_Normal;
+
+            Vector2 newVelocityParticle = Vector2.ZERO;
+
+            if (ccdCollisionTime <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
+            double newTimeCoefficient = timeCoefficientPrediction * ccdCollisionTime;
+            newTimeCoefficient -= epsilon / (newVelocityParticle - newVelocityECP).Length(); // try to prevent Zero-Distances // HACK // TODO: check Length() > epsilon
+            if (newTimeCoefficient < 0.0) newTimeCoefficient = 0.0; // don't move particle toward edge - just reflect velocity
+
+            Vector2 newVelocityOrigin = alpha < alphaCenterOfMass ?
+                newVelocityECP * (1.0 - betaLeft) + (origin.v + newVelocityECP - velocityEdgeCollisionPoint) * betaLeft :
+                (origin.v + newVelocityECP - velocityEdgeCollisionPoint) * (1.0 - betaRight) + origin.v * betaRight;
+            Vector2 newVelocityNeighbor = alpha < alphaCenterOfMass ?
+                neighbor.v * (1.0 - betaLeft) + (neighbor.v + newVelocityECP - velocityEdgeCollisionPoint) * betaLeft :
+                (neighbor.v + newVelocityECP - velocityEdgeCollisionPoint) * (1.0 - betaRight) + newVelocityECP * betaRight;
+
+            subframeToAdd.vParticle = newVelocityParticle;
+            subframeToAdd.vEdgeStart = newVelocityOrigin;
+            subframeToAdd.vEdgeEnd = newVelocityNeighbor;
+            subframeToAdd.timeCoefficient = newTimeCoefficient;
+            return subframeToAdd;
+        }
+
         private void CheckParticleEdge_F2D(
             ref List<Particle.CCDDebugInfo> ccds,
             Particle particle,
@@ -250,8 +306,20 @@ namespace PhysicsTestbed
 
             if (ccdCollisionTime != null)
             { 
-                // TODO: implement proper contact generation for this case
-                // TODO: JUST DO IT!
+                Particle.CCDDebugInfo ccd = GenerateDebugInfo(solverInput, ccdCollisionTime.Value);
+                CollisionSubframeBuffer contact =
+                    GenerateContact_ImpulseConservation_F2D(
+                        particle, origin, neighbor, ccd, ccdCollisionTime.Value, timeCoefficientPrediction,
+                        subframeToAdd
+                    );
+                if (contact != null)
+                {
+                    collisionBuffer.Add(contact);
+                }
+                ccds.Add(ccd);
+
+                if (LsmBody.pauseOnBodyBodyCollision)
+                    Testbed.Paused = true;
             }
         }
 
