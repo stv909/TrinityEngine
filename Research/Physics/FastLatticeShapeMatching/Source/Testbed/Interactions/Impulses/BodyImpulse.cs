@@ -76,7 +76,8 @@ namespace PhysicsTestbed
             Vector2 reflectNormal = new Vector2(-reflectSurface.Y, reflectSurface.X);
             if (reflectNormal.Dot(velocityPointRelativeEdge) < 0) reflectNormal = -reflectNormal;
 
-            Vector2 newVelocity = velocityPointRelativeEdge - 2.0 * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
+            Vector2 newVelocity = 
+                velocityPointRelativeEdge - (1.0 + coefficientElasticity) * reflectNormal * (reflectNormal.Dot(velocityPointRelativeEdge) / reflectNormal.LengthSq());
             if (ccdCollisionTime <= 0.0) Testbed.PostMessage(System.Drawing.Color.Red, "timeCoefficient = 0"); // Zero-Distance not allowed // DEBUG
             double newTimeCoefficient = timeCoefficientPrediction * ccdCollisionTime;
             newTimeCoefficient -= epsilon / newVelocity.Length(); // try to prevent Zero-Distances // HACK // TODO: check Length() > epsilon
