@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace PhysicsTestbed
 {
-	public class PanAndZoom : MouseForce
+    public class PanAndZoom : MouseForce // TODO: use MouseService instead of MouseForce base class
     {
         public override void ApplyForce(IEnumerable particles)
         { 

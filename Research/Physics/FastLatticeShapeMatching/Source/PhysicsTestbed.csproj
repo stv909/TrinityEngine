@@ -89,10 +89,10 @@
     <Compile Include="Testbed\Blueprints\Chair.cs" />
     <Compile Include="Testbed\Blueprints\Building.cs" />
     <Compile Include="Testbed\Blueprints\Custom.cs" />
-    <Compile Include="Testbed\Services\DragForce.cs" />
+    <Compile Include="Testbed\Services\DragParticle.cs" />
     <Compile Include="Physics\Interactions\Forces\GravityForce.cs" />
     <Compile Include="Testbed\Blueprints\Human.cs" />
-    <Compile Include="Testbed\Services\LockForce.cs" />
+    <Compile Include="Testbed\Services\LockParticle.cs" />
     <Compile Include="Physics\Interactions\Forces\WallForce.cs" />
     <Compile Include="Physics\Interactions\Impulses\BodyRepulse.cs" />
     <Compile Include="Testbed\Services\PanAndZoom.cs" />
@@ -101,7 +101,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Testbed\Services\MouseForce.cs" />
-    <Compile Include="Testbed\Services\PushForce.cs" />
+    <Compile Include="Testbed\Services\PushParticleGroup.cs" />
     <Compile Include="Testbed\Blueprints\Rectangle.cs" />
     <Compile Include="Testbed\Blueprints\Simple.cs" />
     <Compile Include="Testbed\Window\Controller.cs" />
