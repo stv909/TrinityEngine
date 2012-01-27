@@ -308,14 +308,12 @@ namespace PhysicsTestbed
                 Vector2 posNext = pos + t.v * timeCoefficientPrediction;
 
                 // Collide with walls
-                Debug.Assert(Testbed.world.environmentImpulses[0] is WallImpulse); // TODO: fix this HACK
-                Testbed.world.environmentImpulses[0].ApplyImpulse(this, t, null, timeCoefficientPrediction, ref collisionBuffer); // TODO: make refactoring for BodyImpulse
+                Testbed.world.bodyWallRepulse.ApplyImpulse(this, t, null, timeCoefficientPrediction, ref collisionBuffer); // TODO: make refactoring for BodyImpulse
             }
         }
 
         public static void CollideBodies(LsmBody movingBody, LsmBody blockingBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
-            Debug.Assert(Testbed.world.environmentImpulses[1] is BodyImpulse); // TODO: fix this HACK
             foreach (Particle particleOfMovingBody in movingBody.particles)
             {
                 // impulse & offset collision method
@@ -326,21 +324,21 @@ namespace PhysicsTestbed
             if (!movingBody.Frozen && !blockingBody.Frozen)
             {
                 foreach (Particle particleOfMovingBody in movingBody.particles)
-                    Testbed.world.environmentImpulses[1].ApplyImpulse(
+                    Testbed.world.bodyBodyRepulse.ApplyImpulse(
                         movingBody, particleOfMovingBody, blockingBody, timeCoefficientPrediction, ref collisionBuffer
                     ); // TODO: make refactoring for BodyImpulse
             }
             else if (!movingBody.Frozen && blockingBody.Frozen)
             {
                 foreach (Particle particleOfMovingBody in movingBody.particles)
-                    Testbed.world.environmentImpulses[1].ApplyImpulse_DynamicToFrozen(
+                    Testbed.world.bodyBodyRepulse.ApplyImpulse_DynamicToFrozen(
                         movingBody, particleOfMovingBody, blockingBody, timeCoefficientPrediction, ref collisionBuffer
                     ); // TODO: make refactoring for BodyImpulse
             }
             else if (movingBody.Frozen && !blockingBody.Frozen)
             {
                 foreach (Particle particleOfBlockingBody in blockingBody.particles)
-                    Testbed.world.environmentImpulses[1].ApplyImpulse_FrozenToDynamic(
+                    Testbed.world.bodyBodyRepulse.ApplyImpulse_FrozenToDynamic(
                         blockingBody, particleOfBlockingBody, movingBody, timeCoefficientPrediction, ref collisionBuffer
                     ); // TODO: make refactoring for BodyImpulse
             }

@@ -11,6 +11,11 @@ namespace PhysicsTestbed
 
         public WallForce(float width, float height)
         {
+            SetDimensions(width, height);
+        }
+
+        public void SetDimensions(float width, float height)
+        {
             this.right = width;
             this.top = height;
         }

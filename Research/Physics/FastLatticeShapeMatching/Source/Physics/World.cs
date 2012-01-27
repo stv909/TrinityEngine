@@ -10,8 +10,9 @@ namespace PhysicsTestbed
         public static World Singleton { get { return singleton; } }
 
 		public List<LsmBody> bodies = new List<LsmBody>();
-		public List<EnvironmentForce> environmentForces = new List<EnvironmentForce>();
-		public List<EnvironmentImpulse> environmentImpulses = new List<EnvironmentImpulse>();
+        public BodyImpulse bodyBodyRepulse = new BodyImpulse();
+        public WallImpulse bodyWallRepulse = new WallImpulse(9999, 9999);
+        public List<EnvironmentForce> environmentForces = new List<EnvironmentForce>();
         public List<EnvironmentForce> interactionServices = new List<EnvironmentForce>();
 
         public List<MouseForce> mouseForces = new List<MouseForce>();

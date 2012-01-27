@@ -299,25 +299,27 @@ namespace PhysicsTestbed
             Gl.glLineWidth(2.0f);
             Gl.glBegin(Gl.GL_LINES);
             {
+                WallForce shell = wallForce;
                 Gl.glColor4f(0.75f, 0.75f, 0.75f, 0.5f);
-                Gl.glVertex2d(wallForce.left + wallForce.border, wallForce.top);
-                Gl.glVertex2d(wallForce.left + wallForce.border, wallForce.bottom);
-                Gl.glVertex2d(wallForce.right - wallForce.border, wallForce.top);
-                Gl.glVertex2d(wallForce.right - wallForce.border, wallForce.bottom);
-                Gl.glVertex2d(wallForce.left, wallForce.top - wallForce.border);
-                Gl.glVertex2d(wallForce.right, wallForce.top - wallForce.border);
-                Gl.glVertex2d(wallForce.left, wallForce.bottom + wallForce.border);
-                Gl.glVertex2d(wallForce.right, wallForce.bottom + wallForce.border);
+                Gl.glVertex2d(shell.left + shell.border, shell.top);
+                Gl.glVertex2d(shell.left + shell.border, shell.bottom);
+                Gl.glVertex2d(shell.right - shell.border, shell.top);
+                Gl.glVertex2d(shell.right - shell.border, shell.bottom);
+                Gl.glVertex2d(shell.left, shell.top - shell.border);
+                Gl.glVertex2d(shell.right, shell.top - shell.border);
+                Gl.glVertex2d(shell.left, shell.bottom + shell.border);
+                Gl.glVertex2d(shell.right, shell.bottom + shell.border);
 
+                WallImpulse wall = world.bodyWallRepulse;
                 Gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-                Gl.glVertex2d(wallImpulse.left + wallImpulse.border, wallImpulse.top);
-                Gl.glVertex2d(wallImpulse.left + wallImpulse.border, wallImpulse.bottom);
-                Gl.glVertex2d(wallImpulse.right - wallImpulse.border, wallImpulse.top);
-                Gl.glVertex2d(wallImpulse.right - wallImpulse.border, wallImpulse.bottom);
-                Gl.glVertex2d(wallImpulse.left, wallImpulse.top - wallImpulse.border);
-                Gl.glVertex2d(wallImpulse.right, wallImpulse.top - wallImpulse.border);
-                Gl.glVertex2d(wallImpulse.left, wallImpulse.bottom + wallImpulse.border);
-                Gl.glVertex2d(wallImpulse.right, wallImpulse.bottom + wallImpulse.border);
+                Gl.glVertex2d(wall.left + wall.border, wall.top);
+                Gl.glVertex2d(wall.left + wall.border, wall.bottom);
+                Gl.glVertex2d(wall.right - wall.border, wall.top);
+                Gl.glVertex2d(wall.right - wall.border, wall.bottom);
+                Gl.glVertex2d(wall.left, wall.top - wall.border);
+                Gl.glVertex2d(wall.right, wall.top - wall.border);
+                Gl.glVertex2d(wall.left, wall.bottom + wall.border);
+                Gl.glVertex2d(wall.right, wall.bottom + wall.border);
             }
             Gl.glEnd();
         }

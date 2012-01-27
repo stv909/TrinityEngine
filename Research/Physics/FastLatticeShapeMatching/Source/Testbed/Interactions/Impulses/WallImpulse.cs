@@ -12,9 +12,14 @@ namespace PhysicsTestbed
 
 		public WallImpulse(float width, float height)
 		{
-			this.right = width;
-			this.top = height;
+            SetDimensions(width, height);
 		}
+
+        public void SetDimensions(float width, float height)
+        {
+            this.right = width;
+            this.top = height;
+        }
 
         public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
 		{

@@ -20,18 +20,13 @@ namespace PhysicsTestbed
         {
             InitializeComponent();
 
-            // TODO: make refactoring for this Testbed initializations [
-            Testbed.wallImpulse.right = renderBox.Width;
-            Testbed.wallImpulse.top = renderBox.Height;
+            Testbed.world.bodyWallRepulse.SetDimensions(renderBox.Width, renderBox.Height);
+            Testbed.wallForce.SetDimensions(renderBox.Width, renderBox.Height);
 
-            Testbed.wallForce.right = renderBox.Width;
-            Testbed.wallForce.top = renderBox.Height;
-
-            for (int i = 0; i < 2; ++i )
+            for (int i = 0; i < Testbed.world.bodies.Count; ++i)
             {
                 Testbed.MakeDataBindingForBody(this, Testbed.world.bodies[i], i);
             }
-            // ]
 
             statusBox.PostMessage(Color.Green, "Simulation started");
         }
@@ -154,13 +149,8 @@ namespace PhysicsTestbed
 
 		private void renderBox_Resize(object sender, EventArgs e)
 		{
-            // TODO: make refactoring for this Testbed initializations [
-			Testbed.wallImpulse.right = renderBox.Width;
-			Testbed.wallImpulse.top = renderBox.Height;
-
-            Testbed.wallForce.right = renderBox.Width;
-            Testbed.wallForce.top = renderBox.Height;
-            // ]
+            Testbed.world.bodyWallRepulse.SetDimensions(renderBox.Width, renderBox.Height);
+            Testbed.wallForce.SetDimensions(renderBox.Width, renderBox.Height);
         }
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)

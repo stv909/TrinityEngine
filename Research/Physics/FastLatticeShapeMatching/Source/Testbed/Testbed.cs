@@ -18,8 +18,6 @@ namespace PhysicsTestbed
         public static PushForce pushForce;
 		public static LockForce lockForce;
 		public static GravityForce gravityForce;
-        public static WallImpulse wallImpulse;
-        public static BodyImpulse bodyImpulse;
 
         public static PanAndZoom panAndZoom;
 
@@ -56,8 +54,6 @@ namespace PhysicsTestbed
 			pushForce = new PushForce();
 			lockForce = new LockForce();
 			gravityForce = new GravityForce();
-			wallImpulse = new WallImpulse(9999, 9999);
-            bodyImpulse = new BodyImpulse();
             panAndZoom = new PanAndZoom();
 
 			world.environmentForces.Add(dragForce);
@@ -65,8 +61,6 @@ namespace PhysicsTestbed
             world.environmentForces.Add(pushForce);
 			world.environmentForces.Add(lockForce);
 			world.environmentForces.Add(gravityForce);
-            world.environmentImpulses.Add(wallImpulse);
-            world.environmentImpulses.Add(bodyImpulse);
             world.interactionServices.Add(panAndZoom);
 
             world.mouseForces.Add(dragForce);
@@ -98,6 +92,7 @@ namespace PhysicsTestbed
 
         public static void MakeDataBindingForBody(TestWindow window, LsmBody body, int bodyIndex)
         {
+            // TODO: make this method suitable for N bodies - not only for 2 of them
             if (window != null && (bodyIndex == 0 || bodyIndex == 1))
             {
                 MakeCheckBoxDataBinding(window, "model0" + (bodyIndex + 1) + "DisableCollisions", "Checked", body, "UseWallForce");
