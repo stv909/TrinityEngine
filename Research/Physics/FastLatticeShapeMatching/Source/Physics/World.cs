@@ -12,16 +12,16 @@ namespace PhysicsTestbed
 		public List<LsmBody> bodies = new List<LsmBody>();
         public BodyRepulse bodyBodyRepulse = new BodyRepulse();
         public WallRepulse bodyWallRepulse = new WallRepulse(9999, 9999);
-        public List<EnvironmentForce> environmentForces = new List<EnvironmentForce>();
-        public List<Updatable> forceServices = new List<Updatable>();
-        public List<Updatable> interactionServices = new List<Updatable>();
+        public List<IEnvironmentForce> environmentForces = new List<IEnvironmentForce>();
+        public List<IUpdatable> forceServices = new List<IUpdatable>();
+        public List<IUpdatable> interactionServices = new List<IUpdatable>();
 
         public List<MouseService> mouseServices = new List<MouseService>();
 
 		public void Update()
 		{
             // update all services
-            foreach (Updatable updatable in forceServices)
+            foreach (IUpdatable updatable in forceServices)
             {
                 updatable.Update();
             }
@@ -31,7 +31,7 @@ namespace PhysicsTestbed
 			{
                 if (!b.Frozen)
                 {
-                    foreach (EnvironmentForce force in environmentForces)
+                    foreach (IEnvironmentForce force in environmentForces)
                     {
                         if (force is WallForce && !b.UseWallForce) // HACK to apply custom forces // TODO: make correct system
                             continue;
@@ -123,7 +123,7 @@ namespace PhysicsTestbed
             while (collisionFound);
 
             // postupdate all services
-            foreach (Updatable updatable in forceServices)
+            foreach (IUpdatable updatable in forceServices)
             {
                 updatable.PostUpdate();
             }

@@ -5,13 +5,13 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-    public interface Updatable
+    public interface IUpdatable
     {
         void Update();
         void PostUpdate();
     }
 
-    public interface EnvironmentForce
+    public interface IEnvironmentForce
 	{
 		void ApplyForce(IEnumerable particles);
     }

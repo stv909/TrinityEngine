@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-	public class GravityForce : EnvironmentForce
+	public class GravityForce : IEnvironmentForce
 	{
 		[Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "Gravity", Min = 0.0, Max = 1.0)]
 		public static double gravity = 0.0;

@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
-	public abstract class MouseForce : MouseService, EnvironmentForce
+	public abstract class MouseForce : MouseService, IEnvironmentForce
 	{
         public virtual void ApplyForce(IEnumerable particles)
         {

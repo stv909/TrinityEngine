@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-    public class WallForce : EnvironmentForce
+    public class WallForce : IEnvironmentForce
     {
         public float border = 30;
         public float left = 0, right, bottom = 0, top;

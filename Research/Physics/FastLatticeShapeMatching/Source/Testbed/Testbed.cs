@@ -53,13 +53,17 @@ namespace PhysicsTestbed
             bodiesCollection = new Array[2] { Blueprints.SimpleX1.blueprint, Blueprints.SimpleX2.blueprint };
             //currentBlueprints = new Array[5] { Blueprints.SimpleX2.blueprint, Blueprints.SimpleX1.blueprint, Blueprints.Rectangle.blueprint, Blueprints.Rectangle.blueprint, Blueprints.Rectangle.blueprint };
             GenerateBodies(bodiesCollection);
-            
-            dragParticle = new DragParticle();
+
             wallForce = new WallForce(9999, 9999);
-			pushParticle = new PushParticleGroup();
-			lockParticle = new LockParticle();
-			gravityForce = new GravityForce();
+            gravityForce = new GravityForce();
+
+            dragParticle = new DragParticle();
+            lockParticle = new LockParticle();
+            pushParticle = new PushParticleGroup();
+
             panAndZoom = new PanAndZoom();
+
+            // TODO: automate grouping of service elements to environmentForces, forceServices, interactionServices and mouseServices
 
             world.environmentForces.Add(wallForce);
 			world.environmentForces.Add(gravityForce);

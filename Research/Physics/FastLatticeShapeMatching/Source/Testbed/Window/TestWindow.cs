@@ -56,7 +56,7 @@ namespace PhysicsTestbed
 			}
 
             // Update interaction services
-            foreach (Updatable service in Testbed.world.interactionServices)
+            foreach (IUpdatable service in Testbed.world.interactionServices)
             {
                 service.Update();
             }

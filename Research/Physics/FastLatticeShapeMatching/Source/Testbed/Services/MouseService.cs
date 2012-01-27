@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
-    public abstract class MouseService : Updatable
+    public class MouseService : IUpdatable
 	{
 		protected bool lmbDown = false, mmbDown = false, rmbDown = false;
 		protected bool oldLmbDown, oldMmbDown, oldRmbDown;
