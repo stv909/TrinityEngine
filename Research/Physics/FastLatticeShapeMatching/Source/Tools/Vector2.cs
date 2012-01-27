@@ -13,7 +13,7 @@ namespace PhysicsTestbed
 		{
 			get
 			{
-				return new Vector2(0, 0);
+				return new Vector2(0.0, 0.0);
 			}
 		}
 
@@ -40,14 +40,6 @@ namespace PhysicsTestbed
 				y = value;
 			}
 		}
-
-		/*
-		public Vector2()
-		{
-			X = 0;
-			Y = 0;
-		}
-		*/
 
 		public Vector2(double x, double y)
 		{
