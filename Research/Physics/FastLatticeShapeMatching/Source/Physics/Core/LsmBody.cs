@@ -308,7 +308,7 @@ namespace PhysicsTestbed
                 Vector2 posNext = pos + t.v * timeCoefficientPrediction;
 
                 // Collide with walls
-                Testbed.world.bodyWallRepulse.ApplyImpulse(this, t, null, timeCoefficientPrediction, ref collisionBuffer); // TODO: make refactoring for BodyImpulse
+                Testbed.world.bodyWallRepulse.ApplyImpulse(this, t, timeCoefficientPrediction, ref collisionBuffer); // TODO: make refactoring for BodyImpulse
             }
         }
 

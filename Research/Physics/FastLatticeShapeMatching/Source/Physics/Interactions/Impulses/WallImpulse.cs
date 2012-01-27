@@ -22,11 +22,10 @@ namespace PhysicsTestbed
         }
 
         public void ApplyImpulse(
-            LsmBody applyBody, Particle applyParticle, LsmBody otherBody, // HACK // TODO: try to don't use such information for collisions or formilize this ussage
+            LsmBody applyBody, Particle applyParticle,
             double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer // HACK // TODO: remove ref List<>
         )
 		{
-            Debug.Assert(otherBody == null);
             float left = this.left + border, right = this.right - border, bottom = this.bottom + border, top = this.top - border;
             if (left < 0.0 || right < 0.0 || bottom < 0.0 || top < 0.0) // to prevent computation for incorrect case
                 return;
@@ -52,16 +51,5 @@ namespace PhysicsTestbed
                 collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y * BodyImpulse.coefficientElasticity), null, Vector2.ZERO, Vector2.ZERO, (top - pos.Y) / velocity.Y));
             }
         }
-
-        public void ApplyImpulse_DynamicToFrozen(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
-        {
-            Debug.Assert(false);
-        }
-
-        public void ApplyImpulse_FrozenToDynamic(LsmBody otherBody, Particle otherParticle, LsmBody applyBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
-        {
-            Debug.Assert(false);
-        }
-
 	}
 }
