@@ -79,29 +79,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Maths\EdgePointCCDSolver.cs" />
-    <Compile Include="Physics\LsmBody.cs" />
-    <Compile Include="Physics\Chunk.cs" />
-    <Compile Include="Physics\EnvironmentForce.cs" />
-    <Compile Include="Physics\SmoothingRegion.cs" />
-    <Compile Include="Physics\Particle.cs" />
+    <Compile Include="Utils\Maths\EdgePointCCDSolver.cs" />
+    <Compile Include="Physics\Core\LsmBody.cs" />
+    <Compile Include="Physics\Core\Chunk.cs" />
+    <Compile Include="Physics\Interactions\EnvironmentForce.cs" />
+    <Compile Include="Physics\Core\SmoothingRegion.cs" />
+    <Compile Include="Physics\Core\Particle.cs" />
     <Compile Include="Physics\World.cs" />
     <Compile Include="Testbed\Blueprints\Chair.cs" />
     <Compile Include="Testbed\Blueprints\Building.cs" />
     <Compile Include="Testbed\Blueprints\Custom.cs" />
-    <Compile Include="Testbed\Interactions\Forces\DragForce.cs" />
-    <Compile Include="Testbed\Interactions\Forces\GravityForce.cs" />
+    <Compile Include="Testbed\Services\DragForce.cs" />
+    <Compile Include="Physics\Interactions\Forces\GravityForce.cs" />
     <Compile Include="Testbed\Blueprints\Human.cs" />
-    <Compile Include="Testbed\Interactions\Forces\LockForce.cs" />
-    <Compile Include="Testbed\Interactions\Forces\WallForce.cs" />
-    <Compile Include="Testbed\Interactions\Impulses\BodyImpulse.cs" />
-    <Compile Include="Testbed\Interactions\PanAndZoom.cs" />
-    <Compile Include="Testbed\Render.cs" />
+    <Compile Include="Testbed\Services\LockForce.cs" />
+    <Compile Include="Physics\Interactions\Forces\WallForce.cs" />
+    <Compile Include="Physics\Interactions\Impulses\BodyImpulse.cs" />
+    <Compile Include="Testbed\Services\PanAndZoom.cs" />
+    <Compile Include="Testbed\Render\Render.cs" />
     <Compile Include="Testbed\Window\MessageTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Testbed\Interactions\Forces\MouseForce.cs" />
-    <Compile Include="Testbed\Interactions\Forces\PushForce.cs" />
+    <Compile Include="Testbed\Services\MouseForce.cs" />
+    <Compile Include="Testbed\Services\PushForce.cs" />
     <Compile Include="Testbed\Blueprints\Rectangle.cs" />
     <Compile Include="Testbed\Blueprints\Simple.cs" />
     <Compile Include="Testbed\Window\Controller.cs" />
@@ -144,12 +144,12 @@
     <Compile Include="Testbed\Window\TestWindow.Rendering.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Testbed\Interactions\Impulses\WallImpulse.cs" />
-    <Compile Include="Tools\Color3.cs" />
-    <Compile Include="Tools\LineSegment.cs" />
-    <Compile Include="Tools\ManagedList.cs" />
-    <Compile Include="Maths\Matrix2x2.cs" />
-    <Compile Include="Maths\Vector2.cs" />
+    <Compile Include="Physics\Interactions\Impulses\WallImpulse.cs" />
+    <Compile Include="Utils\Color3.cs" />
+    <Compile Include="Utils\LineSegment.cs" />
+    <Compile Include="Utils\ManagedList.cs" />
+    <Compile Include="Utils\Maths\Matrix2x2.cs" />
+    <Compile Include="Utils\Maths\Vector2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
