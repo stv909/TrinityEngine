@@ -94,7 +94,7 @@
     <Compile Include="Testbed\Blueprints\Human.cs" />
     <Compile Include="Testbed\Services\LockForce.cs" />
     <Compile Include="Physics\Interactions\Forces\WallForce.cs" />
-    <Compile Include="Physics\Interactions\Impulses\BodyImpulse.cs" />
+    <Compile Include="Physics\Interactions\Impulses\BodyRepulse.cs" />
     <Compile Include="Testbed\Services\PanAndZoom.cs" />
     <Compile Include="Testbed\Render\Render.cs" />
     <Compile Include="Testbed\Window\MessageTextBox.cs">
@@ -144,7 +144,7 @@
     <Compile Include="Testbed\Window\TestWindow.Rendering.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Physics\Interactions\Impulses\WallImpulse.cs" />
+    <Compile Include="Physics\Interactions\Impulses\WallRepulse.cs" />
     <Compile Include="Utils\Color3.cs" />
     <Compile Include="Utils\LineSegment.cs" />
     <Compile Include="Utils\ManagedList.cs" />
