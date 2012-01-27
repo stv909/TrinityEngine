@@ -310,7 +310,7 @@ namespace PhysicsTestbed
                 Gl.glVertex2d(shell.left, shell.bottom + shell.border);
                 Gl.glVertex2d(shell.right, shell.bottom + shell.border);
 
-                WallImpulse wall = world.bodyWallRepulse;
+                WallRepulse wall = world.bodyWallRepulse;
                 Gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
                 Gl.glVertex2d(wall.left + wall.border, wall.top);
                 Gl.glVertex2d(wall.left + wall.border, wall.bottom);
@@ -392,8 +392,8 @@ namespace PhysicsTestbed
         {
             RenderWalls();
             RenderBodies();
-            if (BodyImpulse.CCDTimeOffset > 0.0 || LsmBody.pauseOnBodyBodyCollision) 
-                RenderCCDHelpers(BodyImpulse.CCDTimeOffset);
+            if (BodyRepulse.CCDTimeOffset > 0.0 || LsmBody.pauseOnBodyBodyCollision) 
+                RenderCCDHelpers(BodyRepulse.CCDTimeOffset);
             RenderForces();
         }
     }

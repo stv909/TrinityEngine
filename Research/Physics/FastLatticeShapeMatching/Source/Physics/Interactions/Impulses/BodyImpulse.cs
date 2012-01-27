@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
-    public class BodyImpulse
+    public class BodyRepulse
     {
         [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "CCD time offset (pure visual)", Min = 0.01, Max = 0.99)]
         public static double ccdTimeOffset = 0.01;

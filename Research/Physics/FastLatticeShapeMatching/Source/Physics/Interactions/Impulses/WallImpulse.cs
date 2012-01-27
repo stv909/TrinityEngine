@@ -5,12 +5,12 @@ using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
-    public class WallImpulse
+    public class WallRepulse
 	{
         public float border = 45;
         public float left = 0, right, bottom = 0, top;
 
-		public WallImpulse(float width, float height)
+		public WallRepulse(float width, float height)
 		{
             SetDimensions(width, height);
 		}
@@ -36,19 +36,19 @@ namespace PhysicsTestbed
 
             if (posNext.X < left)
             {
-                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(-velocity.X * BodyImpulse.coefficientElasticity, velocity.Y), null, Vector2.ZERO, Vector2.ZERO, (left - pos.X) / velocity.X));
+                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(-velocity.X * BodyRepulse.coefficientElasticity, velocity.Y), null, Vector2.ZERO, Vector2.ZERO, (left - pos.X) / velocity.X));
             }
             if (posNext.X > right)
             {
-                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(-velocity.X * BodyImpulse.coefficientElasticity, velocity.Y), null, Vector2.ZERO, Vector2.ZERO, (right - pos.X) / velocity.X));
+                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(-velocity.X * BodyRepulse.coefficientElasticity, velocity.Y), null, Vector2.ZERO, Vector2.ZERO, (right - pos.X) / velocity.X));
             }
             if (posNext.Y < bottom)
             {
-                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y * BodyImpulse.coefficientElasticity), null, Vector2.ZERO, Vector2.ZERO, (bottom - pos.Y) / velocity.Y));
+                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y * BodyRepulse.coefficientElasticity), null, Vector2.ZERO, Vector2.ZERO, (bottom - pos.Y) / velocity.Y));
             }
             if (posNext.Y > top)
             {
-                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y * BodyImpulse.coefficientElasticity), null, Vector2.ZERO, Vector2.ZERO, (top - pos.Y) / velocity.Y));
+                collisionBuffer.Add(new CollisionSubframeBuffer(applyParticle, new Vector2(velocity.X, -velocity.Y * BodyRepulse.coefficientElasticity), null, Vector2.ZERO, Vector2.ZERO, (top - pos.Y) / velocity.Y));
             }
         }
 	}
