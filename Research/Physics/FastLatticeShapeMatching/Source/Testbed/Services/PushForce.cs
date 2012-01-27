@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-	public class PushForce : MouseForce
+	public class PushParticleGroup : MouseForce
 	{
 		const float PUSH_DIST = 35f;
 

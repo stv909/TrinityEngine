@@ -308,7 +308,7 @@ namespace PhysicsTestbed
                 Vector2 posNext = pos + t.v * timeCoefficientPrediction;
 
                 // Collide with walls
-                Testbed.world.bodyWallRepulse.ApplyImpulse(this, t, timeCoefficientPrediction, ref collisionBuffer); // TODO: make refactoring for BodyImpulse
+                Testbed.world.bodyWallRepulse.ApplyImpulse(this, t, timeCoefficientPrediction, ref collisionBuffer);
             }
         }
 
@@ -326,21 +326,21 @@ namespace PhysicsTestbed
                 foreach (Particle particleOfMovingBody in movingBody.particles)
                     Testbed.world.bodyBodyRepulse.ApplyImpulse(
                         movingBody, particleOfMovingBody, blockingBody, timeCoefficientPrediction, ref collisionBuffer
-                    ); // TODO: make refactoring for BodyImpulse
+                    );
             }
             else if (!movingBody.Frozen && blockingBody.Frozen)
             {
                 foreach (Particle particleOfMovingBody in movingBody.particles)
                     Testbed.world.bodyBodyRepulse.ApplyImpulse_DynamicToFrozen(
                         movingBody, particleOfMovingBody, blockingBody, timeCoefficientPrediction, ref collisionBuffer
-                    ); // TODO: make refactoring for BodyImpulse
+                    );
             }
             else if (movingBody.Frozen && !blockingBody.Frozen)
             {
                 foreach (Particle particleOfBlockingBody in blockingBody.particles)
                     Testbed.world.bodyBodyRepulse.ApplyImpulse_FrozenToDynamic(
                         blockingBody, particleOfBlockingBody, movingBody, timeCoefficientPrediction, ref collisionBuffer
-                    ); // TODO: make refactoring for BodyImpulse
+                    );
             }
         }
 

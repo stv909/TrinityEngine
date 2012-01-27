@@ -12,7 +12,7 @@ namespace PhysicsTestbed
         [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "0.01x CCD time offset", Min = -0.01, Max = 0.01)]
         public static double ccdTimeOffset001x = -0.01;
         [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "coefficient of elasticity", Min = 0.0, Max = 1.0)]
-        public static double coefficientElasticity = 1.0;
+        public static double coefficientElasticity = 1.0; // TODO: make this coeffetient dependent on material types of both interacting bodies - use 2d-table for this
 
         public static double CCDTimeOffset { get{ return ccdTimeOffset + ccdTimeOffset001x; } }
 

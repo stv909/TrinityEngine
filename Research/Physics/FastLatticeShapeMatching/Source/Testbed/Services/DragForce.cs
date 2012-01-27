@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace PhysicsTestbed
 {
-	public class DragForce : MouseForce
+	public class DragParticle : MouseForce
 	{
 		public Particle selected;
 		new bool oldLmbDown = false;

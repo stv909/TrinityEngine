@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-	public class LockForce : MouseForce
+	public class LockParticle : MouseForce
 	{
 		public override void ApplyForce(IEnumerable particles)
 		{

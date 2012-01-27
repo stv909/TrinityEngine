@@ -13,10 +13,10 @@ namespace PhysicsTestbed
         public static Array blueprintsCollection = null;
         public static Array bodiesCollection = null;
 
-		public static DragForce dragForce;
+		public static DragParticle dragForce;
         public static WallForce wallForce;
-        public static PushForce pushForce;
-		public static LockForce lockForce;
+        public static PushParticleGroup pushForce;
+		public static LockParticle lockForce;
 		public static GravityForce gravityForce;
 
         public static PanAndZoom panAndZoom;
@@ -49,10 +49,10 @@ namespace PhysicsTestbed
             //currentBlueprints = new Array[5] { Blueprints.SimpleX2.blueprint, Blueprints.SimpleX1.blueprint, Blueprints.Rectangle.blueprint, Blueprints.Rectangle.blueprint, Blueprints.Rectangle.blueprint };
             GenerateBodies(bodiesCollection);
             
-            dragForce = new DragForce();
+            dragForce = new DragParticle();
             wallForce = new WallForce(9999, 9999);
-			pushForce = new PushForce();
-			lockForce = new LockForce();
+			pushForce = new PushParticleGroup();
+			lockForce = new LockParticle();
 			gravityForce = new GravityForce();
             panAndZoom = new PanAndZoom();
 
