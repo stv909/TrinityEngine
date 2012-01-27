@@ -11,9 +11,7 @@ namespace PhysicsTestbed
 	public partial class TestWindow : Form
 	{
 		int pauseStepFrame = 0;
-
 		Vector2 centerOfMass;
-
 		Vector2 velocity = new Vector2(0f, 0f);
 
 		public TestWindow()
@@ -56,7 +54,7 @@ namespace PhysicsTestbed
 			}
 
             // Update interaction services
-            foreach (IUpdatable service in Testbed.world.interactionServices)
+            foreach (IUpdatable service in Testbed.interactionServices)
             {
                 service.Update();
             }
@@ -101,7 +99,7 @@ namespace PhysicsTestbed
 
 		private void renderBox_MouseDown(object sender, MouseEventArgs e)
 		{
-            foreach (MouseService d in Testbed.world.mouseServices)
+            foreach (MouseService d in Testbed.mouseServices)
 			{
                 if (e.Button == MouseButtons.Left)
                     d.LmbDown();
@@ -114,7 +112,7 @@ namespace PhysicsTestbed
 
 		private void renderBox_MouseUp(object sender, MouseEventArgs e)
 		{
-            foreach (MouseService d in Testbed.world.mouseServices)
+            foreach (MouseService d in Testbed.mouseServices)
 			{
 				if (e.Button == MouseButtons.Left)
 					d.LmbUp();
@@ -127,7 +125,7 @@ namespace PhysicsTestbed
 
 		private void renderBox_MouseMove(object sender, MouseEventArgs e)
 		{
-            foreach (MouseService d in Testbed.world.mouseServices)
+            foreach (MouseService d in Testbed.mouseServices)
 			{
     			d.MouseMove(e.X, this.renderBox.Height - e.Y);
 			}
@@ -135,7 +133,7 @@ namespace PhysicsTestbed
 
         private void renderBox_MouseWheel(object sender, MouseEventArgs e)
         {
-            foreach (MouseService d in Testbed.world.mouseServices)
+            foreach (MouseService d in Testbed.mouseServices)
             {
                 if (e.Delta != 0) d.Wheel(e.Delta);
             }

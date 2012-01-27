@@ -25,6 +25,9 @@ namespace PhysicsTestbed
 		public static LockParticle lockParticle;
         public static PushParticleGroup pushParticle;
 
+        // groups
+        public static List<IUpdatable> interactionServices = new List<IUpdatable>();
+        public static List<MouseService> mouseServices = new List<MouseService>();
 
 		public static bool paused = false;
 		public static int updateFrame = 0;
@@ -75,12 +78,12 @@ namespace PhysicsTestbed
             world.environmentForces.Add(pushParticle);
             world.forceServices.Add(pushParticle);
 
-            world.interactionServices.Add(panAndZoom);
+            interactionServices.Add(panAndZoom);
 
-            world.mouseServices.Add(dragParticle);
-            world.mouseServices.Add(pushParticle);
-            world.mouseServices.Add(lockParticle);
-            world.mouseServices.Add(panAndZoom);
+            mouseServices.Add(dragParticle);
+            mouseServices.Add(pushParticle);
+            mouseServices.Add(lockParticle);
+            mouseServices.Add(panAndZoom);
         }
 
         public static void PostMessage(string message)

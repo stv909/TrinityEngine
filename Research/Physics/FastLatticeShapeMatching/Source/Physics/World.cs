@@ -12,11 +12,10 @@ namespace PhysicsTestbed
 		public List<LsmBody> bodies = new List<LsmBody>();
         public BodyRepulse bodyBodyRepulse = new BodyRepulse();
         public WallRepulse bodyWallRepulse = new WallRepulse(9999, 9999);
+
+        // groups
         public List<IEnvironmentForce> environmentForces = new List<IEnvironmentForce>();
         public List<IUpdatable> forceServices = new List<IUpdatable>();
-        public List<IUpdatable> interactionServices = new List<IUpdatable>();
-
-        public List<MouseService> mouseServices = new List<MouseService>();
 
 		public void Update()
 		{
