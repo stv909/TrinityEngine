@@ -13,28 +13,29 @@ namespace PhysicsTestbed
         public BodyRepulse bodyBodyRepulse = new BodyRepulse();
         public WallRepulse bodyWallRepulse = new WallRepulse(9999, 9999);
         public List<EnvironmentForce> environmentForces = new List<EnvironmentForce>();
-        public List<EnvironmentForce> interactionServices = new List<EnvironmentForce>();
+        public List<Updatable> forceServices = new List<Updatable>();
+        public List<Updatable> interactionServices = new List<Updatable>();
 
-        public List<MouseForce> mouseForces = new List<MouseForce>();
+        public List<MouseService> mouseServices = new List<MouseService>();
 
 		public void Update()
 		{
-            // update all external forces
-			foreach (EnvironmentForce e in environmentForces)
-			{
-				e.Update();
-			}
+            // update all services
+            foreach (Updatable updatable in forceServices)
+            {
+                updatable.Update();
+            }
 
             // update internal processes in bodies, find velocities
 			foreach (LsmBody b in bodies)
 			{
                 if (!b.Frozen)
                 {
-                    foreach (EnvironmentForce e in environmentForces)
+                    foreach (EnvironmentForce force in environmentForces)
                     {
-                        if (e is WallForce && !b.UseWallForce) // HACK to apply custom forces // TODO: make correct system
+                        if (force is WallForce && !b.UseWallForce) // HACK to apply custom forces // TODO: make correct system
                             continue;
-                        e.ApplyForce(b.particles);
+                        force.ApplyForce(b.particles);
                     }
                     b.Smooth();
                     b.DoFracture();
@@ -121,10 +122,10 @@ namespace PhysicsTestbed
             }
             while (collisionFound);
 
-            // postupdate external forces
-            foreach (EnvironmentForce e in environmentForces)
+            // postupdate all services
+            foreach (Updatable updatable in forceServices)
             {
-                e.PostUpdate();
+                updatable.PostUpdate();
             }
 		}
 	}

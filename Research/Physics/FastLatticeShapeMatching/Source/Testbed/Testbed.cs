@@ -13,13 +13,18 @@ namespace PhysicsTestbed
         public static Array blueprintsCollection = null;
         public static Array bodiesCollection = null;
 
-		public static DragParticle dragForce;
+        // forces
+        public static GravityForce gravityForce;
         public static WallForce wallForce;
-        public static PushParticleGroup pushForce;
-		public static LockParticle lockForce;
-		public static GravityForce gravityForce;
 
+        // services
         public static PanAndZoom panAndZoom;
+
+        // mouse forces
+        public static DragParticle dragParticle;
+		public static LockParticle lockParticle;
+        public static PushParticleGroup pushParticle;
+
 
 		public static bool paused = false;
 		public static int updateFrame = 0;
@@ -49,24 +54,29 @@ namespace PhysicsTestbed
             //currentBlueprints = new Array[5] { Blueprints.SimpleX2.blueprint, Blueprints.SimpleX1.blueprint, Blueprints.Rectangle.blueprint, Blueprints.Rectangle.blueprint, Blueprints.Rectangle.blueprint };
             GenerateBodies(bodiesCollection);
             
-            dragForce = new DragParticle();
+            dragParticle = new DragParticle();
             wallForce = new WallForce(9999, 9999);
-			pushForce = new PushParticleGroup();
-			lockForce = new LockParticle();
+			pushParticle = new PushParticleGroup();
+			lockParticle = new LockParticle();
 			gravityForce = new GravityForce();
             panAndZoom = new PanAndZoom();
 
-			world.environmentForces.Add(dragForce);
             world.environmentForces.Add(wallForce);
-            world.environmentForces.Add(pushForce);
-			world.environmentForces.Add(lockForce);
 			world.environmentForces.Add(gravityForce);
+
+            world.environmentForces.Add(dragParticle);
+            world.forceServices.Add(dragParticle);
+			world.environmentForces.Add(lockParticle);
+            world.forceServices.Add(lockParticle);
+            world.environmentForces.Add(pushParticle);
+            world.forceServices.Add(pushParticle);
+
             world.interactionServices.Add(panAndZoom);
 
-            world.mouseForces.Add(dragForce);
-            world.mouseForces.Add(pushForce);
-            world.mouseForces.Add(lockForce);
-            world.mouseForces.Add(panAndZoom);
+            world.mouseServices.Add(dragParticle);
+            world.mouseServices.Add(pushParticle);
+            world.mouseServices.Add(lockParticle);
+            world.mouseServices.Add(panAndZoom);
         }
 
         public static void PostMessage(string message)

@@ -20,7 +20,7 @@ namespace PhysicsTestbed
             this.top = height;
         }
 
-        public override void ApplyForce(System.Collections.IEnumerable particles)
+        public virtual void ApplyForce(System.Collections.IEnumerable particles)
         {
             float left = this.left + border, right = this.right - border, bottom = this.bottom + border, top = this.top - border;
 

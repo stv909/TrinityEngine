@@ -51,14 +51,14 @@ namespace PhysicsTestbed
 				// Apply the drag force, even if we are paused
 				foreach (LsmBody body in Testbed.world.bodies)
 				{
-					Testbed.dragForce.ApplyForce(body.particles);
+					Testbed.dragParticle.ApplyForce(body.particles);
 				}
 			}
 
             // Update interaction services
-            foreach (EnvironmentForce srv in Testbed.world.interactionServices)
+            foreach (Updatable service in Testbed.world.interactionServices)
             {
-                srv.Update();
+                service.Update();
             }
 
 			this.Render();
@@ -101,7 +101,7 @@ namespace PhysicsTestbed
 
 		private void renderBox_MouseDown(object sender, MouseEventArgs e)
 		{
-            foreach (MouseForce d in Testbed.world.mouseForces)
+            foreach (MouseService d in Testbed.world.mouseServices)
 			{
                 if (e.Button == MouseButtons.Left)
                     d.LmbDown();
@@ -114,7 +114,7 @@ namespace PhysicsTestbed
 
 		private void renderBox_MouseUp(object sender, MouseEventArgs e)
 		{
-            foreach (MouseForce d in Testbed.world.mouseForces)
+            foreach (MouseService d in Testbed.world.mouseServices)
 			{
 				if (e.Button == MouseButtons.Left)
 					d.LmbUp();
@@ -127,7 +127,7 @@ namespace PhysicsTestbed
 
 		private void renderBox_MouseMove(object sender, MouseEventArgs e)
 		{
-            foreach (MouseForce d in Testbed.world.mouseForces)
+            foreach (MouseService d in Testbed.world.mouseServices)
 			{
     			d.MouseMove(e.X, this.renderBox.Height - e.Y);
 			}
@@ -135,7 +135,7 @@ namespace PhysicsTestbed
 
         private void renderBox_MouseWheel(object sender, MouseEventArgs e)
         {
-            foreach (MouseForce d in Testbed.world.mouseForces)
+            foreach (MouseService d in Testbed.world.mouseServices)
             {
                 if (e.Delta != 0) d.Wheel(e.Delta);
             }

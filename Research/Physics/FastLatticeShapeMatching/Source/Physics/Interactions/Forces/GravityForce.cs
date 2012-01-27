@@ -11,7 +11,7 @@ namespace PhysicsTestbed
 		[Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "Gravity", Min = 0.0, Max = 1.0)]
 		public static double gravity = 0.0;
 
-		public override void ApplyForce(IEnumerable particles)
+		public virtual void ApplyForce(IEnumerable particles)
 		{
 			if (gravity != 0.0)
 			{

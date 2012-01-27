@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Testbed\Services\MouseService.cs" />
     <Compile Include="Utils\Maths\EdgePointCCDSolver.cs" />
     <Compile Include="Physics\Core\LsmBody.cs" />
     <Compile Include="Physics\Core\Chunk.cs" />

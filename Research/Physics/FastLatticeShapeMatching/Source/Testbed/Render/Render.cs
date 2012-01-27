@@ -262,29 +262,29 @@ namespace PhysicsTestbed
 
         static void RenderDragForce()
         {
-            if (dragForce.Dragging)
+            if (dragParticle.Dragging)
             {
                 // Draw line between knobs
                 Gl.glLineWidth(1.0f);
                 Gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
                 Gl.glBegin(Gl.GL_LINES);
                 {
-                    Gl.glVertex2i(dragForce.mouse.X, dragForce.mouse.Y);
-                    Gl.glVertex2d(dragForce.selected.goal.X, dragForce.selected.goal.Y);
+                    Gl.glVertex2i(dragParticle.mouse.X, dragParticle.mouse.Y);
+                    Gl.glVertex2d(dragParticle.selected.goal.X, dragParticle.selected.goal.Y);
                 }
                 Gl.glEnd();
                 // Draw source knob
-                CommonShapes.RenderKnob(dragForce.selected.goal, new Color3(1, 0, 0));
+                CommonShapes.RenderKnob(dragParticle.selected.goal, new Color3(1, 0, 0));
                 // Draw destination knob
-                CommonShapes.RenderKnob(new Vector2(dragForce.mouse.X, dragForce.mouse.Y), new Color3(0, 1, 0));
+                CommonShapes.RenderKnob(new Vector2(dragParticle.mouse.X, dragParticle.mouse.Y), new Color3(0, 1, 0));
             }
         }
 
         static void RenderPushForce()
         {
-            if (pushForce.Pushing)
+            if (pushParticle.Pushing)
             {
-                CommonShapes.RenderCircle(new Vector2(pushForce.PushPosition.X, pushForce.PushPosition.Y), pushForce.PushDistance, new Color3(0, 0, 1));
+                CommonShapes.RenderCircle(new Vector2(pushParticle.PushPosition.X, pushParticle.PushPosition.Y), pushParticle.PushDistance, new Color3(0, 0, 1));
             }
         }
 

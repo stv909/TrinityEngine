@@ -5,14 +5,14 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-    public abstract class Updatable
+    public interface Updatable
     {
-        public virtual void Update() { }
-        public virtual void PostUpdate() { }
+        void Update();
+        void PostUpdate();
     }
 
-    public abstract class EnvironmentForce : Updatable
+    public interface EnvironmentForce
 	{
-		public abstract void ApplyForce(IEnumerable particles);
+		void ApplyForce(IEnumerable particles);
     }
 }

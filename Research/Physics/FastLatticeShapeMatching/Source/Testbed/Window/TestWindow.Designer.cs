@@ -472,7 +472,7 @@ namespace PhysicsTestbed
             this.model02DisableCollisions.Name = "model02DisableCollisions";
             this.model02DisableCollisions.Size = new System.Drawing.Size(104, 17);
             this.model02DisableCollisions.TabIndex = 72;
-            this.model02DisableCollisions.Text = "disable collisions";
+            this.model02DisableCollisions.Text = "disable walls";
             this.model02DisableCollisions.UseVisualStyleBackColor = true;
             // 
             // model01DisableCollisions
@@ -483,7 +483,7 @@ namespace PhysicsTestbed
             this.model01DisableCollisions.Name = "model01DisableCollisions";
             this.model01DisableCollisions.Size = new System.Drawing.Size(104, 17);
             this.model01DisableCollisions.TabIndex = 73;
-            this.model01DisableCollisions.Text = "disable collisions";
+            this.model01DisableCollisions.Text = "disable walls";
             this.model01DisableCollisions.UseVisualStyleBackColor = true;
             // 
             // model02Freeze
