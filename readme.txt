@@ -39,6 +39,14 @@ Trinity Engine. Conceptual design and research.
 												+ test new system in all cases
 												+ remove bodyActiveDebug & bodyPassiveDebug, make proper and quality Frozen & UseWallForce flag instead
 												> make general refactoring of all algorithms and data structures to reflect new conception
+													+ Blueprints
+													+ Repulse
+													+ Project structure
+													+ Environment Physical Force
+													> Services and service groups
+														+ 1-st wave of refactoring
+														- groups automation and generalization
+														- service interfaces correction
 												- restore all debug drawings
 												- fix collision response for edges with locked vertices
 										+ simple and obvious method to find timeCoefficient
