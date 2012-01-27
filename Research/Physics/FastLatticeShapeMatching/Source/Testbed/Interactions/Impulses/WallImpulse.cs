@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
-    public class WallImpulse : EnvironmentImpulse
+    public class WallImpulse
 	{
         public float border = 45;
         public float left = 0, right, bottom = 0, top;
@@ -21,7 +21,10 @@ namespace PhysicsTestbed
             this.top = height;
         }
 
-        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        public void ApplyImpulse(
+            LsmBody applyBody, Particle applyParticle, LsmBody otherBody, // HACK // TODO: try to don't use such information for collisions or formilize this ussage
+            double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer // HACK // TODO: remove ref List<>
+        )
 		{
             Debug.Assert(otherBody == null);
             float left = this.left + border, right = this.right - border, bottom = this.bottom + border, top = this.top - border;
@@ -50,12 +53,12 @@ namespace PhysicsTestbed
             }
         }
 
-        public override void ApplyImpulse_DynamicToFrozen(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        public void ApplyImpulse_DynamicToFrozen(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
             Debug.Assert(false);
         }
 
-        public override void ApplyImpulse_FrozenToDynamic(LsmBody otherBody, Particle otherParticle, LsmBody applyBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        public void ApplyImpulse_FrozenToDynamic(LsmBody otherBody, Particle otherParticle, LsmBody applyBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
             Debug.Assert(false);
         }

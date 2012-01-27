@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace PhysicsTestbed
 {
-    public class BodyImpulse : EnvironmentImpulse
+    public class BodyImpulse
     {
         [Controllable(Type = ControllableAttribute.ControllerType.Slider, Caption = "CCD time offset (pure visual)", Min = 0.01, Max = 0.99)]
         public static double ccdTimeOffset = 0.01;
@@ -324,7 +324,10 @@ namespace PhysicsTestbed
             }
         }
 
-        public override void ApplyImpulse(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        public void ApplyImpulse(
+            LsmBody applyBody, Particle applyParticle, LsmBody otherBody, // HACK // TODO: try to don't use such information for collisions or formilize this ussage
+            double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer // HACK // TODO: remove ref List<>
+        )
         {
             Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
             Debug.Assert(!applyBody.Frozen && !otherBody.Frozen);
@@ -351,7 +354,7 @@ namespace PhysicsTestbed
             }
         }
 
-        public override void ApplyImpulse_DynamicToFrozen(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        public void ApplyImpulse_DynamicToFrozen(LsmBody applyBody, Particle applyParticle, LsmBody otherBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
             Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
             Debug.Assert(!applyBody.Frozen && otherBody.Frozen);
@@ -377,7 +380,7 @@ namespace PhysicsTestbed
             }
         }
 
-        public override void ApplyImpulse_FrozenToDynamic(LsmBody otherBody, Particle otherParticle, LsmBody applyBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
+        public void ApplyImpulse_FrozenToDynamic(LsmBody otherBody, Particle otherParticle, LsmBody applyBody, double timeCoefficientPrediction, ref List<CollisionSubframeBuffer> collisionBuffer)
         {
             Debug.Assert(!applyBody.Equals(otherBody)); // don't allow self-collision here
             Debug.Assert(applyBody.Frozen && !otherBody.Frozen);
