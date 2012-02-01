@@ -103,6 +103,7 @@
     <Compile Include="App\MainWindow\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="App\Testbed\Services\IService.cs" />
     <Compile Include="App\Testbed\Services\MouseService.cs" />
     <Compile Include="Utils\Maths\EdgePointCCDSolver.cs" />
     <Compile Include="Physics\Core\LsmBody.cs" />

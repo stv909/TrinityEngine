@@ -5,10 +5,9 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-    public interface IUpdatable
+    public interface IUpdatableForce
     {
         void Update();
-        void PostUpdate();
     }
 
     public interface IEnvironmentForce

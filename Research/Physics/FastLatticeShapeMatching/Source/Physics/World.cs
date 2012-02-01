@@ -15,16 +15,9 @@ namespace PhysicsTestbed
 
         // groups
         public List<IEnvironmentForce> environmentForces = new List<IEnvironmentForce>();
-        public List<IUpdatable> forceServices = new List<IUpdatable>();
 
 		public void Update()
 		{
-            // update all services
-            foreach (IUpdatable updatable in forceServices)
-            {
-                updatable.Update();
-            }
-
             // update internal processes in bodies, find velocities
 			foreach (LsmBody b in bodies)
 			{
@@ -120,12 +113,6 @@ namespace PhysicsTestbed
                 }
             }
             while (collisionFound);
-
-            // postupdate all services
-            foreach (IUpdatable updatable in forceServices)
-            {
-                updatable.PostUpdate();
-            }
 		}
 	}
 }

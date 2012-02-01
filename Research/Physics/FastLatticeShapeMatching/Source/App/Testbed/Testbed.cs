@@ -17,7 +17,7 @@ namespace PhysicsTestbed
         public static GravityForce gravityForce;
         public static WallForce wallForce;
 
-        // services
+        // mouse services
         public static PanAndZoom panAndZoom;
 
         // mouse forces
@@ -26,7 +26,7 @@ namespace PhysicsTestbed
         public static PushParticleGroup pushParticle;
 
         // groups
-        public static List<IUpdatable> interactionServices = new List<IUpdatable>();
+        public static List<IService> interactionServices = new List<IService>();
         public static List<MouseService> mouseServices = new List<MouseService>();
 
 		public static bool paused = false;
@@ -59,31 +59,29 @@ namespace PhysicsTestbed
 
             wallForce = new WallForce(9999, 9999);
             gravityForce = new GravityForce();
-
             dragParticle = new DragParticle();
             lockParticle = new LockParticle();
             pushParticle = new PushParticleGroup();
-
             panAndZoom = new PanAndZoom();
 
-            // TODO: automate grouping of service elements to environmentForces, forceServices, interactionServices and mouseServices
+            // automatic grouping of service elements
+            IList<Object> groupElems = new List<Object>();
+            groupElems.Add(wallForce);
+            groupElems.Add(gravityForce);
+            groupElems.Add(dragParticle);
+            groupElems.Add(lockParticle);
+            groupElems.Add(pushParticle);
+            groupElems.Add(panAndZoom);
 
-            world.environmentForces.Add(wallForce);
-			world.environmentForces.Add(gravityForce);
-
-            world.environmentForces.Add(dragParticle);
-            world.forceServices.Add(dragParticle);
-			world.environmentForces.Add(lockParticle);
-            world.forceServices.Add(lockParticle);
-            world.environmentForces.Add(pushParticle);
-            world.forceServices.Add(pushParticle);
-
-            interactionServices.Add(panAndZoom);
-
-            mouseServices.Add(dragParticle);
-            mouseServices.Add(pushParticle);
-            mouseServices.Add(lockParticle);
-            mouseServices.Add(panAndZoom);
+            foreach (Object elem in groupElems)
+            {
+                if (elem is IEnvironmentForce)
+                    world.environmentForces.Add(elem as IEnvironmentForce);
+                if (elem is IService)
+                    interactionServices.Add(elem as IService);
+                if (elem is MouseService)
+                    mouseServices.Add(elem as MouseService);
+            }
         }
 
         public static void PostMessage(string message)

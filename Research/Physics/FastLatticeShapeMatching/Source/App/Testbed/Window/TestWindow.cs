@@ -18,6 +18,8 @@ namespace PhysicsTestbed
         {
             InitializeComponent();
 
+            // TODO: remove Testbed-related logic from here
+
             Testbed.world.bodyWallRepulse.SetDimensions(renderBox.Width, renderBox.Height);
             Testbed.wallForce.SetDimensions(renderBox.Width, renderBox.Height);
 
@@ -31,8 +33,16 @@ namespace PhysicsTestbed
 
 		private void TimerTick(object sender, EventArgs e)
 		{
-			pauseStepFrame++;
+            // TODO: remove Testbed-related logic from here
 
+            // PreUpdate interaction services
+            foreach (IService service in Testbed.interactionServices)
+            {
+                service.PreUpdate();
+            }
+
+            // Update physics
+			pauseStepFrame++;
 			Testbed.paused = true;
 
 			if (pauseStepButton.Capture && pauseStepFrame % 20 == 0 && pauseStepFrame > 0)
@@ -47,18 +57,19 @@ namespace PhysicsTestbed
 			else
 			{
 				// Apply the drag force, even if we are paused
-				foreach (LsmBody body in Testbed.world.bodies)
+                foreach (LsmBody body in Testbed.world.bodies) // TODO: fix this HACK
 				{
 					Testbed.dragParticle.ApplyForce(body.particles);
 				}
 			}
 
-            // Update interaction services
-            foreach (IUpdatable service in Testbed.interactionServices)
+            // PostUpdate interaction services
+            foreach (IService service in Testbed.interactionServices)
             {
-                service.Update();
+                service.PostUpdate();
             }
 
+            // Update presentation
 			this.Render();
 			UpdatePanels();
 		}
@@ -101,12 +112,7 @@ namespace PhysicsTestbed
 		{
             foreach (MouseService d in Testbed.mouseServices)
 			{
-                if (e.Button == MouseButtons.Left)
-                    d.LmbDown();
-                else if (e.Button == MouseButtons.Right)
-                    d.RmbDown();
-                else if (e.Button == MouseButtons.Middle)
-                    d.MmbDown();
+                d.MouseDown(e.Button);
 			}
 		}
 
@@ -114,13 +120,8 @@ namespace PhysicsTestbed
 		{
             foreach (MouseService d in Testbed.mouseServices)
 			{
-				if (e.Button == MouseButtons.Left)
-					d.LmbUp();
-				else if (e.Button == MouseButtons.Right)
-					d.RmbUp();
-                else if (e.Button == MouseButtons.Middle)
-                    d.MmbUp();
-			}
+                d.MouseUp(e.Button);
+            }
 		}
 
 		private void renderBox_MouseMove(object sender, MouseEventArgs e)
@@ -133,9 +134,12 @@ namespace PhysicsTestbed
 
         private void renderBox_MouseWheel(object sender, MouseEventArgs e)
         {
-            foreach (MouseService d in Testbed.mouseServices)
+            if (e.Delta != 0)
             {
-                if (e.Delta != 0) d.Wheel(e.Delta);
+                foreach (MouseService d in Testbed.mouseServices)
+                {
+                    d.MouseWheel(e.Delta);
+                }
             }
         }
 

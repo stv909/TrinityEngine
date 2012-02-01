@@ -46,12 +46,12 @@ namespace PhysicsTestbed
 						selected.fExt += (mouseVec - selected.x) * selected.mass;
 						selected.v = Vector2.ZERO;
 					}
-					else if (Testbed.Paused && !lmbDown && oldLmbDown)
+					else if (Testbed.Paused && !lmbDown && oldLmbDown) // TODO: fix this HACK
 					{
 						selected.fExt += (mouseVec - selected.x) * PAUSED_MULT * selected.mass;
 					}
 				}
-				else if(lmbDown)
+				else if (lmbDown)
 				{
 					selected.x = mouseVec;
                     selected.v = Vector2.ZERO;

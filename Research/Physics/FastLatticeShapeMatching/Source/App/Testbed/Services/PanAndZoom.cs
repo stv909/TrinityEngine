@@ -10,7 +10,7 @@ namespace PhysicsTestbed
     {
         double zoomMultiplier = 1.33;
 
-        public override void Update()
+        public override void PreUpdate()
         {
             if (wheelPositive || wheelNegative)
             {
@@ -26,7 +26,7 @@ namespace PhysicsTestbed
                 Testbed.screenTranslate -= Testbed.screenZoom * new Vector2(mouse.X - oldMouse.X, mouse.Y - oldMouse.Y);
             }
 
-            base.Update();
+            base.PreUpdate();
         }
     }
 }
