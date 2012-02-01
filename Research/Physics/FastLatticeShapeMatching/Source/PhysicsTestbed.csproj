@@ -108,17 +108,17 @@
     <Compile Include="Utils\Maths\EdgePointCCDSolver.cs" />
     <Compile Include="Physics\Core\LsmBody.cs" />
     <Compile Include="Physics\Core\Chunk.cs" />
-    <Compile Include="Physics\Interactions\EnvironmentForce.cs" />
+    <Compile Include="Physics\Interactions\IEnvironmentForce.cs" />
     <Compile Include="Physics\Core\SmoothingRegion.cs" />
     <Compile Include="Physics\Core\Particle.cs" />
     <Compile Include="Physics\World.cs" />
     <Compile Include="App\Testbed\Blueprints\Chair.cs" />
     <Compile Include="App\Testbed\Blueprints\Building.cs" />
     <Compile Include="App\Testbed\Blueprints\Custom.cs" />
-    <Compile Include="App\Testbed\Services\DragParticle.cs" />
+    <Compile Include="App\Testbed\Services\Physical\DragParticle.cs" />
     <Compile Include="Physics\Interactions\Forces\GravityForce.cs" />
     <Compile Include="App\Testbed\Blueprints\Human.cs" />
-    <Compile Include="App\Testbed\Services\LockParticle.cs" />
+    <Compile Include="App\Testbed\Services\Physical\LockParticle.cs" />
     <Compile Include="Physics\Interactions\Forces\WallForce.cs" />
     <Compile Include="Physics\Interactions\Impulses\BodyRepulse.cs" />
     <Compile Include="App\Testbed\Services\PanAndZoom.cs" />
@@ -126,8 +126,8 @@
     <Compile Include="App\Testbed\Window\MessageTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="App\Testbed\Services\MouseForce.cs" />
-    <Compile Include="App\Testbed\Services\PushParticleGroup.cs" />
+    <Compile Include="App\Testbed\Services\Physical\MouseForce.cs" />
+    <Compile Include="App\Testbed\Services\Physical\PushParticleGroup.cs" />
     <Compile Include="App\Testbed\Blueprints\Rectangle.cs" />
     <Compile Include="App\Testbed\Blueprints\Simple.cs" />
     <Compile Include="App\Testbed\Window\Controller.cs" />
