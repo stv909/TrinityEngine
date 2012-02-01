@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysicsTestbed
 {
-    public interface IUpdatableForce
+    public interface IUpdatableForce // TODO: implement support for Updatable Forces in Physical Core
     {
         void Update();
     }

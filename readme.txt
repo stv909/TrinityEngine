@@ -45,8 +45,10 @@ Trinity Engine. Conceptual design and research.
 													+ Environment Physical Force
 													> Services and service groups
 														+ 1-st wave of refactoring
-														- groups automation and generalization
-														- service interfaces correction
+														+ groups automation and generalization
+														+ service interfaces correction
+														- refactoring of all services
+														- refactoring of all forces and repulses
 												- restore all debug drawings
 												- fix collision response for edges with locked vertices
 										+ simple and obvious method to find timeCoefficient
