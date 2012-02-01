@@ -57,10 +57,16 @@
     <ManifestKeyFile>PhysicsTestbed_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -79,7 +85,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Testbed\Services\MouseService.cs" />
+    <Compile Include="App\ConservationOfEnergy\Window\CoeWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="App\ConservationOfEnergy\Window\CoeWindow.Designer.cs">
+      <DependentUpon>CoeWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="App\Editor\Window\EditorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="App\Editor\Window\EditorWindow.Designer.cs">
+      <DependentUpon>EditorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="App\MainWindow\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="App\MainWindow\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="App\Testbed\Services\MouseService.cs" />
     <Compile Include="Utils\Maths\EdgePointCCDSolver.cs" />
     <Compile Include="Physics\Core\LsmBody.cs" />
     <Compile Include="Physics\Core\Chunk.cs" />
@@ -87,37 +111,46 @@
     <Compile Include="Physics\Core\SmoothingRegion.cs" />
     <Compile Include="Physics\Core\Particle.cs" />
     <Compile Include="Physics\World.cs" />
-    <Compile Include="Testbed\Blueprints\Chair.cs" />
-    <Compile Include="Testbed\Blueprints\Building.cs" />
-    <Compile Include="Testbed\Blueprints\Custom.cs" />
-    <Compile Include="Testbed\Services\DragParticle.cs" />
+    <Compile Include="App\Testbed\Blueprints\Chair.cs" />
+    <Compile Include="App\Testbed\Blueprints\Building.cs" />
+    <Compile Include="App\Testbed\Blueprints\Custom.cs" />
+    <Compile Include="App\Testbed\Services\DragParticle.cs" />
     <Compile Include="Physics\Interactions\Forces\GravityForce.cs" />
-    <Compile Include="Testbed\Blueprints\Human.cs" />
-    <Compile Include="Testbed\Services\LockParticle.cs" />
+    <Compile Include="App\Testbed\Blueprints\Human.cs" />
+    <Compile Include="App\Testbed\Services\LockParticle.cs" />
     <Compile Include="Physics\Interactions\Forces\WallForce.cs" />
     <Compile Include="Physics\Interactions\Impulses\BodyRepulse.cs" />
-    <Compile Include="Testbed\Services\PanAndZoom.cs" />
-    <Compile Include="Testbed\Render\Render.cs" />
-    <Compile Include="Testbed\Window\MessageTextBox.cs">
+    <Compile Include="App\Testbed\Services\PanAndZoom.cs" />
+    <Compile Include="App\Testbed\Render\Render.cs" />
+    <Compile Include="App\Testbed\Window\MessageTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Testbed\Services\MouseForce.cs" />
-    <Compile Include="Testbed\Services\PushParticleGroup.cs" />
-    <Compile Include="Testbed\Blueprints\Rectangle.cs" />
-    <Compile Include="Testbed\Blueprints\Simple.cs" />
-    <Compile Include="Testbed\Window\Controller.cs" />
-    <Compile Include="Testbed\Window\ControllerPanel.cs">
+    <Compile Include="App\Testbed\Services\MouseForce.cs" />
+    <Compile Include="App\Testbed\Services\PushParticleGroup.cs" />
+    <Compile Include="App\Testbed\Blueprints\Rectangle.cs" />
+    <Compile Include="App\Testbed\Blueprints\Simple.cs" />
+    <Compile Include="App\Testbed\Window\Controller.cs" />
+    <Compile Include="App\Testbed\Window\ControllerPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Testbed\Window\TestWindow.cs">
+    <Compile Include="App\Testbed\Window\TestWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Testbed\Window\TestWindow.Designer.cs">
+    <Compile Include="App\Testbed\Window\TestWindow.Designer.cs">
       <DependentUpon>TestWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Testbed\Program.cs" />
+    <Compile Include="App\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Testbed\Window\TestWindow.resx">
+    <EmbeddedResource Include="App\ConservationOfEnergy\Window\CoeWindow.resx">
+      <DependentUpon>CoeWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App\Editor\Window\EditorWindow.resx">
+      <DependentUpon>EditorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App\MainWindow\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App\Testbed\Window\TestWindow.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TestWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -132,6 +165,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="PhysicsTestbed_TemporaryKey.pfx" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -141,8 +175,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Testbed\Testbed.cs" />
-    <Compile Include="Testbed\Window\TestWindow.Rendering.cs">
+    <Compile Include="App\Testbed\Testbed.cs" />
+    <Compile Include="App\Testbed\Window\TestWindow.Rendering.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Physics\Interactions\Impulses\WallRepulse.cs" />

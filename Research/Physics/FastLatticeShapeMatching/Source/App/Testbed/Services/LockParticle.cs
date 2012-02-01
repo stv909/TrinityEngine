@@ -12,7 +12,7 @@ namespace PhysicsTestbed
 		{
 			Vector2 mouseVec = new Vector2(mouse.X, mouse.Y);
 
-			if (rmbJustPressed && Program.window.rmbLockRadioButton.Checked)
+			if (rmbJustPressed && Program.testbedWindow.rmbLockRadioButton.Checked)
 			{
 				double minDist = 50;
 				Particle closestParticle = null;

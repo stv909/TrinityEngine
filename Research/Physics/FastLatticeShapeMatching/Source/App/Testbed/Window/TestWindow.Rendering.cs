@@ -6,7 +6,7 @@ using Tao.OpenGl;
 
 namespace PhysicsTestbed
 {
-	public partial class TestWindow
+	public partial class TestbedWindow
 	{
 		bool glInitialized = false;
 

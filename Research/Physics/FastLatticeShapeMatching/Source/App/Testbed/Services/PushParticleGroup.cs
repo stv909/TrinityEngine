@@ -12,7 +12,7 @@ namespace PhysicsTestbed
 
 		public bool Pushing
 		{
-			get { return rmbDown && Program.window.rmbPushRadioButton.Checked; }
+			get { return rmbDown && Program.testbedWindow.rmbPushRadioButton.Checked; }
 		}
 
 		public Point PushPosition

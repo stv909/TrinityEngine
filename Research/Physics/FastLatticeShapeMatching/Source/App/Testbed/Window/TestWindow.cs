@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 namespace PhysicsTestbed
 {
-	public partial class TestWindow : Form
+	public partial class TestbedWindow : Form
 	{
 		int pauseStepFrame = 0;
 		Vector2 centerOfMass;
 		Vector2 velocity = new Vector2(0f, 0f);
 
-		public TestWindow()
+		public TestbedWindow()
         {
             InitializeComponent();
 

@@ -40,7 +40,7 @@ namespace PhysicsTestbed
 				if (paused != value)
 				{
 					paused = value;
-					if (paused) Program.window.runCheckBox.Checked = false;
+					if (paused) Program.testbedWindow.runCheckBox.Checked = false;
 				}
 			}
 		}
@@ -88,15 +88,15 @@ namespace PhysicsTestbed
 
         public static void PostMessage(string message)
         {
-            Program.window.statusBox.PostMessage(Color.Black, message);
+            Program.testbedWindow.statusBox.PostMessage(Color.Black, message);
         }
 
         public static void PostMessage(Color color, string message)
         {
-            Program.window.statusBox.PostMessage(color, message);
+            Program.testbedWindow.statusBox.PostMessage(color, message);
         }
 
-        static void MakeCheckBoxDataBinding(TestWindow window, string checkBoxName, string checkBoxPropertyName, LsmBody body, string bodyPropertyName)
+        static void MakeCheckBoxDataBinding(TestbedWindow window, string checkBoxName, string checkBoxPropertyName, LsmBody body, string bodyPropertyName)
         {
             System.Windows.Forms.Control[] controls = window.Controls.Find(checkBoxName, true);
             if (controls.Length > 0 && controls.GetValue(0) != null && controls.GetValue(0) is System.Windows.Forms.CheckBox)
@@ -107,7 +107,7 @@ namespace PhysicsTestbed
             }
         }
 
-        public static void MakeDataBindingForBody(TestWindow window, LsmBody body, int bodyIndex)
+        public static void MakeDataBindingForBody(TestbedWindow window, LsmBody body, int bodyIndex)
         {
             // TODO: make this method suitable for N bodies - not only for 2 of them
             if (window != null && (bodyIndex == 0 || bodyIndex == 1))
@@ -127,7 +127,7 @@ namespace PhysicsTestbed
             body.GenerateFromBlueprint(blueprint);
             if (verticalIndex < 2)
             {
-                MakeDataBindingForBody(Program.window, body, verticalIndex);
+                MakeDataBindingForBody(Program.testbedWindow, body, verticalIndex);
             }
             return body;
         }

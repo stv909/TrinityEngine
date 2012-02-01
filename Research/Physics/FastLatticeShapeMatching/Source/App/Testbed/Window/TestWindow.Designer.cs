@@ -1,6 +1,6 @@
 namespace PhysicsTestbed
 {
-	partial class TestWindow
+	partial class TestbedWindow
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -149,13 +149,13 @@ namespace PhysicsTestbed
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -470,7 +470,7 @@ namespace PhysicsTestbed
             this.model02DisableCollisions.AutoSize = true;
             this.model02DisableCollisions.Location = new System.Drawing.Point(236, 645);
             this.model02DisableCollisions.Name = "model02DisableCollisions";
-            this.model02DisableCollisions.Size = new System.Drawing.Size(104, 17);
+            this.model02DisableCollisions.Size = new System.Drawing.Size(85, 17);
             this.model02DisableCollisions.TabIndex = 72;
             this.model02DisableCollisions.Text = "disable walls";
             this.model02DisableCollisions.UseVisualStyleBackColor = true;
@@ -481,7 +481,7 @@ namespace PhysicsTestbed
             this.model01DisableCollisions.AutoSize = true;
             this.model01DisableCollisions.Location = new System.Drawing.Point(236, 669);
             this.model01DisableCollisions.Name = "model01DisableCollisions";
-            this.model01DisableCollisions.Size = new System.Drawing.Size(104, 17);
+            this.model01DisableCollisions.Size = new System.Drawing.Size(85, 17);
             this.model01DisableCollisions.TabIndex = 73;
             this.model01DisableCollisions.Text = "disable walls";
             this.model01DisableCollisions.UseVisualStyleBackColor = true;
@@ -577,7 +577,7 @@ namespace PhysicsTestbed
             this.statusBox.TabIndex = 36;
             this.statusBox.Text = "";
             // 
-            // TestWindow
+            // TestbedWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -623,7 +623,7 @@ namespace PhysicsTestbed
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "TestWindow";
+            this.Name = "TestbedWindow";
             this.Text = "Physics Testbed";
             this.Load += new System.EventHandler(this.TestWindow_Load);
             this.SizeChanged += new System.EventHandler(this.TestWindow_SizeChanged);
